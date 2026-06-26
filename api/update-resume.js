@@ -109,8 +109,7 @@ async function callDeepSeekAPI(currentData, userRequest) {
     return { success: false, error: 'DEEPSEEK_API_KEY 未设置' };
   }
 
-  const systemPrompt = `你是简历修改机器人。用户给出修改指令，你返回修改后的完整JSON。
-规则：只改用户指定的内容，其余原样保留。直接输出JSON，不要任何说明文字。`;
+  const systemPrompt = `你是简历JSON修改器。根据用户指令修改JSON并输出。只输出JSON。`;
 
   try {
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
@@ -125,7 +124,7 @@ async function callDeepSeekAPI(currentData, userRequest) {
           { role: 'system', content: systemPrompt },
           {
             role: 'user',
-            content: `当前JSON：${JSON.stringify(currentData)}\n\n修改指令：${userRequest}\n\n输出修改后的完整JSON：`,
+            content: `请根据修改指令更新以下JSON，然后输出完整的修改后JSON。\n\n修改指令：${userRequest}\n\n当前JSON：${JSON.stringify(currentData, null, 2)}\n\n输出：`,
           },
         ],
         max_tokens: 4096,
