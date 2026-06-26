@@ -3,95 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>刘芮辰 - 个人简历</title>
+<title>刘芮辰的简历</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif; background:linear-gradient(160deg,#f8f6fb 0%,#f0f4ff 40%,#f0fdf4 100%); background-attachment:fixed; color:#333; line-height:1.6; min-height:100vh; }
-  .container { max-width:800px; margin:0 auto; padding:20px 16px 60px; }
-  .card { background:rgba(255,255,255,.92); backdrop-filter:blur(12px); border-radius:20px; box-shadow:0 8px 32px rgba(161,140,209,.12); overflow:hidden; }
+  body { font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif; background:#e8e8e8; padding:20px; }
+  .resume { width:210mm; min-height:297mm; background:#fff; margin:auto; padding:18mm 20mm; box-shadow:0 4px 20px rgba(0,0,0,.12); }
 
   /* 头部 */
-  .header { background:linear-gradient(135deg,#a18cd1,#fbc2eb); color:#fff; padding:28px 36px; display:flex; align-items:center; gap:24px; }
-  .header .photo { width:85px; height:113px; border-radius:10px; object-fit:cover; flex-shrink:0; border:3px solid rgba(255,255,255,.4); box-shadow:0 4px 16px rgba(0,0,0,.1); }
-  .header .info { flex:1; }
-  .name { font-size:1.7rem; font-weight:700; letter-spacing:1px; }
-  .title { font-size:.85rem; opacity:.85; margin-top:4px; }
-  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
-  .tag { background:rgba(255,255,255,.2); backdrop-filter:blur(4px); padding:3px 12px; border-radius:20px; font-size:.78rem; }
+  .header { text-align:center; padding-bottom:12px; margin-bottom:14px; border-bottom:2px solid #a18cd1; }
+  .header .photo { width:70px; height:93px; border-radius:10px; object-fit:cover; border:3px solid #e8d5f0; margin-bottom:8px; }
+  .header h1 { font-size:22px; letter-spacing:1px; margin:4px 0; }
+  .header .sub { font-size:11px; color:#666; margin:2px 0; }
+  .header .tags { display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-top:6px; }
+  .tag { background:#f0e8f8; padding:2px 10px; border-radius:12px; font-size:10px; color:#6b5b95; }
 
   /* 教育 */
-  .edu-section { padding:24px 40px; border-bottom:1px solid #f0e8f0; }
-  .edu-section h2 { font-size:1.05rem; color:#6b5b95; margin-bottom:14px; }
-  .edu-row { margin-bottom:14px; }
-  .edu-row:last-child { margin-bottom:0; }
-  .edu-school { font-weight:600; color:#4a3f6b; font-size:1rem; }
-  .edu-period { font-size:.82rem; color:#a18cd1; float:right; }
-  .edu-major { font-size:.88rem; color:#777; margin-bottom:4px; }
-  .edu-detail { font-size:.85rem; color:#555; padding-left:12px; border-left:2px solid #e8d5f0; }
+  .edu-section { margin-bottom:12px; }
+  .edu-section h2 { font-size:13px; color:#6b5b95; margin-bottom:8px; }
+  .edu-row { font-size:11px; margin-bottom:6px; }
+  .edu-head { line-height:1.6; }
+  .edu-head em { font-size:10px; color:#a18cd1; margin-left:6px; }
+  .edu-detail { font-size:11px; color:#555; padding-left:10px; border-left:2px solid #e8d5f0; margin-top:4px; }
 
-  /* 板块容器：渐变背景 + 70%白色蒙版 */
-  .panel-section { position:relative; padding:28px 40px; overflow:hidden; }
-  .panel-section::before { content:""; position:absolute; inset:0; background:rgba(255,255,255,.7); z-index:1; }
-  .panel-section > * { position:relative; z-index:2; }
-  .panel-section.intern { background:linear-gradient(180deg, rgba(212,252,121,.25) 0%, rgba(150,230,161,.15) 100%); }
-  .panel-section.campus { background:linear-gradient(180deg, rgba(132,250,176,.2) 0%, rgba(143,211,244,.15) 100%); }
-  .panel-section.skill { background:linear-gradient(180deg, rgba(161,140,209,.2) 0%, rgba(251,194,235,.15) 100%); }
-  .section-title { font-size:1.05rem; font-weight:700; color:#6b5b95; margin-bottom:18px; }
+  /* 板块 */
+  .panel { margin-bottom:10px; border-radius:8px; overflow:hidden; }
+  .panel-title { padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer; display:flex; justify-content:space-between; align-items:center; user-select:none; }
+  .panel-title::after { content:"▼"; font-size:9px; transition:transform .25s; }
+  .panel.collapsed .panel-title::after { content:"▶"; }
+  .panel.intern .panel-title { background:linear-gradient(135deg,rgba(212,252,121,.35),rgba(150,230,161,.25)); }
+  .panel.campus .panel-title { background:linear-gradient(135deg,rgba(132,250,176,.3),rgba(143,211,244,.2)); }
+  .panel.skill .panel-title { background:linear-gradient(135deg,rgba(161,140,209,.25),rgba(251,194,235,.2)); }
+  .panel-body { background:rgba(255,255,255,.7); padding:0 14px; }
+  .panel.collapsed .panel-body { display:none; }
 
   /* 索引条 */
-  .idx-item { margin-bottom:10px; }
+  .idx-item { margin-bottom:8px; }
   .idx-item:last-child { margin-bottom:0; }
-  .idx-bar { display:flex; align-items:center; gap:12px; padding:10px 16px; cursor:pointer; user-select:none; border-radius:10px; background:rgba(255,255,255,.6); border:1px solid rgba(0,0,0,.04); transition:all .2s; }
-  .idx-bar:hover { background:rgba(255,255,255,.85); box-shadow:0 2px 8px rgba(0,0,0,.04); }
-  .idx-dot { width:10px; height:10px; border-radius:50%; background:var(--accent); flex-shrink:0; }
-  .idx-title { font-size:.9rem; font-weight:600; color:#4a3f6b; flex-shrink:0; }
-  .idx-sub { font-size:.78rem; color:#999; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .idx-arrow { font-size:.65rem; color:#c4b5e0; transition:transform .25s; flex-shrink:0; }
+  .idx-bar { display:flex; align-items:center; gap:10px; padding:7px 12px; cursor:pointer; border-radius:8px; background:rgba(255,255,255,.6); border:1px solid rgba(0,0,0,.04); transition:all .2s; }
+  .idx-bar:hover { background:rgba(255,255,255,.9); }
+  .idx-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+  .idx-title { font-size:11px; font-weight:600; color:#333; flex-shrink:0; }
+  .idx-sub { font-size:10px; color:#999; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .idx-arrow { font-size:8px; color:#c4b5e0; transition:transform .25s; flex-shrink:0; }
   .idx-item.open .idx-arrow { transform:rotate(90deg); }
-  .idx-item.open .idx-bar { background:var(--grad); }
+  .idx-item.open .idx-bar { background:var(--grad); color:#fff; }
   .idx-item.open .idx-bar .idx-title,.idx-item.open .idx-bar .idx-sub,.idx-item.open .idx-bar .idx-arrow { color:#fff; }
 
-  .idx-body { max-height:0; overflow:hidden; transition:max-height .35s ease; background:rgba(255,255,255,.5); border-radius:0 0 10px 10px; margin-top:-2px; }
-  .idx-item.open .idx-body { max-height:2000px; padding:14px 16px 14px 38px; }
+  .idx-body { max-height:0; overflow:hidden; transition:max-height .35s; background:rgba(255,255,255,.5); border-radius:0 0 8px 8px; }
+  .idx-item.open .idx-body { max-height:3000px; padding:8px 12px 8px 30px; }
   .idx-body ul { list-style:none; }
-  .idx-body li { font-size:.84rem; color:#555; padding:4px 0 4px 16px; position:relative; line-height:1.6; }
-  .idx-body li::before { content:"▸"; position:absolute; left:0; color:var(--accent); font-size:.65rem; top:7px; }
-  .skill-badges { display:flex; flex-wrap:wrap; gap:8px; }
-  .skill-badge { font-size:.84rem; color:#4a3f6b; background:rgba(255,255,255,.7); padding:7px 14px; border-radius:8px; border:1px solid rgba(161,140,209,.15); line-height:1.5; }
+  .idx-body li { font-size:11px; color:#555; padding:3px 0 3px 14px; position:relative; line-height:1.5; }
+  .idx-body li::before { content:"▸"; position:absolute; left:0; color:var(--accent); font-size:8px; top:5px; }
+  .skill-badges { display:flex; flex-wrap:wrap; gap:6px; }
+  .skill-badge { font-size:11px; color:#4a3f6b; background:rgba(255,255,255,.7); padding:4px 10px; border-radius:6px; border:1px solid rgba(161,140,209,.15); }
+  b { color:#2d2250; }
 
-  .footer { text-align:center; padding:20px; font-size:.78rem; color:#c4b5e0; }
+  /* PDF导出按钮 */
+  .export-btn { position:fixed; right:24px; bottom:24px; background:linear-gradient(135deg,#a18cd1,#fbc2eb); color:#fff; border:none; padding:12px 22px; border-radius:25px; cursor:pointer; font-size:14px; box-shadow:0 4px 16px rgba(161,140,209,.3); font-family:inherit; z-index:99; }
 
+  @media print {
+    body { background:#fff; padding:0; }
+    .resume { box-shadow:none; padding:10mm; }
+    .export-btn { display:none; }
+  }
   @media (max-width:600px) {
-    .header { flex-direction:column; text-align:center; padding:24px 20px; }
-    .header .photo { width:65px; height:86px; }
-    .name { font-size:1.3rem; }
-    .edu-section,.panel-section { padding-left:20px; padding-right:20px; }
+    .resume { width:auto; min-height:auto; padding:14px; }
     .idx-sub { display:none; }
-    .tags { justify-content:center; }
+    .export-btn { right:10px; bottom:10px; padding:10px 16px; font-size:12px; }
   }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="card">
 
-    <div class="header">
-      <img class="photo" src="photo.jpg" alt="照片">
-      <div class="info">
-        <div class="name">刘芮辰</div>
-        <div class="title">意向岗位：人力资源 / 活动策划 / 运营实习生</div>
-        <div class="tags"><span class="tag">15318036172</span> <span class="tag">liuruichen02@qq.com</span> <span class="tag">山东</span> <span class="tag">24岁</span> <span class="tag">中共党员</span></div>
-      </div>
-    </div>
+<div class="resume" id="resume">
 
-    <div class="edu-section">
-      <h2>🎓 教育背景</h2>
-      <div class="edu-row"><span class="edu-school">澳门大学</span><span class="edu-period">2025-08 ~ 至今</span><div class="edu-major">国际关系与公共政策（硕士）</div><div class="edu-detail">专业成绩：<b>GPA 3.5</b>（第一学期）<br>主修课程：<b>国际关系理论</b>、国际组织与全球治理、亚太国际关系、<b>社会科学研究设计</b>、<b>国际关系与数据科学</b>等</div></div><div class="edu-row"><span class="edu-school">南京财经大学</span><span class="edu-period">2020-09 ~ 2024-06</span><div class="edu-major">公共事业管理（学士）</div><div class="edu-detail">专业成绩：<b>GPA 3.54/4.0</b> | 专业排名：<b>4/31</b><br>主修课程：公共政策学、公共管理学、<b>定量研究方法与Stata应用</b>、公共经济学、<b>公共管理研究方法</b>、高等数学等<br>荣誉奖项：连续获得五次<b>校级学习优秀奖学金</b>、两次<b>素质拓展奖学金</b>；获<b>优秀大学生</b>、<b>优秀学生干部</b>、<b>优秀毕业论文</b>等称号</div></div>
-    </div>
+  <div class="header">
+    <img class="photo" src="photo.jpg" alt="照片">
+    <h1>刘芮辰</h1>
+    <div class="sub">意向岗位：人力资源 / 活动策划 / 运营实习生</div>
+    <div class="tags"><span class="tag">15318036172</span> <span class="tag">liuruichen02@qq.com</span> <span class="tag">山东</span> <span class="tag">24岁</span> <span class="tag">中共党员</span></div>
+  </div>
 
-    <div class="panel-section intern">
-      <div class="section-title">💼 实习经历</div>
-      <div class="idx-item" style="--grad:linear-gradient(135deg,#a18cd1,#fbc2eb); --accent:#a18cd1">
+  <div class="edu-section">
+    <h2>🎓 教育背景</h2>
+    <div class="edu-row">
+  <div class="edu-head"><b>澳门大学</b> <span>国际关系与公共政策（硕士）</span> <em>2025-08 ~ 至今</em></div>
+  <div class="edu-detail">专业成绩：<b>GPA 3.5</b>（第一学期）<br>主修课程：<b>国际关系理论</b>、国际组织与全球治理、亚太国际关系、<b>社会科学研究设计</b>、<b>国际关系与数据科学</b>等</div>
+</div><div class="edu-row">
+  <div class="edu-head"><b>南京财经大学</b> <span>公共事业管理（学士）</span> <em>2020-09 ~ 2024-06</em></div>
+  <div class="edu-detail">专业成绩：<b>GPA 3.54/4.0</b> | 专业排名：<b>4/31</b><br>主修课程：公共政策学、公共管理学、<b>定量研究方法与Stata应用</b>、公共经济学、<b>公共管理研究方法</b>、高等数学等<br>荣誉奖项：连续获得五次<b>校级学习优秀奖学金</b>、两次<b>素质拓展奖学金</b>；获<b>优秀大学生</b>、<b>优秀学生干部</b>、<b>优秀毕业论文</b>等称号</div>
+</div>
+  </div>
+
+  <div class="panel intern">
+    <div class="panel-title" onclick="this.parentElement.classList.toggle('collapsed')">💼 实习经历</div>
+    <div class="panel-body"><div class="idx-item" style="--grad:linear-gradient(135deg,#a18cd1,#fbc2eb); --accent:#a18cd1">
       <div class="idx-bar" onclick="toggleIdx(this)">
         <span class="idx-dot"></span>
         <span class="idx-title">中国新闻发展公司江苏分公司（新华社）</span>
@@ -115,12 +123,12 @@
         <span class="idx-arrow">▶</span>
       </div>
       <div class="idx-body"><ul><li>文档与流程优化：<b>系统化整理</b>、归档及<b>数字化办公文档</b>，优化文件检索流程，提升部门内部<b>信息流转效率</b></li><li>沟通与协调：熟练起草与<b>格式化公文材料</b>，作为对接窗口之一，协助处理<b>跨部门沟通事务</b>，锻炼了精准的<b>沟通与协调能力</b></li></ul></div>
-    </div>
-    </div>
+    </div></div>
+  </div>
 
-    <div class="panel-section campus">
-      <div class="section-title">🏫 校园经历</div>
-      <div class="idx-item" style="--grad:linear-gradient(135deg,#a18cd1,#fbc2eb); --accent:#a18cd1">
+  <div class="panel campus">
+    <div class="panel-title" onclick="this.parentElement.classList.toggle('collapsed')">🏫 校园经历</div>
+    <div class="panel-body"><div class="idx-item" style="--grad:linear-gradient(135deg,#a18cd1,#fbc2eb); --accent:#a18cd1">
       <div class="idx-bar" onclick="toggleIdx(this)">
         <span class="idx-dot"></span>
         <span class="idx-title">南京财经大学神寂动漫社</span>
@@ -144,12 +152,12 @@
         <span class="idx-arrow">▶</span>
       </div>
       <div class="idx-body"><ul><li>研究设计与分析：从<b>行为公共管理视角</b>出发，进行系统性文献综述，使用<b>多案例分析比较方法</b>，参与构建<b>政府政策—公民体验</b>分析模型，撰写研究分析报告</li><li>能力转化：锻炼了从复杂社会问题中提炼核心议题、进行<b>结构化分析</b>并输出见解的能力，此逻辑分析能力可直接迁移至<b>活动策划与用户调研</b>中，项目获得南京财经大学<b>优秀毕业论文</b>称号</li></ul></div>
-    </div>
-    </div>
+    </div></div>
+  </div>
 
-    <div class="panel-section skill">
-      <div class="section-title">⭐ 技能与评价</div>
-      <div class="idx-item" style="--grad:linear-gradient(135deg,#a18cd1,#fbc2eb); --accent:#a18cd1">
+  <div class="panel skill">
+    <div class="panel-title" onclick="this.parentElement.classList.toggle('collapsed')">⭐ 技能与评价</div>
+    <div class="panel-body"><div class="idx-item" style="--grad:linear-gradient(135deg,#a18cd1,#fbc2eb); --accent:#a18cd1">
       <div class="idx-bar" onclick="toggleIdx(this)">
         <span class="idx-dot"></span>
         <span class="idx-title">大模型驱动型数字化生产力</span>
@@ -177,20 +185,30 @@
         <span class="idx-arrow">▶</span>
       </div>
       <div class="idx-body"><div class="skill-badges"><span class="skill-badge">中共党员，具备严谨的政企公文与新媒体推文撰写能力</span><span class="skill-badge">英语流利（CET-6，雅思6.5，硕士全英文教学），普通话标准</span><span class="skill-badge">曾获“南财演说家”五强及演讲比赛二等奖，擅长跨团队沟通协调与大型活动闭环执行</span><span class="skill-badge">熟悉现场招聘流程，具备校园招聘、简历筛选及培训协调等全流程实践经验，可快速上手招聘相关工作</span><span class="skill-badge">具备良好的沟通协调与多任务处理能力，在校期间曾独立策划执行大型活动，熟悉和各类人员对接的流程，适应快节奏协作环境</span></div></div>
-    </div>
-    </div>
-
+    </div></div>
   </div>
-  <div class="footer">© 2025 刘芮辰 | 感谢阅读</div>
+
 </div>
+
+<button class="export-btn" onclick="exportPDF()">📄 导出 PDF</button>
 
 <script>
 function toggleIdx(el) {
   el.parentElement.classList.toggle('open');
-  // 首次点击后再加动画
-  el.parentElement.querySelector('.idx-body').style.transition = 'max-height .35s ease';
 }
-document.querySelectorAll('.idx-item').forEach((p,i)=>{ if(i===0) p.classList.add('open'); });
+
+function exportPDF() {
+  var el = document.getElementById('resume');
+  html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
+    var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+    var img = canvas.toDataURL('image/png');
+    var w = 210, h = canvas.height * w / canvas.width;
+    pdf.addImage(img, 'PNG', 0, 0, w, h);
+    var now = new Date();
+    var ds = String(now.getDate()).padStart(2,'0') + String(now.getMonth()+1).padStart(2,'0');
+    pdf.save('刘芮辰的简历' + ds + '.pdf');
+  });
+}
 </script>
 </body>
 </html>
