@@ -1,339 +1,147 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>刘芮辰 - 个人简历</title>
-  <meta name="description" content="刘芮辰的个人简历 - 人力资源/活动策划/运营实习生">
-  <!-- Tailwind CSS CDN（样式框架，无需本地安装） -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- 自定义字体和图标 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <style>
-    /* 全局字体设置 */
-    body {
-      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      min-height: 100vh;
-    }
-    /* 打印样式：去掉背景色，节省墨水 */
-    @media print {
-      body { background: white; }
-      .resume-card { box-shadow: none !important; border: 1px solid #eee; }
-      .no-print { display: none !important; }
-    }
-    /* 加载动画 */
-    .loading-spinner {
-      border: 3px solid #e5e7eb;
-      border-top: 3px solid #3b82f6;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
-</head>
-<body class="py-4 px-3 sm:py-8 sm:px-4">
-  <!-- 顶部操作栏（仅页面显示，打印时隐藏） -->
-  <div class="no-print max-w-4xl mx-auto mb-4 flex justify-end gap-3">
-    <button onclick="window.print()" class="px-4 py-2 bg-white rounded-lg shadow text-gray-600 hover:bg-gray-50 text-sm transition">
-      🖨️ 打印简历
-    </button>
-    <a href="/admin" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 text-sm transition">
-      🔐 管理
-    </a>
-  </div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>刘芮辰 - 个人简历</title>
+<style>
+  :root { --blue: #2563eb; --gray: #6b7280; --light: #f8fafc; --border: #e5e7eb; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: #f1f5f9; color: #1e293b; line-height: 1.6; }
+  .container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
 
-  <!-- 简历主体卡片 -->
-  <div id="resume-container" class="max-w-4xl mx-auto resume-card bg-white rounded-2xl shadow-2xl overflow-hidden">
-    <!-- 加载状态 -->
-    <div id="loading" class="flex flex-col items-center justify-center py-32">
-      <div class="loading-spinner mb-4"></div>
-      <p class="text-gray-400">简历加载中...</p>
-    </div>
+  /* 头部 */
+  .header { background: linear-gradient(135deg, #1e40af, #3b82f6); color: #fff; padding: 32px 36px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .header .name { font-size: 2rem; font-weight: 700; }
+  .header .title { font-size: .95rem; opacity: .85; margin-top: 4px; }
+  .header .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .header .tag { background: rgba(255,255,255,.15); padding: 4px 14px; border-radius: 20px; font-size: .85rem; }
 
-    <!-- 简历内容（初始隐藏，数据加载后显示） -->
-    <div id="resume-content" class="hidden">
-      <!-- ========== 头部：姓名 + 基本信息 ========== -->
-      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 sm:px-10 py-8">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-          <!-- 照片区域 -->
-          <div id="photo-area" class="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-white/20 overflow-hidden border-2 border-white/30">
-            <img id="photo-img" src="" alt="照片" class="w-full h-full object-cover hidden">
-            <div id="photo-placeholder" class="w-full h-full flex items-center justify-center text-3xl">
-              👤
-            </div>
-          </div>
-          <!-- 姓名和求职意向 -->
-          <div class="flex-1">
-            <h1 id="name-display" class="text-3xl sm:text-4xl font-bold tracking-wide mb-1"></h1>
-            <p id="target-display" class="text-blue-100 text-sm sm:text-base"></p>
-          </div>
-        </div>
-        <!-- 联系方式标签 -->
-        <div id="contact-tags" class="flex flex-wrap gap-x-4 gap-y-1.5 mt-5 text-sm opacity-90"></div>
-      </div>
+  /* 区块 */
+  .section { padding: 28px 36px; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section h2 { font-size: 1.15rem; color: var(--blue); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section h2 .icon { font-size: 1.3rem; }
 
-      <!-- ========== 主体内容区 ========== -->
-      <div class="px-6 sm:px-10 py-8 space-y-8">
+  /* 时间线 */
+  .item { padding-left: 18px; border-left: 2px solid #dbeafe; margin-bottom: 20px; }
+  .item:last-child { margin-bottom: 0; }
+  .item .head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+  .item .head h3 { font-size: 1.05rem; font-weight: 600; }
+  .item .head .date { font-size: .82rem; color: var(--blue); background: #eff6ff; padding: 2px 10px; border-radius: 12px; white-space: nowrap; }
+  .item .sub { font-size: .9rem; color: var(--gray); margin-bottom: 6px; }
+  .item li { font-size: .92rem; color: #475569; margin-bottom: 4px; list-style: none; }
+  .item li::before { content: "•"; color: #93c5fd; margin-right: 8px; }
 
-        <!-- 教育背景 -->
-        <section>
-          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
-            <span>🎓</span> 教育背景
-          </h2>
-          <div id="education-section"></div>
-        </section>
+  /* 技能 */
+  .skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .skill-box { background: var(--light); border-radius: 12px; padding: 16px; }
+  .skill-box h4 { font-size: .92rem; font-weight: 600; margin-bottom: 8px; }
+  .skill-box .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-box .tag-list span { background: #fff; border: 1px solid var(--border); padding: 3px 10px; border-radius: 14px; font-size: .82rem; color: #475569; }
 
-        <!-- 实习经历 -->
-        <section>
-          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
-            <span>💼</span> 实习经历
-          </h2>
-          <div id="internships-section"></div>
-        </section>
+  /* 自我评价 */
+  .eval-item { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .eval-item .num { background: #dbeafe; color: var(--blue); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: .78rem; font-weight: 700; flex-shrink: 0; }
+  .eval-item p { font-size: .92rem; color: #475569; }
 
-        <!-- 校园经历 -->
-        <section>
-          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
-            <span>🏫</span> 校园经历
-          </h2>
-          <div id="campus-section"></div>
-        </section>
+  .loading { text-align: center; padding: 80px 0; color: var(--gray); }
+  .footer { text-align: center; padding: 16px; font-size: .8rem; color: #94a3b8; }
 
-        <!-- 技能特长 -->
-        <section>
-          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
-            <span>⭐</span> 技能特长
-          </h2>
-          <div id="skills-section"></div>
-        </section>
-
-        <!-- 自我评价 -->
-        <section>
-          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
-            <span>💡</span> 自我评价
-          </h2>
-          <div id="self-eval-section"></div>
-        </section>
-
-      </div>
-
-      <!-- 页脚 -->
-      <div class="px-10 py-4 bg-gray-50 text-center text-gray-400 text-xs">
-        感谢您花时间阅读我的简历，期待与您进一步交流！
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== JavaScript 逻辑 ==================== -->
-  <script>
-  /**
-   * 简历数据加载与渲染
-   *
-   * 加载策略：
-   * 1. 先尝试从 /api/get-resume 获取数据（生产环境 + vercel dev）
-   * 2. 如果 API 不可用，加载本地 resume-data.json（纯 Vite 开发模式）
-   */
-  async function loadResumeData() {
-    // 优先 API（读 GitHub API，无CDN缓存，实时）
-    try {
-      const response = await fetch('/api/get-resume');
-      if (response.ok) return await response.json();
-    } catch (e) {
-      console.log('API 不可用，尝试 GitHub Raw...');
-    }
-    // 降级：GitHub Raw
-    const GITHUB_RAW = 'https://raw.githubusercontent.com/02Ruichen/resume-website/master/public/resume-data.json';
-    try {
-      const response = await fetch(GITHUB_RAW + '?t=' + Date.now());
-      if (response.ok) return await response.json();
-    } catch (e) {
-      console.log('GitHub Raw 不可用，使用本地数据');
-    }
-    // 最终降级：本地文件
-    const response = await fetch('/resume-data.json');
-    return await response.json();
+  @media (max-width: 600px) {
+    .header { padding: 24px 20px; }
+    .header .name { font-size: 1.5rem; }
+    .section { padding: 20px; }
+    .skills { grid-template-columns: 1fr; }
   }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="card">
+    <div id="loading" class="loading">简历加载中...</div>
+    <div id="content" style="display:none"></div>
+  </div>
+  <div class="footer">© 2025 刘芮辰 | 感谢阅读</div>
+</div>
 
-  /**
-   * 渲染整个简历页面
-   */
-  function renderResume(data) {
+<script>
+(async () => {
+  try {
+    // 加载简历数据
+    const data = await (await fetch('resume-data.json')).json();
     const p = data.personal;
 
-    // 设置页面标题
-    document.title = `${p.name} - 个人简历`;
-
-    // 渲染姓名
-    document.getElementById('name-display').textContent = p.name;
-
-    // 渲染求职意向
-    const targets = p.targetPositions?.join(' / ') || '';
-    document.getElementById('target-display').textContent = `意向岗位：${targets}`;
-
-    // 渲染联系方式标签
-    const contactTags = document.getElementById('contact-tags');
-    const contactItems = [
-      { icon: '📞', value: p.phone },
-      { icon: '📧', value: p.email },
-      { icon: '📍', value: p.hometown },
-      { icon: '🎂', value: `${p.age}岁` },
-      { icon: '🏛️', value: p.politicalStatus },
-    ];
-    contactTags.innerHTML = contactItems
-      .filter(item => item.value)
-      .map(item => `<span class="inline-flex items-center gap-1 bg-white/15 px-3 py-1 rounded-full">${item.icon} ${item.value}</span>`)
-      .join('');
-
-    // 渲染照片（如果有的话）
-    const photoImg = document.getElementById('photo-img');
-    photoImg.onload = () => {
-      photoImg.classList.remove('hidden');
-      document.getElementById('photo-placeholder').classList.add('hidden');
-    };
-    photoImg.src = '/photo.jpg';
-
-    // 渲染教育背景
-    renderEducation(data.education || []);
-
-    // 渲染实习经历
-    renderExperience(data.internships || [], 'internships-section');
-
-    // 渲染校园经历
-    renderExperience(data.campus || [], 'campus-section');
-
-    // 渲染技能
-    renderSkills(data.skills || []);
-
-    // 渲染自我评价
-    renderSelfEvaluation(data.selfEvaluation || []);
-
-    // 显示内容，隐藏加载动画
-    document.getElementById('loading').classList.add('hidden');
-    document.getElementById('resume-content').classList.remove('hidden');
-  }
-
-  /**
-   * 渲染教育背景区块
-   */
-  function renderEducation(educationList) {
-    const section = document.getElementById('education-section');
-    section.innerHTML = educationList.map(edu => `
-      <div class="mb-5 last:mb-0">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-          <h3 class="font-bold text-gray-800 text-lg">${escapeHtml(edu.school)}</h3>
-          <span class="text-sm text-blue-600 font-medium bg-blue-50 px-3 py-0.5 rounded-full inline-block w-fit mt-1 sm:mt-0">
-            ${escapeHtml(edu.period)}
-          </span>
+    document.getElementById('content').innerHTML = `
+      <div class="header">
+        <div>
+          <div class="name">${p.name}</div>
+          <div class="title">意向岗位：${(p.targetPositions||[]).join(' / ')}</div>
+          <div class="tags">
+            ${[p.phone,p.email,p.hometown,p.age+'岁',p.politicalStatus].filter(Boolean).map(v=>`<span class="tag">${v}</span>`).join('')}
+          </div>
         </div>
-        <p class="text-gray-600 text-sm mb-2 font-medium">${escapeHtml(edu.major)}</p>
-        <ul class="space-y-1">
-          ${(edu.details || []).map(d => `
-            <li class="text-gray-600 text-sm flex items-start gap-2">
-              <span class="text-blue-400 mt-1 flex-shrink-0">▸</span>
-              <span>${escapeHtml(d)}</span>
-            </li>
-          `).join('')}
-        </ul>
       </div>
-    `).join('');
-  }
 
-  /**
-   * 渲染经历区块（实习经历和校园经历共用）
-   */
-  function renderExperience(list, containerId) {
-    const section = document.getElementById(containerId);
-    if (!list || list.length === 0) {
-      section.innerHTML = '<p class="text-gray-400 text-sm">暂无相关信息</p>';
-      return;
-    }
-    section.innerHTML = list.map(item => `
-      <div class="mb-5 last:mb-0 pl-4 border-l-2 border-blue-200 hover:border-blue-400 transition-colors">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-          <h3 class="font-bold text-gray-800">
-            ${escapeHtml(item.company || item.organization)}
-          </h3>
-          <span class="text-sm text-blue-600 font-medium bg-blue-50 px-3 py-0.5 rounded-full inline-block w-fit mt-1 sm:mt-0">
-            ${escapeHtml(item.period)}
-          </span>
-        </div>
-        <p class="text-gray-500 text-sm mb-2 italic">${escapeHtml(item.position || item.role)}</p>
-        <ul class="space-y-1.5">
-          ${(item.details || []).map(d => `
-            <li class="text-gray-600 text-sm flex items-start gap-2">
-              <span class="text-blue-400 mt-1 flex-shrink-0">•</span>
-              <span>${escapeHtml(d)}</span>
-            </li>
-          `).join('')}
-        </ul>
-      </div>
-    `).join('');
-  }
-
-  /**
-   * 渲染技能特长区块
-   */
-  function renderSkills(skillsList) {
-    const section = document.getElementById('skills-section');
-    section.innerHTML = `
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        ${skillsList.map(skill => `
-          <div class="bg-gray-50 rounded-xl p-4">
-            <h4 class="font-semibold text-gray-700 mb-2 text-sm">${escapeHtml(skill.category)}</h4>
-            <div class="flex flex-wrap gap-1.5">
-              ${(skill.items || []).map(item => `
-                <span class="bg-white text-gray-600 text-xs px-2.5 py-1 rounded-full border border-gray-200">
-                  ${escapeHtml(item)}
-                </span>
-              `).join('')}
-            </div>
+      <div class="section">
+        <h2><span class="icon">🎓</span>教育背景</h2>
+        ${(data.education||[]).map(e=>`
+          <div class="item">
+            <div class="head"><h3>${e.school}</h3><span class="date">${e.period}</span></div>
+            <div class="sub">${e.major}</div>
+            ${(e.details||[]).map(d=>`<li>${d}</li>`).join('')}
           </div>
         `).join('')}
       </div>
-    `;
-  }
 
-  /**
-   * 渲染自我评价区块
-   */
-  function renderSelfEvaluation(evalList) {
-    const section = document.getElementById('self-eval-section');
-    section.innerHTML = evalList.map((item, index) => `
-      <div class="flex items-start gap-3 mb-3 last:mb-0">
-        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">
-          ${index + 1}
-        </span>
-        <p class="text-gray-600 text-sm leading-relaxed">${escapeHtml(item)}</p>
+      <div class="section">
+        <h2><span class="icon">💼</span>实习经历</h2>
+        ${(data.internships||[]).map(i=>`
+          <div class="item">
+            <div class="head"><h3>${i.company}</h3><span class="date">${i.period}</span></div>
+            <div class="sub">${i.position}</div>
+            ${(i.details||[]).map(d=>`<li>${d}</li>`).join('')}
+          </div>
+        `).join('')}
       </div>
-    `).join('');
-  }
 
-  /**
-   * 防止 XSS 攻击的 HTML 转义函数
-   */
-  function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
+      <div class="section">
+        <h2><span class="icon">🏫</span>校园经历</h2>
+        ${(data.campus||[]).map(c=>`
+          <div class="item">
+            <div class="head"><h3>${c.organization}</h3><span class="date">${c.period}</span></div>
+            <div class="sub">${c.role}</div>
+            ${(c.details||[]).map(d=>`<li>${d}</li>`).join('')}
+          </div>
+        `).join('')}
+      </div>
 
-  // ========== 页面启动 ==========
-  loadResumeData()
-    .then(data => renderResume(data))
-    .catch(err => {
-      console.error('简历加载失败:', err);
-      document.getElementById('loading').innerHTML = `
-        <p class="text-red-400 mb-2">😥 简历加载失败，请稍后刷新重试</p>
-        <p class="text-gray-300 text-xs">${escapeHtml(err.message)}</p>
-      `;
-    });
-  </script>
+      <div class="section">
+        <h2><span class="icon">⭐</span>技能特长</h2>
+        <div class="skills">
+          ${(data.skills||[]).map(s=>`
+            <div class="skill-box">
+              <h4>${s.category}</h4>
+              <div class="tag-list">${(s.items||[]).map(i=>`<span>${i}</span>`).join('')}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="section">
+        <h2><span class="icon">💡</span>自我评价</h2>
+        ${(data.selfEvaluation||[]).map((t,i)=>`
+          <div class="eval-item"><span class="num">${i+1}</span><p>${t}</p></div>
+        `).join('')}
+      </div>
+    `;
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  } catch(e) {
+    document.getElementById('loading').textContent = '加载失败，请刷新重试';
+  }
+})();
+</script>
 </body>
 </html>
