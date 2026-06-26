@@ -5,16 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰 - 个人简历</title>
 <style>
-  :root { --purple: #a18cd1; --pink: #fbc2eb; --blue: #a6c1ee; --green: #96e6a1; --lightblue: #8fd3f4; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif; background: linear-gradient(160deg, #f8f6fb 0%, #f0f4ff 40%, #f0fdf4 100%); background-attachment: fixed; color: #333; line-height: 1.6; min-height: 100vh; }
   .container { max-width: 800px; margin: 0 auto; padding: 20px 16px 60px; }
   .card { background: rgba(255,255,255,.92); backdrop-filter: blur(12px); border-radius: 20px; box-shadow: 0 8px 32px rgba(161,140,209,.12); overflow: hidden; }
-  .header { background: linear-gradient(135deg, #a18cd1, #fbc2eb); color: #fff; padding: 36px 40px; text-align: center; }
-  .name { font-size: 2rem; font-weight: 700; letter-spacing: 2px; }
-  .title { font-size: .9rem; opacity: .85; margin-top: 6px; }
-  .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
-  .tag { background: rgba(255,255,255,.2); backdrop-filter: blur(4px); padding: 5px 16px; border-radius: 20px; font-size: .82rem; }
+  .header { background: linear-gradient(135deg, #a18cd1, #fbc2eb); color: #fff; padding: 28px 36px; display: flex; align-items: center; gap: 24px; }
+  .header .photo { width: 85px; height: 113px; border-radius: 10px; object-fit: cover; flex-shrink: 0; border: 3px solid rgba(255,255,255,.4); box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+  .header .info { flex: 1; }
+  .name { font-size: 1.7rem; font-weight: 700; letter-spacing: 1px; }
+  .title { font-size: .85rem; opacity: .85; margin-top: 4px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tag { background: rgba(255,255,255,.2); backdrop-filter: blur(4px); padding: 3px 12px; border-radius: 20px; font-size: .78rem; }
   .edu-section { padding: 24px 40px; border-bottom: 1px solid #f0e8f0; }
   .edu-section h2 { font-size: 1.05rem; color: #6b5b95; margin-bottom: 14px; }
   .edu-item { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; padding: 8px 0; }
@@ -51,8 +52,10 @@
   .skill-tag { font-size: .85rem; color: #4a3f6b; background: rgba(161,140,209,.08); padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(161,140,209,.15); line-height: 1.5; }
   .footer { text-align: center; padding: 20px; font-size: .78rem; color: #c4b5e0; }
   @media (max-width: 600px) {
-    .header,.edu-section,.tab-content { padding-left: 20px; padding-right: 20px; }
-    .name { font-size: 1.5rem; }
+    .header { flex-direction: column; text-align: center; padding: 24px 20px; }
+    .header .photo { width: 65px; height: 86px; }
+    .name { font-size: 1.3rem; }
+    .edu-section,.tab-content { padding-left: 20px; padding-right: 20px; }
     .tab-btn { font-size: .78rem; padding: 12px 4px; }
     .sub-title small { display: none; }
   }
@@ -62,9 +65,12 @@
 <div class="container">
   <div class="card">
     <div class="header">
-      <div class="name">刘芮辰</div>
-      <div class="title">意向岗位：人力资源 / 活动策划 / 运营实习生</div>
-      <div class="tags"><span class="tag">15318036172</span> <span class="tag">liuruichen02@qq.com</span> <span class="tag">山东</span> <span class="tag">24岁</span> <span class="tag">中共党员</span></div>
+      <img class="photo" src="photo.jpg" alt="照片">
+      <div class="info">
+        <div class="name">刘芮辰</div>
+        <div class="title">意向岗位：人力资源 / 活动策划 / 运营实习生</div>
+        <div class="tags"><span class="tag">15318036172</span> <span class="tag">liuruichen02@qq.com</span> <span class="tag">山东</span> <span class="tag">24岁</span> <span class="tag">中共党员</span></div>
+      </div>
     </div>
     <div class="edu-section">
       <h2>🎓 教育背景</h2>
@@ -75,63 +81,63 @@
       <button class="tab-btn" onclick="switchTab(1)">🏫 校园经历</button>
       <button class="tab-btn" onclick="switchTab(2)">⭐ 技能与评价</button>
     </div>
-    <div class="tab-content intern active"><div class="sub-panel" data-section="intern" data-index="0">
+    <div class="tab-content intern active"><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">中国新闻发展公司江苏分公司（新华社）<small> | 政务新媒体部实习生 | 2022-06 ~ 2022-10</small></span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><ul><li>内容策划与撰写：独立负责财政、金融领域新闻信息的搜集、整合与编辑，日均整合筛选政务新闻30+篇，精准匹配政府需求，产出高质量内容，精准传达政策信息</li><li>活动策划与执行：参与策划线上政策宣传项目，协助制定宣传方案，通过内容排期与互动设计，提升传播效果与公众参与度</li><li>多平台运营支持：协助维护政府采购网站内容，日均审核并发布300+政府采购公告，学习并实践了运营逻辑与规范，同时有效提升了信息传达的效率</li></ul></div>
-    </div><div class="sub-panel" data-section="intern" data-index="1">
+    </div><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">青岛滨海学院附属医院人力资源部<small> | 招聘助理实习生 | 2024-02 ~ 2024-05</small></span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><ul><li>招聘现场参与：参与校园招聘全流程支持，负责展位布置、宣传材料发放，主动与潜在候选人沟通、介绍岗位信息，累计收取并初步筛选简历200余份</li><li>培训与员工协调：协助组织3场新员工培训，参与人数150余人，负责日程协调与现场支持，提升培训信息传达效率；完成5次员工考勤核查，确保数据准确</li></ul></div>
-    </div><div class="sub-panel" data-section="intern" data-index="2">
+    </div><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">山东省枣庄市薛城区财政局<small> | 行政助理 | 2024-06 ~ 2024-10</small></span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><ul><li>文档与流程优化：系统化整理、归档及数字化办公文档，优化文件检索流程，提升部门内部信息流转效率</li><li>沟通与协调：熟练起草与格式化公文材料，作为对接窗口之一，协助处理跨部门沟通事务，锻炼了精准的沟通与协调能力</li></ul></div>
     </div></div>
-    <div class="tab-content campus"><div class="sub-panel" data-section="campus" data-index="0">
+    <div class="tab-content campus"><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">南京财经大学神寂动漫社<small> | 社长 | 2022-06 ~ 2023-06</small></span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><ul><li>大型活动全流程策划与执行：作为总负责人，策划并主办“南京高校联盟舞台剧暨宅舞大赛”，吸引22个社团参赛，现场参与超300人，全程负责方案撰写、预算控制、宣传推广与现场执行，获评校级“十佳社团活动”</li><li>团队管理与招募：主导社团招新、日常运营与团队建设，任期内社团影响力显著提升，获评“五星社团”，积累了团队管理与协调经验</li><li>新媒体平台运营：2021-2022年任宣传部长期间，独立运营社团bilibili及QQ空间全平台内容，策划单条视频以2.7万播放量刷新社团记录</li></ul></div>
-    </div><div class="sub-panel" data-section="campus" data-index="1">
+    </div><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">南财“云支教”线上志愿教学项目<small> | 志愿教师兼课程策划 | 2022-12 ~ 2023-02</small></span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><ul><li>课程内容设计：参与教学研讨，独立负责“食品安全与健康”系列课程的策划与准备，将专业知识转化为易懂的课件与讲述</li><li>教学与互动实施：通过线上平台对接学生，完成寒假运动打卡监督、阅读计划引导及系列课程讲授，累计服务时长30小时，获学生好评与校级表彰证书</li></ul></div>
-    </div><div class="sub-panel" data-section="campus" data-index="2">
+    </div><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">贫困群体内生动力双驱动模型构建研究项目<small> | 研究员 | 2023-12 ~ 2024-05</small></span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><ul><li>研究设计与分析：从行为公共管理视角出发，进行系统性文献综述，使用多案例分析比较方法，参与构建“政府政策—公民体验”分析模型，撰写研究分析报告</li><li>能力转化：锻炼了从复杂社会问题中提炼核心议题、进行结构化分析并输出见解的能力，此逻辑分析能力可直接迁移至活动策划与用户调研中，项目获得南京财经大学“优秀毕业论文”称号</li></ul></div>
     </div></div>
-    <div class="tab-content skill"><div class="sub-panel" data-section="skill" data-index="0">
+    <div class="tab-content skill"><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">大模型驱动型数字化生产力</span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><div class="skill-tags"><div class="skill-tag">精通提示词工程（Prompt Engineering），熟练使用Claude Code等AI工具进行自动化脚本开发、数据分析与流程重构</div><div class="skill-tag">将大语言模型接入传统办公生态（Office、表单、数据台账），实现海量数据批量清洗、格式一键转化与智能化重构</div><div class="skill-tag">曾通过Claude调教将常规3天数据处理周期缩短至2-3小时，时效提升90%+并确保100%准确</div></div></div>
-    </div><div class="sub-panel" data-section="skill" data-index="1">
+    </div><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">AI应用接入与轻量开发</span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><div class="skill-tags"><div class="skill-tag">具备AI接口集成与轻量化应用开发思维，能调用大模型API搭建简易智能工具（如简历智能修改网站、自动化问答机器人）</div><div class="skill-tag">有基础的小程序页面搭建与部署经验，善于将AI能力产品化，从业务痛点出发设计提效工具</div></div></div>
-    </div><div class="sub-panel" data-section="skill" data-index="2">
+    </div><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">数理基础与分析工具</span>
         <span class="sub-arrow">▶</span>
       </div>
       <div class="sub-body"><div class="skill-tags"><div class="skill-tag">熟练掌握Stata、R语言进行基础数据分析与数理统计</div><div class="skill-tag">国家计算机二级，正系统进阶Python自动化办公库（Pandas/openpyxl）及SQL结构化查询</div><div class="skill-tag">浏览器自动化测试</div></div></div>
-    </div><div class="sub-panel" data-section="skill" data-index="3">
+    </div><div class="sub-panel">
       <div class="sub-header" onclick="toggleSub(this)">
         <span class="sub-title">核心软实力</span>
         <span class="sub-arrow">▶</span>
@@ -145,6 +151,8 @@
 function switchTab(n) {
   document.querySelectorAll('.tab-btn').forEach((b,i)=>{ b.classList.toggle('active',i===n); });
   document.querySelectorAll('.tab-content').forEach((c,i)=>{ c.classList.toggle('active',i===n); });
+  var first = document.querySelectorAll('.tab-content.active .sub-panel');
+  if(first.length>0) first[0].classList.add('open');
 }
 function toggleSub(el) {
   el.parentElement.classList.toggle('open');
