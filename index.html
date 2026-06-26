@@ -199,19 +199,19 @@
     photoImg.src = '/photo.jpg';
 
     // 渲染教育背景
-    renderEducation(data.education);
+    renderEducation(data.education || []);
 
     // 渲染实习经历
-    renderExperience(data.internships, 'internships-section');
+    renderExperience(data.internships || [], 'internships-section');
 
     // 渲染校园经历
-    renderExperience(data.campus, 'campus-section');
+    renderExperience(data.campus || [], 'campus-section');
 
     // 渲染技能
-    renderSkills(data.skills);
+    renderSkills(data.skills || []);
 
     // 渲染自我评价
-    renderSelfEvaluation(data.selfEvaluation);
+    renderSelfEvaluation(data.selfEvaluation || []);
 
     // 显示内容，隐藏加载动画
     document.getElementById('loading').classList.add('hidden');
