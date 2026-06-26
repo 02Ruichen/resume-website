@@ -11,10 +11,10 @@
   .container { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
   .card { background: #fff; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08); overflow: hidden; }
   .header { background: linear-gradient(135deg, #1e40af, #3b82f6); color: #fff; padding: 32px 36px; }
-  .header .name { font-size: 2rem; font-weight: 700; }
-  .header .title { font-size: .95rem; opacity: .85; margin-top: 4px; }
-  .header .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .header .tag { background: rgba(255,255,255,.15); padding: 4px 14px; border-radius: 20px; font-size: .85rem; }
+  .name { font-size: 2rem; font-weight: 700; }
+  .title { font-size: .95rem; opacity: .85; margin-top: 4px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .tag { background: rgba(255,255,255,.15); padding: 4px 14px; border-radius: 20px; font-size: .85rem; }
   .section { padding: 28px 36px; border-bottom: 1px solid var(--border); }
   .section:last-child { border-bottom: none; }
   .section h2 { font-size: 1.15rem; color: var(--blue); margin-bottom: 16px; }
@@ -27,30 +27,27 @@
   .item li { font-size: .92rem; color: #475569; margin-bottom: 4px; list-style: none; }
   .item li::before { content: "-"; color: #93c5fd; margin-right: 8px; }
   /* 技能与评价 — 竖排莫兰迪色块 */
-  .skill-block { border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; }
-  .skill-block:last-child { margin-bottom: 0; }
-  .skill-title { font-size: 1rem; font-weight: 700; color: #334155; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,.06); }
-  .skill-items { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-  .skill-items li { font-size: .92rem; color: #475569; padding: 2px 0; }
-  .skill-items li::before { content: "▸"; color: #94a3b8; margin-right: 8px; font-size: .75rem; }
+  .skill-cat { border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; }
+  .skill-cat:last-child { margin-bottom: 0; }
+  .skill-title { font-size: .95rem; font-weight: 700; color: #475569; margin-bottom: 12px; letter-spacing: .5px; }
+  .skill-rows { display: flex; flex-direction: column; gap: 8px; }
+  .skill-row { font-size: .9rem; color: #475569; padding: 8px 14px; background: rgba(255,255,255,.55); border-radius: 8px; line-height: 1.5; }
   .footer { text-align: center; padding: 16px; font-size: .8rem; color: #94a3b8; }
-  @media (max-width: 600px) { .header { padding: 24px 20px; } .header .name { font-size: 1.5rem; } .section { padding: 20px; } .skill-block { padding: 14px 16px; } }
+  @media (max-width: 600px) { .header,.section { padding: 24px 20px; } .name { font-size: 1.5rem; } .skill-cat { padding: 14px 16px; } }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="card">
     <div class="header">
-      <div>
-        <div class="name">刘芮辰</div>
-        <div class="title">意向岗位：人力资源 / 活动策划 / 运营实习生</div>
-        <div class="tags"><span class="tag">15318036172</span> <span class="tag">liuruichen02@qq.com</span> <span class="tag">山东</span> <span class="tag">24岁</span> <span class="tag">中共党员</span></div>
-      </div>
+      <div class="name">刘芮辰</div>
+      <div class="title">意向岗位：人力资源 / 活动策划 / 运营实习生</div>
+      <div class="tags"><span class="tag">15318036172</span> <span class="tag">liuruichen02@qq.com</span> <span class="tag">山东</span> <span class="tag">24岁</span> <span class="tag">中共党员</span></div>
     </div>
     <div class="section"><h2>🎓 教育背景</h2><div class="item"><div class="head"><h3>澳门大学</h3><span class="date">2025-08 ~ 至今</span></div><div class="sub">国际关系与公共政策（硕士）</div><li>专业成绩：GPA 3.5（第一学期）</li><li>主修课程：国际关系理论、国际组织与全球治理、亚太国际关系、社会科学研究设计、国际关系与数据科学等</li></div><div class="item"><div class="head"><h3>南京财经大学</h3><span class="date">2020-09 ~ 2024-06</span></div><div class="sub">公共事业管理（学士）</div><li>专业成绩：GPA 3.54/4.0 | 专业排名：4/31</li><li>主修课程：公共政策学、公共管理学、定量研究方法与Stata应用、公共经济学、公共管理研究方法、高等数学等</li><li>荣誉奖项：连续获得五次校级学习优秀奖学金、两次素质拓展奖学金；获“优秀大学生”、“优秀学生干部”、“优秀毕业论文”等称号</li></div></div>
     <div class="section"><h2>💼 实习经历</h2><div class="item"><div class="head"><h3>中国新闻发展公司江苏分公司（新华社）</h3><span class="date">2022-06 ~ 2022-10</span></div><div class="sub">政务新媒体部实习生</div><li>内容策划与撰写：独立负责财政、金融领域新闻信息的搜集、整合与编辑，日均整合筛选政务新闻30+篇，精准匹配政府需求，产出高质量内容，精准传达政策信息</li><li>活动策划与执行：参与策划线上政策宣传项目，协助制定宣传方案，通过内容排期与互动设计，提升传播效果与公众参与度</li><li>多平台运营支持：协助维护政府采购网站内容，日均审核并发布300+政府采购公告，学习并实践了运营逻辑与规范，同时有效提升了信息传达的效率</li></div><div class="item"><div class="head"><h3>青岛滨海学院附属医院人力资源部</h3><span class="date">2024-02 ~ 2024-05</span></div><div class="sub">招聘助理实习生</div><li>招聘现场参与：参与校园招聘全流程支持，负责展位布置、宣传材料发放，主动与潜在候选人沟通、介绍岗位信息，累计收取并初步筛选简历200余份</li><li>培训与员工协调：协助组织3场新员工培训，参与人数150余人，负责日程协调与现场支持，提升培训信息传达效率；完成5次员工考勤核查，确保数据准确</li></div><div class="item"><div class="head"><h3>山东省枣庄市薛城区财政局</h3><span class="date">2024-06 ~ 2024-10</span></div><div class="sub">行政助理</div><li>文档与流程优化：系统化整理、归档及数字化办公文档，优化文件检索流程，提升部门内部信息流转效率</li><li>沟通与协调：熟练起草与格式化公文材料，作为对接窗口之一，协助处理跨部门沟通事务，锻炼了精准的沟通与协调能力</li></div></div>
     <div class="section"><h2>🏫 校园经历</h2><div class="item"><div class="head"><h3>南京财经大学神寂动漫社</h3><span class="date">2022-06 ~ 2023-06</span></div><div class="sub">社长</div><li>大型活动全流程策划与执行：作为总负责人，策划并主办“南京高校联盟舞台剧暨宅舞大赛”，吸引22个社团参赛，现场参与超300人，全程负责方案撰写、预算控制、宣传推广与现场执行，获评校级“十佳社团活动”</li><li>团队管理与招募：主导社团招新、日常运营与团队建设，任期内社团影响力显著提升，获评“五星社团”，积累了团队管理与协调经验</li><li>新媒体平台运营：2021-2022年任宣传部长期间，独立运营社团bilibili及QQ空间全平台内容，策划单条视频以2.7万播放量刷新社团记录</li></div><div class="item"><div class="head"><h3>南财“云支教”线上志愿教学项目</h3><span class="date">2022-12 ~ 2023-02</span></div><div class="sub">志愿教师兼课程策划</div><li>课程内容设计：参与教学研讨，独立负责“食品安全与健康”系列课程的策划与准备，将专业知识转化为易懂的课件与讲述</li><li>教学与互动实施：通过线上平台对接学生，完成寒假运动打卡监督、阅读计划引导及系列课程讲授，累计服务时长30小时，获学生好评与校级表彰证书</li></div><div class="item"><div class="head"><h3>贫困群体内生动力双驱动模型构建研究项目</h3><span class="date">2023-12 ~ 2024-05</span></div><div class="sub">研究员</div><li>研究设计与分析：从行为公共管理视角出发，进行系统性文献综述，使用多案例分析比较方法，参与构建“政府政策—公民体验”分析模型，撰写研究分析报告</li><li>能力转化：锻炼了从复杂社会问题中提炼核心议题、进行结构化分析并输出见解的能力，此逻辑分析能力可直接迁移至活动策划与用户调研中，项目获得南京财经大学“优秀毕业论文”称号</li></div></div>
-    <div class="section"><h2>⭐ 技能与评价</h2><div class="skill-block" style="background:#f0ebe3;"><h3 class="skill-title">大模型驱动型数字化生产力</h3><ul class="skill-items"><li>精通提示词工程（Prompt Engineering），熟练使用Claude Code等AI工具进行自动化脚本开发、数据分析与流程重构</li><li>将大语言模型接入传统办公生态（Office、表单、数据台账），实现海量数据批量清洗、格式一键转化与智能化重构</li><li>曾通过Claude调教将常规3天数据处理周期缩短至2-3小时，时效提升90%+并确保100%准确</li></ul></div><div class="skill-block" style="background:#e8e0d5;"><h3 class="skill-title">AI应用接入与轻量开发</h3><ul class="skill-items"><li>具备AI接口集成与轻量化应用开发思维，能调用大模型API搭建简易智能工具（如简历智能修改网站、自动化问答机器人）</li><li>有基础的小程序页面搭建与部署经验，善于将AI能力产品化，从业务痛点出发设计提效工具</li></ul></div><div class="skill-block" style="background:#e3dcc8;"><h3 class="skill-title">数理基础与分析工具</h3><ul class="skill-items"><li>熟练掌握Stata、R语言进行基础数据分析与数理统计</li><li>国家计算机二级，正系统进阶Python自动化办公库（Pandas/openpyxl）及SQL结构化查询</li><li>浏览器自动化测试</li></ul></div><div class="skill-block" style="background:#e8dfd8;"><h3 class="skill-title">核心软实力</h3><ul class="skill-items"><li>中共党员，具备严谨的政企公文与新媒体推文撰写能力</li><li>英语流利（CET-6，雅思6.5，硕士全英文教学），普通话标准</li><li>曾获“南财演说家”五强及演讲比赛二等奖，擅长跨团队沟通协调与大型活动闭环执行</li><li>熟悉现场招聘流程，具备校园招聘、简历筛选及培训协调等全流程实践经验，可快速上手招聘相关工作</li><li>具备良好的沟通协调与多任务处理能力，在校期间曾独立策划执行大型活动，熟悉和各类人员对接的流程，适应快节奏协作环境</li></ul></div></div>
+    <div class="section"><h2>⭐ 技能与评价</h2><div class="skill-cat" style="background:#f0ebe3;"><h3 class="skill-title">大模型驱动型数字化生产力</h3><div class="skill-rows"><div class="skill-row">精通提示词工程（Prompt Engineering），熟练使用Claude Code等AI工具进行自动化脚本开发、数据分析与流程重构</div><div class="skill-row">将大语言模型接入传统办公生态（Office、表单、数据台账），实现海量数据批量清洗、格式一键转化与智能化重构</div><div class="skill-row">曾通过Claude调教将常规3天数据处理周期缩短至2-3小时，时效提升90%+并确保100%准确</div></div></div><div class="skill-cat" style="background:#e8e0d5;"><h3 class="skill-title">AI应用接入与轻量开发</h3><div class="skill-rows"><div class="skill-row">具备AI接口集成与轻量化应用开发思维，能调用大模型API搭建简易智能工具（如简历智能修改网站、自动化问答机器人）</div><div class="skill-row">有基础的小程序页面搭建与部署经验，善于将AI能力产品化，从业务痛点出发设计提效工具</div></div></div><div class="skill-cat" style="background:#e3dcc8;"><h3 class="skill-title">数理基础与分析工具</h3><div class="skill-rows"><div class="skill-row">熟练掌握Stata、R语言进行基础数据分析与数理统计</div><div class="skill-row">国家计算机二级，正系统进阶Python自动化办公库（Pandas/openpyxl）及SQL结构化查询</div><div class="skill-row">浏览器自动化测试</div></div></div><div class="skill-cat" style="background:#ede4d3;"><h3 class="skill-title">核心软实力</h3><div class="skill-rows"><div class="skill-row">中共党员，具备严谨的政企公文与新媒体推文撰写能力</div><div class="skill-row">英语流利（CET-6，雅思6.5，硕士全英文教学），普通话标准</div><div class="skill-row">曾获“南财演说家”五强及演讲比赛二等奖，擅长跨团队沟通协调与大型活动闭环执行</div><div class="skill-row">熟悉现场招聘流程，具备校园招聘、简历筛选及培训协调等全流程实践经验，可快速上手招聘相关工作</div><div class="skill-row">具备良好的沟通协调与多任务处理能力，在校期间曾独立策划执行大型活动，熟悉和各类人员对接的流程，适应快节奏协作环境</div></div></div></div>
   </div>
   <div class="footer">© 2025 刘芮辰 | 感谢阅读</div>
 </div>
