@@ -140,20 +140,20 @@
    * 2. 如果 API 不可用，加载本地 resume-data.json（纯 Vite 开发模式）
    */
   async function loadResumeData() {
-    // 直接从 GitHub Raw 读取（永远最新，绕过 CDN 缓存）
+    // 优先 API（读 GitHub API，无CDN缓存，实时）
+    try {
+      const response = await fetch('/api/get-resume');
+      if (response.ok) return await response.json();
+    } catch (e) {
+      console.log('API 不可用，尝试 GitHub Raw...');
+    }
+    // 降级：GitHub Raw
     const GITHUB_RAW = 'https://raw.githubusercontent.com/02Ruichen/resume-website/master/public/resume-data.json';
     try {
       const response = await fetch(GITHUB_RAW + '?t=' + Date.now());
       if (response.ok) return await response.json();
     } catch (e) {
-      console.log('GitHub Raw 不可用，尝试 API...');
-    }
-    // 降级：API
-    try {
-      const response = await fetch('/api/get-resume');
-      if (response.ok) return await response.json();
-    } catch (e) {
-      console.log('API 不可用，使用本地数据');
+      console.log('GitHub Raw 不可用，使用本地数据');
     }
     // 最终降级：本地文件
     const response = await fetch('/resume-data.json');
