@@ -115,7 +115,8 @@
       "category": "数理基础与分析工具",
       "items": [
         "熟练掌握Stata、R语言进行基础数据分析与数理统计",
-        "国家计算机二级，正系统进阶Python自动化办公库（Pandas/openpyxl）及SQL结构化查询"
+        "国家计算机二级，正系统进阶Python自动化办公库（Pandas/openpyxl）及SQL结构化查询",
+        "浏览器自动化测试"
       ]
     },
     {
