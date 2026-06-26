@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>刘芮辰 - 个人简历</title>
+  <meta name="description" content="刘芮辰的个人简历 - 人力资源/活动策划/运营实习生">
+  <!-- Tailwind CSS CDN（样式框架，无需本地安装） -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 自定义字体和图标 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* 全局字体设置 */
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+    /* 打印样式：去掉背景色，节省墨水 */
+    @media print {
+      body { background: white; }
+      .resume-card { box-shadow: none !important; border: 1px solid #eee; }
+      .no-print { display: none !important; }
+    }
+    /* 加载动画 */
+    .loading-spinner {
+      border: 3px solid #e5e7eb;
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="py-4 px-3 sm:py-8 sm:px-4">
+  <!-- 顶部操作栏（仅页面显示，打印时隐藏） -->
+  <div class="no-print max-w-4xl mx-auto mb-4 flex justify-end gap-3">
+    <button onclick="window.print()" class="px-4 py-2 bg-white rounded-lg shadow text-gray-600 hover:bg-gray-50 text-sm transition">
+      🖨️ 打印简历
+    </button>
+    <a href="/admin" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 text-sm transition">
+      🔐 管理
+    </a>
+  </div>
+
+  <!-- 简历主体卡片 -->
+  <div id="resume-container" class="max-w-4xl mx-auto resume-card bg-white rounded-2xl shadow-2xl overflow-hidden">
+    <!-- 加载状态 -->
+    <div id="loading" class="flex flex-col items-center justify-center py-32">
+      <div class="loading-spinner mb-4"></div>
+      <p class="text-gray-400">简历加载中...</p>
+    </div>
+
+    <!-- 简历内容（初始隐藏，数据加载后显示） -->
+    <div id="resume-content" class="hidden">
+      <!-- ========== 头部：姓名 + 基本信息 ========== -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 sm:px-10 py-8">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          <!-- 照片区域 -->
+          <div id="photo-area" class="flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-white/20 overflow-hidden border-2 border-white/30">
+            <img id="photo-img" src="" alt="照片" class="w-full h-full object-cover hidden">
+            <div id="photo-placeholder" class="w-full h-full flex items-center justify-center text-3xl">
+              👤
+            </div>
+          </div>
+          <!-- 姓名和求职意向 -->
+          <div class="flex-1">
+            <h1 id="name-display" class="text-3xl sm:text-4xl font-bold tracking-wide mb-1"></h1>
+            <p id="target-display" class="text-blue-100 text-sm sm:text-base"></p>
+          </div>
+        </div>
+        <!-- 联系方式标签 -->
+        <div id="contact-tags" class="flex flex-wrap gap-x-4 gap-y-1.5 mt-5 text-sm opacity-90"></div>
+      </div>
+
+      <!-- ========== 主体内容区 ========== -->
+      <div class="px-6 sm:px-10 py-8 space-y-8">
+
+        <!-- 教育背景 -->
+        <section>
+          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
+            <span>🎓</span> 教育背景
+          </h2>
+          <div id="education-section"></div>
+        </section>
+
+        <!-- 实习经历 -->
+        <section>
+          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
+            <span>💼</span> 实习经历
+          </h2>
+          <div id="internships-section"></div>
+        </section>
+
+        <!-- 校园经历 -->
+        <section>
+          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
+            <span>🏫</span> 校园经历
+          </h2>
+          <div id="campus-section"></div>
+        </section>
+
+        <!-- 技能特长 -->
+        <section>
+          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
+            <span>⭐</span> 技能特长
+          </h2>
+          <div id="skills-section"></div>
+        </section>
+
+        <!-- 自我评价 -->
+        <section>
+          <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4 flex items-center gap-2">
+            <span>💡</span> 自我评价
+          </h2>
+          <div id="self-eval-section"></div>
+        </section>
+
+      </div>
+
+      <!-- 页脚 -->
+      <div class="px-10 py-4 bg-gray-50 text-center text-gray-400 text-xs">
+        感谢您花时间阅读我的简历，期待与您进一步交流！
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JavaScript 逻辑 ==================== -->
+  <script>
+  /**
+   * 简历数据加载与渲染
+   *
+   * 加载策略：
+   * 1. 先尝试从 /api/get-resume 获取数据（生产环境 + vercel dev）
+   * 2. 如果 API 不可用，加载本地 resume-data.json（纯 Vite 开发模式）
+   */
+  async function loadResumeData() {
+    // 直接从 GitHub Raw 读取（永远最新，绕过 CDN 缓存）
+    const GITHUB_RAW = 'https://raw.githubusercontent.com/02Ruichen/resume-website/master/public/resume-data.json';
+    try {
+      const response = await fetch(GITHUB_RAW + '?t=' + Date.now());
+      if (response.ok) return await response.json();
+    } catch (e) {
+      console.log('GitHub Raw 不可用，尝试 API...');
+    }
+    // 降级：API
+    try {
+      const response = await fetch('/api/get-resume');
+      if (response.ok) return await response.json();
+    } catch (e) {
+      console.log('API 不可用，使用本地数据');
+    }
+    // 最终降级：本地文件
+    const response = await fetch('/resume-data.json');
+    return await response.json();
+  }
+
+  /**
+   * 渲染整个简历页面
+   */
+  function renderResume(data) {
+    const p = data.personal;
+
+    // 设置页面标题
+    document.title = `${p.name} - 个人简历`;
+
+    // 渲染姓名
+    document.getElementById('name-display').textContent = p.name;
+
+    // 渲染求职意向
+    const targets = p.targetPositions?.join(' / ') || '';
+    document.getElementById('target-display').textContent = `意向岗位：${targets}`;
+
+    // 渲染联系方式标签
+    const contactTags = document.getElementById('contact-tags');
+    const contactItems = [
+      { icon: '📞', value: p.phone },
+      { icon: '📧', value: p.email },
+      { icon: '📍', value: p.hometown },
+      { icon: '🎂', value: `${p.age}岁` },
+      { icon: '🏛️', value: p.politicalStatus },
+    ];
+    contactTags.innerHTML = contactItems
+      .filter(item => item.value)
+      .map(item => `<span class="inline-flex items-center gap-1 bg-white/15 px-3 py-1 rounded-full">${item.icon} ${item.value}</span>`)
+      .join('');
+
+    // 渲染照片（如果有的话）
+    const photoImg = document.getElementById('photo-img');
+    photoImg.onload = () => {
+      photoImg.classList.remove('hidden');
+      document.getElementById('photo-placeholder').classList.add('hidden');
+    };
+    photoImg.src = '/photo.jpg';
+
+    // 渲染教育背景
+    renderEducation(data.education);
+
+    // 渲染实习经历
+    renderExperience(data.internships, 'internships-section');
+
+    // 渲染校园经历
+    renderExperience(data.campus, 'campus-section');
+
+    // 渲染技能
+    renderSkills(data.skills);
+
+    // 渲染自我评价
+    renderSelfEvaluation(data.selfEvaluation);
+
+    // 显示内容，隐藏加载动画
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('resume-content').classList.remove('hidden');
+  }
+
+  /**
+   * 渲染教育背景区块
+   */
+  function renderEducation(educationList) {
+    const section = document.getElementById('education-section');
+    section.innerHTML = educationList.map(edu => `
+      <div class="mb-5 last:mb-0">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+          <h3 class="font-bold text-gray-800 text-lg">${escapeHtml(edu.school)}</h3>
+          <span class="text-sm text-blue-600 font-medium bg-blue-50 px-3 py-0.5 rounded-full inline-block w-fit mt-1 sm:mt-0">
+            ${escapeHtml(edu.period)}
+          </span>
+        </div>
+        <p class="text-gray-600 text-sm mb-2 font-medium">${escapeHtml(edu.major)}</p>
+        <ul class="space-y-1">
+          ${(edu.details || []).map(d => `
+            <li class="text-gray-600 text-sm flex items-start gap-2">
+              <span class="text-blue-400 mt-1 flex-shrink-0">▸</span>
+              <span>${escapeHtml(d)}</span>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `).join('');
+  }
+
+  /**
+   * 渲染经历区块（实习经历和校园经历共用）
+   */
+  function renderExperience(list, containerId) {
+    const section = document.getElementById(containerId);
+    if (!list || list.length === 0) {
+      section.innerHTML = '<p class="text-gray-400 text-sm">暂无相关信息</p>';
+      return;
+    }
+    section.innerHTML = list.map(item => `
+      <div class="mb-5 last:mb-0 pl-4 border-l-2 border-blue-200 hover:border-blue-400 transition-colors">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+          <h3 class="font-bold text-gray-800">
+            ${escapeHtml(item.company || item.organization)}
+          </h3>
+          <span class="text-sm text-blue-600 font-medium bg-blue-50 px-3 py-0.5 rounded-full inline-block w-fit mt-1 sm:mt-0">
+            ${escapeHtml(item.period)}
+          </span>
+        </div>
+        <p class="text-gray-500 text-sm mb-2 italic">${escapeHtml(item.position || item.role)}</p>
+        <ul class="space-y-1.5">
+          ${(item.details || []).map(d => `
+            <li class="text-gray-600 text-sm flex items-start gap-2">
+              <span class="text-blue-400 mt-1 flex-shrink-0">•</span>
+              <span>${escapeHtml(d)}</span>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `).join('');
+  }
+
+  /**
+   * 渲染技能特长区块
+   */
+  function renderSkills(skillsList) {
+    const section = document.getElementById('skills-section');
+    section.innerHTML = `
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        ${skillsList.map(skill => `
+          <div class="bg-gray-50 rounded-xl p-4">
+            <h4 class="font-semibold text-gray-700 mb-2 text-sm">${escapeHtml(skill.category)}</h4>
+            <div class="flex flex-wrap gap-1.5">
+              ${(skill.items || []).map(item => `
+                <span class="bg-white text-gray-600 text-xs px-2.5 py-1 rounded-full border border-gray-200">
+                  ${escapeHtml(item)}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  /**
+   * 渲染自我评价区块
+   */
+  function renderSelfEvaluation(evalList) {
+    const section = document.getElementById('self-eval-section');
+    section.innerHTML = evalList.map((item, index) => `
+      <div class="flex items-start gap-3 mb-3 last:mb-0">
+        <span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">
+          ${index + 1}
+        </span>
+        <p class="text-gray-600 text-sm leading-relaxed">${escapeHtml(item)}</p>
+      </div>
+    `).join('');
+  }
+
+  /**
+   * 防止 XSS 攻击的 HTML 转义函数
+   */
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // ========== 页面启动 ==========
+  loadResumeData()
+    .then(data => renderResume(data))
+    .catch(err => {
+      console.error('简历加载失败:', err);
+      document.getElementById('loading').innerHTML = `
+        <p class="text-red-400 mb-2">😥 简历加载失败，请稍后刷新重试</p>
+        <p class="text-gray-300 text-xs">${escapeHtml(err.message)}</p>
+      `;
+    });
+  </script>
+</body>
+</html>

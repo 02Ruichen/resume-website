@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 简历管理 - 后台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+    }
+    /* 聊天消息动画 */
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .msg-animate {
+      animation: slideUp 0.3s ease-out;
+    }
+    /* 修改前后对比高亮 */
+    .diff-added { background-color: #d1fae5; }
+    .diff-removed { background-color: #fee2e2; text-decoration: line-through; }
+    /* 滚动条美化 */
+    .chat-area::-webkit-scrollbar { width: 6px; }
+    .chat-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  </style>
+</head>
+<body class="flex flex-col h-screen">
+  <!-- ========== 顶部导航栏 ========== -->
+  <header class="bg-white shadow-sm px-4 sm:px-6 py-3 flex items-center justify-between flex-shrink-0">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">🤖</span>
+      <div>
+        <h1 class="font-bold text-gray-800 text-lg">AI 简历管理</h1>
+        <p class="text-gray-400 text-xs">用自然语言修改简历内容</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/" target="_blank" class="text-sm text-gray-500 hover:text-blue-600 transition">👁️ 预览简历</a>
+      <button id="logout-btn" class="text-sm text-gray-500 hover:text-red-600 transition">退出登录</button>
+    </div>
+  </header>
+
+  <!-- ========== 聊天消息区域 ========== -->
+  <main class="flex-1 overflow-y-auto chat-area px-4 sm:px-6 py-4 space-y-4" id="chat-area">
+    <!-- 欢迎消息 -->
+    <div class="msg-animate flex gap-3">
+      <span class="text-2xl flex-shrink-0">🤖</span>
+      <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-2xl">
+        <p class="text-gray-700 text-sm leading-relaxed">
+          你好！我是你的简历 AI 助手。你可以用自然语言告诉我你想怎么修改简历，例如：
+        </p>
+        <ul class="mt-2 space-y-1 text-sm text-gray-500">
+          <li>• "把我的手机号改为 138xxxx"</li>
+          <li>• "新增一段在字节跳动的实习经历"</li>
+          <li>• "把我的 GPA 更新为 3.8"</li>
+          <li>• "删掉第二段校园经历"</li>
+          <li>• "在技能里加一条：Python 编程"</li>
+        </ul>
+        <p class="text-gray-400 text-xs mt-3">每次修改都会自动更新你的公开简历页面 ✨</p>
+      </div>
+    </div>
+
+    <!-- 对话消息会动态插入到这里 -->
+    <div id="messages-container"></div>
+  </main>
+
+  <!-- ========== 底部输入区域 ========== -->
+  <footer class="bg-white border-t px-4 sm:px-6 py-3 flex-shrink-0">
+    <div class="max-w-3xl mx-auto flex gap-3 items-end">
+      <!-- 输入框 -->
+      <textarea
+        id="user-input"
+        rows="1"
+        placeholder="输入你想修改的内容，例如：把我的邮箱改成 new@email.com"
+        class="flex-1 border border-gray-200 rounded-xl px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-sm"
+      ></textarea>
+      <!-- 发送按钮 -->
+      <button
+        id="send-btn"
+        class="flex-shrink-0 px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium text-sm shadow-lg shadow-blue-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        发送
+      </button>
+    </div>
+    <p class="text-center text-gray-300 text-xs mt-2">修改内容会自动保存到你的公开简历页面</p>
+  </footer>
+
+  <script>
+    // ==================== 权限检查 ====================
+    const token = sessionStorage.getItem('admin_token');
+    if (!token) {
+      // 未登录，跳转到登录页
+      window.location.href = '/admin.html';
+    }
+
+    // ==================== DOM 元素 ====================
+    const chatArea = document.getElementById('chat-area');
+    const messagesContainer = document.getElementById('messages-container');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // ==================== 事件绑定 ====================
+    sendBtn.addEventListener('click', handleSend);
+    userInput.addEventListener('keydown', (e) => {
+      // Enter 发送（Shift+Enter 换行）
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+    // 自动调整输入框高度
+    userInput.addEventListener('input', () => {
+      userInput.style.height = 'auto';
+      userInput.style.height = Math.min(userInput.scrollHeight, 150) + 'px';
+    });
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem('admin_token');
+      window.location.href = '/admin.html';
+    });
+
+    /**
+     * 处理发送消息
+     */
+    async function handleSend() {
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      // 禁用发送按钮，防止重复提交
+      sendBtn.disabled = true;
+      userInput.disabled = true;
+
+      // 显示用户消息
+      appendMessage('user', message);
+      userInput.value = '';
+      userInput.style.height = 'auto';
+
+      // 显示 AI "正在思考"的加载状态
+      const loadingId = appendLoading();
+
+      try {
+        const response = await fetch('/api/update-resume', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password: token,  // 使用登录时保存的 token 作为密码验证
+            request: message,
+          }),
+        });
+
+        const result = await response.json();
+
+        // 移除加载状态
+        removeLoading(loadingId);
+
+        if (result.success) {
+          // 显示 AI 回复
+          appendMessage('ai', result.message || '简历内容已更新成功！✅');
+        } else {
+          // 显示错误
+          appendMessage('ai', `❌ 修改失败：${result.error || '未知错误'}`);
+        }
+      } catch (e) {
+        removeLoading(loadingId);
+        appendMessage('ai', `❌ 网络错误：${e.message}`);
+        console.error('发送请求失败:', e);
+      } finally {
+        sendBtn.disabled = false;
+        userInput.disabled = false;
+        userInput.focus();
+      }
+    }
+
+    /**
+     * 在聊天区追加一条消息
+     * @param {'user' | 'ai'} role - 消息角色
+     * @param {string} text - 消息内容
+     */
+    function appendMessage(role, text) {
+      const isUser = role === 'user';
+      const div = document.createElement('div');
+      div.className = `msg-animate flex gap-3 ${isUser ? 'flex-row-reverse' : ''}`;
+
+      div.innerHTML = isUser ? `
+        <span class="text-2xl flex-shrink-0">👤</span>
+        <div class="bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm max-w-2xl">
+          <p class="text-sm leading-relaxed">${escapeHtml(text)}</p>
+        </div>
+      ` : `
+        <span class="text-2xl flex-shrink-0">🤖</span>
+        <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-2xl">
+          <p class="text-gray-700 text-sm leading-relaxed">${escapeHtml(text).replace(/\n/g, '<br>')}</p>
+        </div>
+      `;
+
+      messagesContainer.appendChild(div);
+      scrollToBottom();
+    }
+
+    /**
+     * 显示加载中的动画
+     */
+    function appendLoading() {
+      const id = 'loading-' + Date.now();
+      const div = document.createElement('div');
+      div.id = id;
+      div.className = 'msg-animate flex gap-3';
+      div.innerHTML = `
+        <span class="text-2xl flex-shrink-0">🤖</span>
+        <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+          <div class="flex gap-1.5">
+            <span class="w-2 h-2 bg-gray-300 rounded-full animate-pulse"></span>
+            <span class="w-2 h-2 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 0.2s"></span>
+            <span class="w-2 h-2 bg-gray-300 rounded-full animate-pulse" style="animation-delay: 0.4s"></span>
+          </div>
+        </div>
+      `;
+      messagesContainer.appendChild(div);
+      scrollToBottom();
+      return id;
+    }
+
+    function removeLoading(id) {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    }
+
+    function scrollToBottom() {
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

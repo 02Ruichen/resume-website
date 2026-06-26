@@ -1,0 +1,14 @@
+{
+  "name": "resume-website",
+  "version": "1.0.0",
+  "description": "刘芮辰的个人简历展示网站 - 含AI管理后台",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  },
+  "dependencies": {}
+}
