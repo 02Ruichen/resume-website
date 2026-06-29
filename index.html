@@ -9,92 +9,74 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   :root { --pink:#ffe4e6; --purple:#f3e8ff; --blue:#e0f2fe; --mint:#d1fae5; --text:#333; --gray:#666; }
-  body { font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif; background:#f0f0f0; padding:20px; }
-  .page { width:210mm; min-height:297mm; background:#fff; margin:0 auto; box-shadow:0 4px 24px rgba(0,0,0,.15); border-radius:4px; overflow:hidden; position:relative; }
+  body { font-family:"Microsoft YaHei","PingFang SC",-apple-system,sans-serif; background:#e8e8e8; padding:14px; }
+  .page { width:210mm; min-height:297mm; background:#fff; margin:0 auto; box-shadow:0 4px 24px rgba(0,0,0,.15); border-radius:2px; overflow:hidden; }
 
-  /* 头部 */
-  .header { background:var(--purple); padding:20px 28px; display:flex; align-items:center; gap:20px; border-bottom:3px solid var(--pink); }
-  .header .photo { width:70px; height:93px; border-radius:8px; object-fit:cover; flex-shrink:0; border:2px solid #fff; }
+  .header { background:var(--purple); padding:12px 22px; display:flex; align-items:center; gap:14px; border-bottom:2px solid var(--pink); }
+  .header .photo { width:55px; height:73px; border-radius:6px; object-fit:cover; flex-shrink:0; border:2px solid #fff; }
   .header .info { flex:1; }
-  .name { font-size:1.6rem; font-weight:700; color:var(--text); letter-spacing:1px; }
-  .title { font-size:.8rem; color:var(--gray); margin-top:2px; }
-  .tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; }
-  .tag { background:var(--pink); padding:2px 10px; border-radius:12px; font-size:.7rem; color:#555; }
+  .name { font-size:1.35rem; font-weight:700; color:var(--text); }
+  .title { font-size:.7rem; color:var(--gray); margin-top:1px; }
+  .tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:3px; }
+  .tag { background:var(--pink); padding:1px 7px; border-radius:10px; font-size:.62rem; color:#555; }
 
-  /* 区域标题 */
-  .section { padding:16px 28px; border-bottom:1px solid #f0f0f0; }
-  .section h2 { font-size:.95rem; color:var(--text); margin-bottom:10px; }
-
-  /* 教育 */
+  .section { padding:8px 22px; border-bottom:1px solid #f0f0f0; }
+  .section h2 { font-size:.82rem; color:var(--text); margin-bottom:5px; }
   .section.edu { background:var(--blue); }
-  .edu-row { margin-bottom:8px; }
-  .edu-row:last-child { margin-bottom:0; }
-  .edu-head { font-size:.85rem; line-height:1.5; }
-  .edu-head em { font-size:.72rem; color:#888; margin-left:6px; }
-  .edu-detail { font-size:.78rem; color:#555; padding-left:10px; border-left:2px solid #ccc; margin-top:3px; }
-
-  /* 实习/校园 */
   .section.intern { background:var(--mint); }
   .section.campus { background:var(--blue); }
+  .section.skills { background:var(--pink); }
 
-  /* 经历条目 */
-  .exp-item { margin-bottom:8px; }
+  .edu-row { margin-bottom:4px; }
+  .edu-row:last-child { margin-bottom:0; }
+  .edu-head { font-size:.74rem; line-height:1.4; }
+  .edu-head em { font-size:.64rem; color:#888; margin-left:4px; }
+  .edu-detail { font-size:.68rem; color:#555; padding-left:8px; border-left:2px solid #ccc; margin-top:1px; }
+
+  .exp-item { margin-bottom:4px; }
   .exp-item:last-child { margin-bottom:0; }
-  .exp-bar { display:flex; align-items:center; gap:10px; padding:8px 12px; cursor:pointer; border-radius:8px; background:rgba(255,255,255,.7); transition:all .2s; }
+  .exp-bar { display:flex; align-items:center; gap:7px; padding:4px 9px; cursor:pointer; border-radius:5px; background:rgba(255,255,255,.7); transition:all .2s; }
   .exp-bar:hover { background:rgba(255,255,255,.95); }
-  .exp-dot { width:8px; height:8px; border-radius:50%; background:#ccc; flex-shrink:0; }
-  .exp-title { font-size:.82rem; font-weight:600; color:var(--text); flex-shrink:0; }
-  .exp-sub { font-size:.72rem; color:#999; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .exp-arrow { font-size:.6rem; color:#ccc; flex-shrink:0; }
+  .exp-dot { width:5px; height:5px; border-radius:50%; background:#bbb; flex-shrink:0; }
+  .exp-title { font-size:.72rem; font-weight:600; color:var(--text); flex-shrink:0; }
+  .exp-sub { font-size:.62rem; color:#999; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .exp-arrow { font-size:.5rem; color:#ccc; flex-shrink:0; }
 
-  /* 精简版 */
-  .exp-brief { font-size:.75rem; color:#555; padding:4px 12px 8px 30px; }
+  .exp-brief { font-size:.66rem; color:#555; padding:2px 9px 4px 21px; }
   .exp-brief ul { list-style:none; }
-  .exp-brief li { padding:2px 0 2px 12px; position:relative; }
-  .exp-brief li::before { content:"▸"; position:absolute; left:0; color:#aaa; font-size:.55rem; top:4px; }
+  .exp-brief li { padding:1px 0 1px 9px; position:relative; line-height:1.35; }
+  .exp-brief li::before { content:"▸"; position:absolute; left:0; color:#bbb; font-size:.45rem; top:3px; }
 
-  /* 详情版（默认隐藏） */
-  .exp-full { display:none; padding:12px 16px 12px 30px; background:rgba(255,255,255,.85); border-radius:8px; }
-  .exp-full h4 { font-size:.85rem; margin-bottom:8px; color:var(--text); }
-  .exp-full h4 small { font-weight:400; font-size:.7rem; color:#999; }
+  .exp-full { display:none; padding:8px 12px 8px 21px; background:rgba(255,255,255,.85); border-radius:5px; }
+  .exp-full h4 { font-size:.76rem; margin-bottom:5px; color:var(--text); }
+  .exp-full h4 small { font-weight:400; font-size:.62rem; color:#999; }
   .exp-full ul { list-style:none; }
-  .exp-full li { font-size:.75rem; color:#555; padding:3px 0 3px 14px; position:relative; line-height:1.5; }
-  .exp-full li::before { content:"▸"; position:absolute; left:0; color:#aaa; font-size:.55rem; top:5px; }
+  .exp-full li { font-size:.66rem; color:#555; padding:2px 0 2px 10px; position:relative; line-height:1.35; }
+  .exp-full li::before { content:"▸"; position:absolute; left:0; color:#bbb; font-size:.45rem; top:4px; }
   .exp-item.expanded .exp-brief { display:none; }
   .exp-item.expanded .exp-full { display:block; }
   .exp-item.expanded .exp-bar { background:var(--pink); }
 
-  /* 返回按钮 */
-  .back-btn { background:var(--purple); border:none; padding:4px 12px; border-radius:6px; cursor:pointer; font-size:.7rem; color:#555; margin-bottom:8px; font-family:inherit; }
+  .back-btn { background:var(--purple); border:none; padding:2px 8px; border-radius:4px; cursor:pointer; font-size:.62rem; color:#555; margin-bottom:4px; font-family:inherit; }
 
-  /* 关键词行 */
-  .kw-line { font-size:.7rem; color:#888; margin-top:6px; padding-top:6px; border-top:1px dashed #e5e5e5; }
+  .kw-line { font-size:.62rem; color:#888; margin-top:3px; padding-top:3px; border-top:1px dashed #e5e5e5; }
 
-  /* 技能 */
-  .section.skills { background:var(--pink); }
-  .skill-block { margin-bottom:10px; }
+  .skill-block { margin-bottom:3px; }
   .skill-block:last-child { margin-bottom:0; }
-  .skill-block h4 { font-size:.82rem; color:var(--text); margin-bottom:6px; }
-  .skill-tags { display:flex; flex-wrap:wrap; gap:5px; }
-  .skill-badge { font-size:.72rem; color:#555; background:rgba(255,255,255,.7); padding:3px 10px; border-radius:6px; }
+  .skill-block h4 { font-size:.74rem; color:var(--text); margin-bottom:1px; display:inline; margin-right:6px; }
+  .skill-tags { font-size:.66rem; color:#555; line-height:1.4; display:inline; }
+
   b { color:#333; }
+  .footer { text-align:center; padding:8px; font-size:.6rem; color:#ccc; }
 
-  .footer { text-align:center; padding:14px; font-size:.68rem; color:#ccc; }
+  .dl-btn { position:fixed; right:20px; bottom:20px; background:var(--purple); color:#555; border:2px solid #d8c8e8; padding:10px 22px; border-radius:25px; cursor:pointer; font-size:14px; font-family:inherit; box-shadow:0 4px 16px rgba(0,0,0,.12); z-index:9999; }
 
-  /* PDF导出 */
-  .dl-btn { position:fixed; right:20px; bottom:20px; background:var(--purple); color:#555; border:2px solid #e0d0f0; padding:10px 20px; border-radius:25px; cursor:pointer; font-size:13px; font-family:inherit; box-shadow:0 2px 8px rgba(0,0,0,.1); z-index:99; }
-
-  /* 打印模式 */
   @media print {
     body { background:#fff; padding:0; }
     .page { box-shadow:none; width:100%; min-height:auto; }
     .dl-btn { display:none; }
-    .exp-arrow,.back-btn { display:none; }
-    .exp-full { display:block!important; }
-    .exp-brief { display:none!important; }
   }
   .printing .dl-btn { display:none; }
-  .printing .page { box-shadow:none; }
   .printing .exp-full { display:block!important; }
   .printing .exp-brief { display:none!important; }
   .printing .exp-arrow,.printing .back-btn { display:none; }
@@ -133,12 +115,12 @@
         <span class="exp-sub">政务新媒体部实习生 | 2022-06 ~ 2022-10</span>
         <span class="exp-arrow">▶</span>
       </div>
-      <div class="exp-brief"><ul><li>内容策划与撰写：独立负责<b>财政、金融领域</b>新闻信息的搜集、整合与编辑，日均整合筛选<b>政务新闻30+篇</b>，精准匹配<b>政府需求</b>，产出高质量内容，精准传达政策信息</li><li>活动策划与执行：参与策划<b>线上政策宣传项目</b>，协助制定宣传方案，通过<b>内容排期与互动设计</b>，提升<b>传播效果与公众参与度</b></li></ul><div class="kw-line">🔑 政务信息·内容策划·CMS·RSS订阅·新闻敏感度·多任务执行</div></div>
+      <div class="exp-brief"><ul><li>内容策划与撰写：独立负责<b>财政、金融领域</b>新闻信息的搜集、整合与编辑，日均整合筛选<b>政务新闻30+篇</b>，精准匹配<b>政府需求</b>，产出高质量内容，精准传达政策信息</li><li>活动策划与执行：参与策划<b>线上政策宣传项目</b>，协助制定宣传方案，通过<b>内容排期与互动设计</b>，提升<b>传播效果与公众参与度</b></li></ul><div class="kw-line">🔑 政务信息·内容策划·CMS新闻编辑·多渠道发布·多任务执行</div></div>
       <div class="exp-full">
         <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_0')">← 返回</button>
         <h4>中国新闻发展公司江苏分公司（新华社）<small> | 政务新媒体部实习生 | 2022-06 ~ 2022-10</small></h4>
         <ul><li>内容策划与撰写：独立负责<b>财政、金融领域</b>新闻信息的搜集、整合与编辑，日均整合筛选<b>政务新闻30+篇</b>，精准匹配<b>政府需求</b>，产出高质量内容，精准传达政策信息</li><li>活动策划与执行：参与策划<b>线上政策宣传项目</b>，协助制定宣传方案，通过<b>内容排期与互动设计</b>，提升<b>传播效果与公众参与度</b></li><li>多平台运营支持：协助维护<b>政府采购网站</b>内容，日均审核并发布<b>300+政府采购公告</b>，学习并实践了<b>运营逻辑与规范</b>，同时有效提升了信息传达的效率</li></ul>
-        <div class="kw-line">🔑 政务信息·内容策划·CMS·RSS订阅·新闻敏感度·多任务执行</div>
+        <div class="kw-line">🔑 政务信息·内容策划·CMS新闻编辑·多渠道发布·多任务执行</div>
       </div>
     </div><div class="exp-item" id="intern_1">
       <div class="exp-bar" onclick="expandExp('intern_1')">
@@ -147,12 +129,12 @@
         <span class="exp-sub">项目实习生 | 2026-05 ~ 至今</span>
         <span class="exp-arrow">▶</span>
       </div>
-      <div class="exp-brief"><ul><li>项目筹备与数字化工作流构建：全流程跟进<b>2026澳门青年实习计划</b>的前期筹备与<b>多方资源对接</b>。针对高频行政事务，引入<b>大语言模型（LLM）工具</b>协助梳理信息对接流程，构建规范化数据台账，做好项目由"前期准备"向"全面执行"平滑迁移的机制支撑</li><li>大模型驱动的数据处理自动化：熟练掌握<b>Claude工具</b>的接入与应用实践，自主打通<b>AI与Microsoft Office</b>（Excel/Word/PPT）的批量流转链路。实现<b>海量报名数据</b>的全自动清洗与格式初审校验，将常规需3天的数据处理周期缩短至2-3小时（<b>时效提升90%+</b>），并确保学员台账数据<b>100%准确</b></li></ul><div class="kw-line">🔑 LLM工具·Claude·流程自动化·VS Code·数据台账·Excel批量处理·大型项目对接</div></div>
+      <div class="exp-brief"><ul><li>项目筹备与数字化工作流构建：全流程跟进<b>2026澳门青年实习计划</b>的前期筹备与<b>多方资源对接</b>。针对高频行政事务，引入<b>大语言模型（LLM）工具</b>协助梳理信息对接流程，构建规范化数据台账，做好项目由"前期准备"向"全面执行"平滑迁移的机制支撑</li><li>大模型驱动的数据处理自动化：熟练掌握<b>Claude工具</b>的接入与应用实践，自主打通<b>AI与Microsoft Office</b>（Excel/Word/PPT）的批量流转链路。实现<b>海量报名数据</b>的全自动清洗与格式初审校验，将常规需3天的数据处理周期缩短至2-3小时（<b>时效提升90%+</b>），并确保学员台账数据<b>100%准确</b></li></ul><div class="kw-line">🔑 LLM工具·Claude·流程自动化·VS Code·数据台账·大型项目对接</div></div>
       <div class="exp-full">
         <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_1')">← 返回</button>
         <h4>横琴深合投资有限公司<small> | 项目实习生 | 2026-05 ~ 至今</small></h4>
         <ul><li>项目筹备与数字化工作流构建：全流程跟进<b>2026澳门青年实习计划</b>的前期筹备与<b>多方资源对接</b>。针对高频行政事务，引入<b>大语言模型（LLM）工具</b>协助梳理信息对接流程，构建规范化数据台账，做好项目由"前期准备"向"全面执行"平滑迁移的机制支撑</li><li>大模型驱动的数据处理自动化：熟练掌握<b>Claude工具</b>的接入与应用实践，自主打通<b>AI与Microsoft Office</b>（Excel/Word/PPT）的批量流转链路。实现<b>海量报名数据</b>的全自动清洗与格式初审校验，将常规需3天的数据处理周期缩短至2-3小时（<b>时效提升90%+</b>），并确保学员台账数据<b>100%准确</b></li><li>流程自动化控制与执行端信息对接：运用<b>VS Code</b>编写自动化脚本控制浏览器进行<b>格式规整与批量版面排校</b>，避免人工手动调整的误差。优化多渠道邮件合并功能规避常规报错与容量限制，负责计划推进期600多名学员的<b>批量通知分发</b>与信息对接，实现全流程<b>零失误、零漏发</b>，确保大型项目稳健步入执行阶段</li></ul>
-        <div class="kw-line">🔑 LLM工具·Claude·流程自动化·VS Code·数据台账·Excel批量处理·大型项目对接</div>
+        <div class="kw-line">🔑 LLM工具·Claude·流程自动化·VS Code·数据台账·大型项目对接</div>
       </div>
     </div><div class="exp-item" id="intern_2">
       <div class="exp-bar" onclick="expandExp('intern_2')">
@@ -161,12 +143,12 @@
         <span class="exp-sub">行政助理 | 2024-06 ~ 2024-10</span>
         <span class="exp-arrow">▶</span>
       </div>
-      <div class="exp-brief"><ul><li>文档与流程优化：<b>系统化整理</b>、归档及<b>数字化办公文档</b>，优化文件检索流程，提升部门内部<b>信息流转效率</b></li><li>沟通与协调：熟练起草与<b>格式化公文材料</b>，作为对接窗口之一，协助处理<b>跨部门沟通事务</b>，锻炼了精准的<b>沟通与协调能力</b></li></ul><div class="kw-line">🔑 公文起草·文档数字化·跨部门沟通·合规审核·细致度·行政统筹</div></div>
+      <div class="exp-brief"><ul><li>文档与流程优化：<b>系统化整理</b>、归档及<b>数字化办公文档</b>，优化文件检索流程，提升部门内部<b>信息流转效率</b></li><li>沟通与协调：熟练起草与<b>格式化公文材料</b>，作为对接窗口之一，协助处理<b>跨部门沟通事务</b>，锻炼了精准的<b>沟通与协调能力</b></li></ul><div class="kw-line">🔑 公文起草·文档数字化·跨部门沟通·合规审核·行政统筹</div></div>
       <div class="exp-full">
         <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_2')">← 返回</button>
         <h4>山东省枣庄市薛城区财政局<small> | 行政助理 | 2024-06 ~ 2024-10</small></h4>
         <ul><li>文档与流程优化：<b>系统化整理</b>、归档及<b>数字化办公文档</b>，优化文件检索流程，提升部门内部<b>信息流转效率</b></li><li>沟通与协调：熟练起草与<b>格式化公文材料</b>，作为对接窗口之一，协助处理<b>跨部门沟通事务</b>，锻炼了精准的<b>沟通与协调能力</b></li></ul>
-        <div class="kw-line">🔑 公文起草·文档数字化·跨部门沟通·合规审核·细致度·行政统筹</div>
+        <div class="kw-line">🔑 公文起草·文档数字化·跨部门沟通·合规审核·行政统筹</div>
       </div>
     </div>
   </div>
@@ -222,16 +204,16 @@
     <h2>⭐ 技能与评价</h2>
     <div class="skill-block">
       <h4>大模型驱动型数字化生产力</h4>
-      <div class="skill-tags"><span class="skill-badge">精通<b>提示词工程（Prompt Engineering）</b>，熟练使用<b>Claude Code</b>等AI工具进行<b>自动化脚本开发</b>、数据分析与流程重构</span><span class="skill-badge">将大语言模型接入传统办公生态（Office、表单、数据台账），实现<b>海量数据批量清洗</b>、<b>格式一键转化</b>与<b>智能化重构</b></span><span class="skill-badge">曾通过Claude调教将常规3天数据处理周期缩短至2-3小时，<b>时效提升90%+</b>并确保<b>100%准确</b></span></div>
+      <div class="skill-tags">精通<b>提示词工程（Prompt Engineering）</b>，熟练使用<b>Claude Code</b>等AI工具进行<b>自动化脚本开发</b>、数据分析与流程重构 | 将大语言模型接入传统办公生态（Office、表单、数据台账），实现<b>海量数据批量清洗</b>、<b>格式一键转化</b>与<b>智能化重构</b> | 曾通过Claude调教将常规3天数据处理周期缩短至2-3小时，<b>时效提升90%+</b>并确保<b>100%准确</b></div>
     </div><div class="skill-block">
       <h4>AI应用接入与轻量开发</h4>
-      <div class="skill-tags"><span class="skill-badge">具备<b>AI接口集成</b>与<b>轻量化应用开发</b>思维，能调用大模型API搭建<b>简易智能工具</b>（如简历智能修改网站、自动化问答机器人）</span><span class="skill-badge">有基础的<b>小程序页面搭建</b>与部署经验，善于将AI能力<b>产品化</b>，从<b>业务痛点</b>出发设计提效工具</span></div>
+      <div class="skill-tags">具备<b>AI接口集成</b>与<b>轻量化应用开发</b>思维，能调用大模型API搭建<b>简易智能工具</b>（如简历智能修改网站、自动化问答机器人） | 有基础的<b>小程序页面搭建</b>与部署经验，善于将AI能力<b>产品化</b>，从<b>业务痛点</b>出发设计提效工具</div>
     </div><div class="skill-block">
       <h4>数理基础与分析工具</h4>
-      <div class="skill-tags"><span class="skill-badge">熟练掌握<b>Stata、R语言</b>进行<b>基础数据分析</b>与数理统计</span><span class="skill-badge">国家计算机二级，正系统进阶<b>Python自动化办公库</b>（Pandas/openpyxl）及<b>SQL结构化查询</b></span><span class="skill-badge">浏览器自动化测试</span></div>
+      <div class="skill-tags">熟练掌握<b>Stata、R语言</b>进行<b>基础数据分析</b>与数理统计 | 国家计算机二级，正系统进阶<b>Python自动化办公库</b>（Pandas/openpyxl）及<b>SQL结构化查询</b> | 浏览器自动化测试</div>
     </div><div class="skill-block">
       <h4>核心软实力</h4>
-      <div class="skill-tags"><span class="skill-badge"><b>中共党员</b>，具备严谨的<b>政企公文</b>与<b>新媒体推文撰写</b>能力</span><span class="skill-badge">英语流利（<b>CET-6</b>，<b>雅思6.5</b>，硕士全英文教学），普通话标准</span><span class="skill-badge">曾获<b>南财演说家五强</b>及演讲比赛二等奖，擅长<b>跨团队沟通协调</b>与<b>大型活动闭环执行</b></span><span class="skill-badge">熟悉<b>现场招聘流程</b>，具备校园招聘、简历筛选及培训协调等<b>全流程实践经验</b>，可快速上手招聘相关工作</span><span class="skill-badge">具备良好的<b>沟通协调与多任务处理能力</b>，在校期间曾独立策划执行大型活动，熟悉和各类人员对接的流程，适应<b>快节奏协作环境</b></span></div>
+      <div class="skill-tags"><b>中共党员</b>，具备严谨的<b>政企公文</b>与<b>新媒体推文撰写</b>能力 | 英语流利（<b>CET-6</b>，<b>雅思6.5</b>，硕士全英文教学），普通话标准 | 曾获<b>南财演说家五强</b>及演讲比赛二等奖，擅长<b>跨团队沟通协调</b>与<b>大型活动闭环执行</b> | 熟悉<b>现场招聘流程</b>，具备校园招聘、简历筛选及培训协调等<b>全流程实践经验</b>，可快速上手招聘相关工作 | 具备良好的<b>沟通协调与多任务处理能力</b>，在校期间曾独立策划执行大型活动，熟悉和各类人员对接的流程，适应<b>快节奏协作环境</b></div>
     </div>
   </div>
 
@@ -242,35 +224,25 @@
 
 <script>
 var currentExpanded = null;
-
 function expandExp(id) {
-  if (currentExpanded) {
-    document.getElementById(currentExpanded).classList.remove('expanded');
-  }
+  if (currentExpanded) document.getElementById(currentExpanded).classList.remove('expanded');
   var el = document.getElementById(id);
-  if (currentExpanded === id) {
-    currentExpanded = null;
-    return;
-  }
+  if (currentExpanded === id) { currentExpanded = null; return; }
   el.classList.add('expanded');
   currentExpanded = id;
-  el.scrollIntoView({ behavior:'smooth', block:'nearest' });
 }
-
 function collapseExp(id) {
   var el = document.getElementById(id);
   el.classList.remove('expanded');
   if (currentExpanded === id) currentExpanded = null;
 }
-
 function exportPDF() {
   var el = document.getElementById('resume');
   el.classList.add('printing');
   html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
     el.classList.remove('printing');
     var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-    var img = canvas.toDataURL('image/png');
-    pdf.addImage(img, 'PNG', 0, 0, 210, 297);
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
     var now = new Date();
     var ds = String(now.getDate()).padStart(2,'0') + String(now.getMonth()+1).padStart(2,'0');
     pdf.save(ds + '刘芮辰.pdf');
