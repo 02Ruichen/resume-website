@@ -16,7 +16,7 @@
   .toolbar button.cancel { display:none; }
   .page { width:210mm; min-height:297mm; background:#fff; margin:0 auto; box-shadow:0 4px 24px rgba(0,0,0,.12); border-radius:4px; overflow:hidden; }
 
-  .header { background:linear-gradient(135deg,#ffe4e6,#f3e8ff); padding:12px 18px; display:flex; align-items:center; gap:14px; }
+  .header { background:linear-gradient(135deg,#ffe4e6,#f3e8ff); padding:12px 18px; display:flex; align-items:center; gap:14px; margin-bottom:6px; }
   .header .photo { width:60px; height:80px; border-radius:6px; object-fit:cover; flex-shrink:0; border:2px solid #fff; }
   .name { font-size:1.4rem; font-weight:700; color:#333; }
   .title { font-size:.7rem; color:#666; margin-top:1px; }
@@ -47,7 +47,17 @@
   .exp-dot { width:5px; height:5px; border-radius:50%; background:#bbb; flex-shrink:0; }
   .exp-title { font-size:.72rem; font-weight:600; flex-shrink:0; }
   .exp-sub { font-size:.62rem; color:#999; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .exp-arrow { font-size:.5rem; color:#ccc; flex-shrink:0; transition:transform .2s; }
+  .exp-item.open .exp-arrow { transform:rotate(90deg); }
+
+  .exp-brief { font-size:.66rem; color:#555; padding:3px 6px 3px 10px; line-height:1.4; text-align:justify; }
+  .exp-item.open .exp-brief { display:none; }
+
+  .exp-full { display:none; }
+  .exp-item.open .exp-full { display:block; }
+
   .exp-detail { font-size:.66rem; color:#555; padding:3px 6px 3px 10px; line-height:1.4; text-align:justify; }
+  .back-btn { background:#f3e8ff; border:none; padding:3px 10px; border-radius:4px; cursor:pointer; font-size:.62rem; margin-bottom:6px; font-family:inherit; }
 
   .skill-block { margin-bottom:5px; }
   .skill-block h4 { font-size:.7rem; margin-bottom:2px; }
@@ -110,28 +120,52 @@
   </div>
   <div class="section intern">
     <h2>💼 实习经历</h2>
-    <div class="exp-item">
-      <div class="exp-bar"><span class="exp-dot"></span><span class="exp-title">中国新闻发展公司江苏分公司（新华社）</span><span class="exp-sub">政务新媒体部实习生 | 2022-06 ~ 2022-10</span></div>
-      <div class="exp-detail" contenteditable="false">独立负责财政与金融领域新闻信息的搜集、整合与编辑工作，日均筛选并匹配政务新闻30余篇，精准响应政府信息需求<br>参与策划线上政策宣传项目，协助制定内容排期方案与互动设计策略，有效提升政策传播效果与公众参与度<br>维护政府采购网站日常内容运营，日均审核并发布公告300余条，在实践中掌握政务信息发布规范与多平台运营逻辑<div class="kw-line">🔑 政务信息·内容策划·CMS发布·政策宣传·多渠道运营</div></div>
-    </div><div class="exp-item">
-      <div class="exp-bar"><span class="exp-dot"></span><span class="exp-title">横琴深合投资有限公司</span><span class="exp-sub">项目实习生 | 2026-05 ~ 至今</span></div>
-      <div class="exp-detail" contenteditable="false">全流程跟进2026澳门青年实习计划的前期筹备与多方资源对接，引入大语言模型工具梳理信息流转流程并构建规范化数据台账<br>独立打通Claude与Microsoft Office的批量处理链路，实现报名数据的自动清洗与格式校验，将3天工作量压缩至2-3小时<br>运用VS Code编写自动化脚本控制浏览器完成格式规整与版面排校，优化邮件合并功能并负责600余名学员的批量通知分发，实现全流程零失误<div class="kw-line">🔑 LLM工具·Claude·流程自动化·VS Code·数据台账·批量处理</div></div>
-    </div><div class="exp-item">
-      <div class="exp-bar"><span class="exp-dot"></span><span class="exp-title">山东省枣庄市薛城区财政局</span><span class="exp-sub">行政助理 | 2024-06 ~ 2024-10</span></div>
-      <div class="exp-detail" contenteditable="false">系统化整理归档及数字化办公文档，通过优化文件检索流程，显著提升部门内部行政信息的流转与调阅效率<br>熟练起草与格式化公文材料，作为部门对外对接窗口，协助处理跨部门行政沟通事务，锻炼了精准的文书撰写与多方协调能力<div class="kw-line">🔑 公文起草·文档数字化·跨部门沟通·行政统筹</div></div>
+    <div class="exp-item" id="intern_0">
+      <div class="exp-bar" onclick="expandExp('intern_0')"><span class="exp-dot"></span><span class="exp-title">中国新闻发展公司江苏分公司（新华社）</span><span class="exp-sub">政务新媒体部实习生 | 2022-06 ~ 2022-10</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief">独立负责财政与金融领域新闻信息的搜集、整合与编辑工作，日均筛选并匹配政务新闻30余篇，精准响应政府信息需求<br>参与策划线上政策宣传项目，协助制定内容排期方案与互动设计策略，有效提升政策传播效果与公众参与度<div class="kw-line">🔑 政务信息·内容策划·CMS发布·政策宣传·多渠道运营</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_0')">← 返回列表</button>
+        <div class="exp-detail">独立负责财政与金融领域新闻信息的搜集、整合与编辑工作，日均筛选并匹配政务新闻30余篇，精准响应政府信息需求<br>参与策划线上政策宣传项目，协助制定内容排期方案与互动设计策略，有效提升政策传播效果与公众参与度<br>维护政府采购网站日常内容运营，日均审核并发布公告300余条，在实践中掌握政务信息发布规范与多平台运营逻辑<div class="kw-line">🔑 政务信息·内容策划·CMS发布·政策宣传·多渠道运营</div></div>
+      </div>
+    </div><div class="exp-item" id="intern_1">
+      <div class="exp-bar" onclick="expandExp('intern_1')"><span class="exp-dot"></span><span class="exp-title">横琴深合投资有限公司</span><span class="exp-sub">项目实习生 | 2026-05 ~ 至今</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief">全流程跟进2026澳门青年实习计划的前期筹备与多方资源对接，引入大语言模型工具梳理信息流转流程并构建规范化数据台账<br>独立打通Claude与Microsoft Office的批量处理链路，实现报名数据的自动清洗与格式校验，将3天工作量压缩至2-3小时<div class="kw-line">🔑 LLM工具·Claude·流程自动化·VS Code·数据台账·批量处理</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_1')">← 返回列表</button>
+        <div class="exp-detail">全流程跟进2026澳门青年实习计划的前期筹备与多方资源对接，引入大语言模型工具梳理信息流转流程并构建规范化数据台账<br>独立打通Claude与Microsoft Office的批量处理链路，实现报名数据的自动清洗与格式校验，将3天工作量压缩至2-3小时<br>运用VS Code编写自动化脚本控制浏览器完成格式规整与版面排校，优化邮件合并功能并负责600余名学员的批量通知分发，实现全流程零失误<div class="kw-line">🔑 LLM工具·Claude·流程自动化·VS Code·数据台账·批量处理</div></div>
+      </div>
+    </div><div class="exp-item" id="intern_2">
+      <div class="exp-bar" onclick="expandExp('intern_2')"><span class="exp-dot"></span><span class="exp-title">山东省枣庄市薛城区财政局</span><span class="exp-sub">行政助理 | 2024-06 ~ 2024-10</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief">系统化整理归档及数字化办公文档，通过优化文件检索流程，显著提升部门内部行政信息的流转与调阅效率<br>熟练起草与格式化公文材料，作为部门对外对接窗口，协助处理跨部门行政沟通事务，锻炼了精准的文书撰写与多方协调能力<div class="kw-line">🔑 公文起草·文档数字化·跨部门沟通·行政统筹</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_2')">← 返回列表</button>
+        <div class="exp-detail">系统化整理归档及数字化办公文档，通过优化文件检索流程，显著提升部门内部行政信息的流转与调阅效率<br>熟练起草与格式化公文材料，作为部门对外对接窗口，协助处理跨部门行政沟通事务，锻炼了精准的文书撰写与多方协调能力<div class="kw-line">🔑 公文起草·文档数字化·跨部门沟通·行政统筹</div></div>
+      </div>
     </div>
   </div>
   <div class="section campus">
     <h2>🏫 校园经历</h2>
-    <div class="exp-item">
-      <div class="exp-bar"><span class="exp-dot"></span><span class="exp-title">南京财经大学神寂动漫社</span><span class="exp-sub">社长 | 2022-06 ~ 2023-06</span></div>
-      <div class="exp-detail" contenteditable="false">作为总负责人策划并主办南京高校联盟舞台剧暨宅舞大赛，从零撰写活动方案、制定预算控制表并统筹22个社团参赛，现场参与超300人，项目获评校级十佳社团活动<br>主导社团招新、日常运营与团队建设，任期内推动社团获评全校五星级社团，积累了丰富的跨团队管理与多方协调经验<br>兼任宣传部长期间独立运营社团B站与QQ空间全平台内容，策划单条视频以2.7万播放量刷新社团历史最高记录<div class="kw-line">🔑 活动策划·团队管理·新媒体运营·B站·跨校协作</div></div>
-    </div><div class="exp-item">
-      <div class="exp-bar"><span class="exp-dot"></span><span class="exp-title">澳门大学硕士毕业论文项目</span><span class="exp-sub">独立研究员 | 2025-10 ~ 至今</span></div>
-      <div class="exp-detail" contenteditable="false">以发展中国家低收入群体为研究对象，运用多时点DID与双向固定效应模型，评估国家激励政策对微观经济自主性的因果效应<br>使用CFPS、CHFS等大型微观面板数据，构建家庭劳动供给、生产性投资与市场收入占比三项核心指标，独立撰写完整实证研究方案<br>结合AI工具辅助系统性文献检索与计量脚本调试，独立完成变量构筑、识别策略设计及方法论稳健性检验<div class="kw-line">🔑 DID·双向固定效应·面板数据·Stata/R·因果推断·政策评估</div></div>
-    </div><div class="exp-item">
-      <div class="exp-bar"><span class="exp-dot"></span><span class="exp-title">贫困群体内生动力双驱动模型构建研究项目</span><span class="exp-sub">研究员 | 2023-12 ~ 2024-05</span></div>
-      <div class="exp-detail" contenteditable="false">从行为公共管理视角出发进行系统性文献综述，使用多案例比较分析方法参与构建政府政策与公民体验的数字化分析模型<br>锻炼了从复杂社会现象中提炼核心议题并进行结构化分析的能力，项目最终获得南京财经大学优秀毕业论文称号<div class="kw-line">🔑 文献综述·案例分析·结构化思维·研究报告</div></div>
+    <div class="exp-item" id="campus_0">
+      <div class="exp-bar" onclick="expandExp('campus_0')"><span class="exp-dot"></span><span class="exp-title">南京财经大学神寂动漫社</span><span class="exp-sub">社长 | 2022-06 ~ 2023-06</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief">作为总负责人策划并主办南京高校联盟舞台剧暨宅舞大赛，从零撰写活动方案、制定预算控制表并统筹22个社团参赛，现场参与超300人，项目获评校级十佳社团活动<br>主导社团招新、日常运营与团队建设，任期内推动社团获评全校五星级社团，积累了丰富的跨团队管理与多方协调经验<div class="kw-line">🔑 活动策划·团队管理·新媒体运营·B站·跨校协作</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('campus_0')">← 返回列表</button>
+        <div class="exp-detail">作为总负责人策划并主办南京高校联盟舞台剧暨宅舞大赛，从零撰写活动方案、制定预算控制表并统筹22个社团参赛，现场参与超300人，项目获评校级十佳社团活动<br>主导社团招新、日常运营与团队建设，任期内推动社团获评全校五星级社团，积累了丰富的跨团队管理与多方协调经验<br>兼任宣传部长期间独立运营社团B站与QQ空间全平台内容，策划单条视频以2.7万播放量刷新社团历史最高记录<div class="kw-line">🔑 活动策划·团队管理·新媒体运营·B站·跨校协作</div></div>
+      </div>
+    </div><div class="exp-item" id="campus_1">
+      <div class="exp-bar" onclick="expandExp('campus_1')"><span class="exp-dot"></span><span class="exp-title">澳门大学硕士毕业论文项目</span><span class="exp-sub">独立研究员 | 2025-10 ~ 至今</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief">以发展中国家低收入群体为研究对象，运用多时点DID与双向固定效应模型，评估国家激励政策对微观经济自主性的因果效应<br>使用CFPS、CHFS等大型微观面板数据，构建家庭劳动供给、生产性投资与市场收入占比三项核心指标，独立撰写完整实证研究方案<div class="kw-line">🔑 DID·双向固定效应·面板数据·Stata/R·因果推断·政策评估</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('campus_1')">← 返回列表</button>
+        <div class="exp-detail">以发展中国家低收入群体为研究对象，运用多时点DID与双向固定效应模型，评估国家激励政策对微观经济自主性的因果效应<br>使用CFPS、CHFS等大型微观面板数据，构建家庭劳动供给、生产性投资与市场收入占比三项核心指标，独立撰写完整实证研究方案<br>结合AI工具辅助系统性文献检索与计量脚本调试，独立完成变量构筑、识别策略设计及方法论稳健性检验<div class="kw-line">🔑 DID·双向固定效应·面板数据·Stata/R·因果推断·政策评估</div></div>
+      </div>
+    </div><div class="exp-item" id="campus_2">
+      <div class="exp-bar" onclick="expandExp('campus_2')"><span class="exp-dot"></span><span class="exp-title">贫困群体内生动力双驱动模型构建研究项目</span><span class="exp-sub">研究员 | 2023-12 ~ 2024-05</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief">从行为公共管理视角出发进行系统性文献综述，使用多案例比较分析方法参与构建政府政策与公民体验的数字化分析模型<br>锻炼了从复杂社会现象中提炼核心议题并进行结构化分析的能力，项目最终获得南京财经大学优秀毕业论文称号<div class="kw-line">🔑 文献综述·案例分析·结构化思维·研究报告</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('campus_2')">← 返回列表</button>
+        <div class="exp-detail">从行为公共管理视角出发进行系统性文献综述，使用多案例比较分析方法参与构建政府政策与公民体验的数字化分析模型<br>锻炼了从复杂社会现象中提炼核心议题并进行结构化分析的能力，项目最终获得南京财经大学优秀毕业论文称号<div class="kw-line">🔑 文献综述·案例分析·结构化思维·研究报告</div></div>
+      </div>
     </div>
   </div>
   <div class="section skills">
@@ -155,6 +189,17 @@
 
 <script>
 var PASSWORD = 'Lrc020930.';
+var currentExpanded = null;
+function expandExp(id) {
+  if (currentExpanded) document.getElementById(currentExpanded).classList.remove('open');
+  var el = document.getElementById(id);
+  if (currentExpanded === id) { currentExpanded = null; return; }
+  el.classList.add('open'); currentExpanded = id;
+}
+function collapseExp(id) {
+  document.getElementById(id).classList.remove('open');
+  if (currentExpanded === id) currentExpanded = null;
+}
 function showUnlock() { document.getElementById('pwModal').classList.add('show'); document.getElementById('pwInput').focus(); }
 function hideModal() { document.getElementById('pwModal').classList.remove('show'); }
 function doUnlock() {
