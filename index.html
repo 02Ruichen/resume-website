@@ -40,7 +40,11 @@
 
   .exp-item { margin-bottom:4px; }
   .exp-item:last-child { margin-bottom:0; }
-  .exp-bar { display:flex; align-items:center; gap:7px; padding:4px 9px; cursor:pointer; border-radius:5px; background:#fafafa; transition:all .2s; }
+  .exp-bar { display:flex; align-items:center; gap:7px; padding:4px 9px; cursor:pointer; border-radius:5px; border-left:3px solid transparent; background:#fafafa; transition:all .2s; }
+  .exp-item:nth-child(4n+1) .exp-bar { border-left-color:#f3e8ff; }
+  .exp-item:nth-child(4n+2) .exp-bar { border-left-color:#e0f2fe; }
+  .exp-item:nth-child(4n+3) .exp-bar { border-left-color:#d1fae5; }
+  .exp-item:nth-child(4n+4) .exp-bar { border-left-color:#ffe4e6; }
   .exp-bar:hover { background:#f0f0f0; }
   .exp-dot { width:5px; height:5px; border-radius:50%; background:#bbb; flex-shrink:0; }
   .exp-title { font-size:.72rem; font-weight:600; color:var(--text); flex-shrink:0; }
@@ -66,15 +70,17 @@
 
   .kw-line { font-size:.62rem; color:#888; margin-top:3px; padding-top:3px; border-top:1px dashed #e5e5e5; }
 
-  .skill-block { margin-bottom:3px; }
+  .skill-block { margin-bottom:5px; padding:6px 10px; background:#fafafa; border-radius:6px; }
   .skill-block:last-child { margin-bottom:0; }
-  .skill-block h4 { font-size:.74rem; color:var(--text); margin-bottom:1px; display:inline; margin-right:6px; }
-  .skill-tags { font-size:.66rem; color:#555; line-height:1.4; display:inline; }
+  .skill-block h4 { font-size:.76rem; color:var(--text); margin-bottom:3px; }
+  .skill-list { list-style:none; font-size:.68rem; color:#555; line-height:1.5; }
+  .skill-list li { padding:1px 0 1px 10px; position:relative; }
+  .skill-list li::before { content:"▸"; position:absolute; left:0; color:#bbb; font-size:.5rem; top:4px; }
 
   b { color:#333; }
   .footer { text-align:center; padding:8px; font-size:.6rem; color:#ccc; }
 
-  .dl-btn { position:fixed; right:20px; bottom:20px; background:linear-gradient(135deg,#ffe4e6,#f3e8ff); color:#555; border:none; padding:10px 22px; border-radius:25px; cursor:pointer; font-size:14px; font-family:inherit; box-shadow:0 4px 16px rgba(0,0,0,.12); z-index:9999; }
+  .dl-btn { display:block; width:210mm; margin:16px auto 0; background:linear-gradient(135deg,#ffe4e6,#f3e8ff); color:#555; border:2px solid #e8d0e0; padding:10px 0; border-radius:8px; cursor:pointer; font-size:15px; font-family:inherit; text-align:center; }
 
   @media print { body { background:#fff; padding:0; } .page { box-shadow:none; width:100%; } .dl-btn { display:none; } }
   .printing .dl-btn { display:none; }
@@ -203,18 +209,18 @@
 
   <div class="section skills">
     <h2>⭐ 技能与评价</h2>
-    <div class="skill-block">
+    <div class="skill-block" style="border-left:3px solid #f3e8ff;">
       <h4>大模型驱动型数字化生产力</h4>
-      <div class="skill-tags">精通<b>提示词工程（Prompt Engineering）</b>，熟练使用<b>Claude Code</b>等AI工具进行<b>自动化脚本开发</b>、数据分析与流程重构 | 将大语言模型接入传统办公生态（Office、表单、数据台账），实现<b>海量数据批量清洗</b>、<b>格式一键转化</b>与<b>智能化重构</b> | 曾通过Claude调教将常规3天数据处理周期缩短至2-3小时，<b>时效提升90%+</b>并确保<b>100%准确</b></div>
-    </div><div class="skill-block">
+      <ul class="skill-list"><li><b>精通<b>提示词</b>：工程（Prompt Engineering）</b>，熟练使用<b>Claude Code</b>等AI工具进行<b>自动化脚本开发</b>、数据分析与流程重构</li><li><b>将大语言模型接入</b>：传统办公生态（Office、表单、数据台账），实现<b>海量数据批量清洗</b>、<b>格式一键转化</b>与<b>智能化重构</b></li><li><b>曾通过Claud</b>：e调教将常规3天数据处理周期缩短至2-3小时，<b>时效提升90%+</b>并确保<b>100%准确</b></li></ul>
+    </div><div class="skill-block" style="border-left:3px solid #e0f2fe;">
       <h4>AI应用接入与轻量开发</h4>
-      <div class="skill-tags">具备<b>AI接口集成</b>与<b>轻量化应用开发</b>思维，能调用大模型API搭建<b>简易智能工具</b>（如简历智能修改网站、自动化问答机器人） | 有基础的<b>小程序页面搭建</b>与部署经验，善于将AI能力<b>产品化</b>，从<b>业务痛点</b>出发设计提效工具</div>
-    </div><div class="skill-block">
+      <ul class="skill-list"><li><b>具备<b>AI接</b>：口集成</b>与<b>轻量化应用开发</b>思维，能调用大模型API搭建<b>简易智能工具</b>（如简历智能修改网站、自动化问答机器人）</li><li><b>有基础的<b>小</b>：程序页面搭建</b>与部署经验，善于将AI能力<b>产品化</b>，从<b>业务痛点</b>出发设计提效工具</li></ul>
+    </div><div class="skill-block" style="border-left:3px solid #d1fae5;">
       <h4>数理基础与分析工具</h4>
-      <div class="skill-tags">熟练掌握<b>Stata、R语言</b>进行<b>基础数据分析</b>与数理统计 | 国家计算机二级，正系统进阶<b>Python自动化办公库</b>（Pandas/openpyxl）及<b>SQL结构化查询</b> | 浏览器自动化测试</div>
-    </div><div class="skill-block">
+      <ul class="skill-list"><li><b>熟练掌握<b>S</b>：tata、R语言</b>进行<b>基础数据分析</b>与数理统计</li><li><b>国家计算机二级，</b>：正系统进阶<b>Python自动化办公库</b>（Pandas/openpyxl）及<b>SQL结构化查询</b></li><li><b>浏览器自动化测试</b>：</li></ul>
+    </div><div class="skill-block" style="border-left:3px solid #ffe4e6;">
       <h4>核心软实力</h4>
-      <div class="skill-tags"><b>中共党员</b>，具备严谨的<b>政企公文</b>与<b>新媒体推文撰写</b>能力 | 英语流利（<b>CET-6</b>，<b>雅思6.5</b>，硕士全英文教学），普通话标准 | 曾获<b>南财演说家五强</b>及演讲比赛二等奖，擅长<b>跨团队沟通协调</b>与<b>大型活动闭环执行</b> | 熟悉<b>现场招聘流程</b>，具备校园招聘、简历筛选及培训协调等<b>全流程实践经验</b>，可快速上手招聘相关工作 | 具备良好的<b>沟通协调与多任务处理能力</b>，在校期间曾独立策划执行大型活动，熟悉和各类人员对接的流程，适应<b>快节奏协作环境</b></div>
+      <ul class="skill-list"><li><b><b>中共党员<</b>：/b>，具备严谨的<b>政企公文</b>与<b>新媒体推文撰写</b>能力</li><li><b>英语流利（<b></b>：CET-6</b>，<b>雅思6.5</b>，硕士全英文教学），普通话标准</li><li><b>曾获<b>南财演</b>：说家五强</b>及演讲比赛二等奖，擅长<b>跨团队沟通协调</b>与<b>大型活动闭环执行</b></li><li><b>熟悉<b>现场招</b>：聘流程</b>，具备校园招聘、简历筛选及培训协调等<b>全流程实践经验</b>，可快速上手招聘相关工作</li><li><b>具备良好的<b></b>：沟通协调与多任务处理能力</b>，在校期间曾独立策划执行大型活动，熟悉和各类人员对接的流程，适应<b>快节奏协作环境</b></li></ul>
     </div>
   </div>
 
