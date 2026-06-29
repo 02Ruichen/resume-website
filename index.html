@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰的简历</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:"Microsoft YaHei","PingFang SC",sans-serif; background:#e8e8e8; padding:14px; }
@@ -73,6 +75,7 @@
   <button class="unlock" onclick="showUnlock()">🔓 编辑模式</button>
   <button class="save" onclick="saveAll()">💾 保存修改</button>
   <button class="cancel" onclick="cancelEdit()">✕ 退出编辑</button>
+  <button onclick="exportPDF()" style="margin-left:auto;">📄 导出PDF</button>
 </div>
 
 <div class="modal" id="pwModal">
@@ -181,6 +184,16 @@ function saveAll() {
   alert('已下载修改后的简历！把文件发给我，我帮你更新到网站上。');
 }
 document.getElementById('pwInput').addEventListener('keydown', function(e) { if(e.key==='Enter') doUnlock(); });
+function exportPDF() {
+  var el = document.getElementById('resume');
+  html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
+    var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
+    var now = new Date();
+    var ds = String(now.getDate()).padStart(2,'0') + String(now.getMonth()+1).padStart(2,'0');
+    pdf.save(ds + '刘芮辰.pdf');
+  });
+}
 </script>
 </body>
 </html>
