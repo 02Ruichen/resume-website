@@ -29,7 +29,9 @@
   .section.edu h2 { background:linear-gradient(135deg,#ffe4e6,#f3e8ff); }
   .section.intern h2 { background:linear-gradient(135deg,#f3e8ff,#e0f2fe); }
   .section.campus h2 { background:linear-gradient(135deg,#e0f2fe,#d1fae5); }
-  .section.skills h2 { background:linear-gradient(135deg,#d1fae5,#ffe4e6); }
+  .section.skills { position:relative; background:linear-gradient(135deg,#d1fae5,#ffe4e6); padding:14px 24px; }
+  .section.skills::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:90%; height:88%; background:rgba(255,255,255,.8); border-radius:8px; z-index:1; }
+  .section.skills > * { position:relative; z-index:2; }
 
   .edu-row { margin-bottom:3px; }
   .edu-head { font-size:.74rem; line-height:1.4; }
@@ -47,9 +49,9 @@
   .exp-sub { font-size:.62rem; color:#999; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .exp-detail { font-size:.66rem; color:#555; padding:4px 8px 4px 18px; line-height:1.35; }
 
-  .skill-block { margin-bottom:2px; padding:2px 8px; background:#fafafa; border-radius:4px; }
-  .skill-block h4 { font-size:.68rem; display:inline; margin-right:6px; }
-  .skill-text { font-size:.66rem; color:#555; line-height:1.1; display:inline; }
+  .skill-block { margin-bottom:5px; }
+  .skill-block h4 { font-size:.7rem; margin-bottom:2px; }
+  .skill-text { font-size:.66rem; color:#555; line-height:1.3; padding-left:10px; }
 
   b { color:#333; }
   .footer { text-align:center; padding:6px; font-size:.6rem; color:#ccc; }
@@ -134,16 +136,16 @@
   </div>
   <div class="section skills">
     <h2>⭐ 技能与评价</h2>
-    <div class="skill-block" style="border-left:3px solid #f3e8ff;">
+    <div class="skill-block">
       <h4>大模型驱动型数字化生产力</h4>
       <div class="skill-text" contenteditable="false">熟练使用Claude Code进行自动化脚本开发与流程重构，具备Prompt Engineering与AI工具链编排能力；将大语言模型接入办公生态（Office、在线表单、数据台账），实现数据批量清洗与格式智能转化；独立搭建简历智能修改网站，掌握AI接口集成、基础前端部署与产品化落地全流程</div>
-    </div><div class="skill-block" style="border-left:3px solid #e0f2fe;">
+    </div><div class="skill-block">
       <h4>AI应用接入与轻量开发</h4>
       <div class="skill-text" contenteditable="false">具备AI产品运营思维，能调用大模型API搭建简易智能工具，从业务痛点出发设计提效解决方案；有网页搭建与部署实操经验，理解AI产品从开发到上线的完整链路</div>
-    </div><div class="skill-block" style="border-left:3px solid #d1fae5;">
+    </div><div class="skill-block">
       <h4>数据工具与AI辅助分析</h4>
       <div class="skill-text" contenteditable="false">掌握Stata、R语言基础操作，具备面板数据清洗与描述性统计的实操经验；通过AI工具（Claude Code）辅助Python编程，实现数据批量处理、格式转化与自动化脚本编写；国家计算机二级，正系统学习SQL结构化查询与Python办公自动化</div>
-    </div><div class="skill-block" style="border-left:3px solid #ffe4e6;">
+    </div><div class="skill-block">
       <h4>核心软实力</h4>
       <div class="skill-text" contenteditable="false">中共党员，具备政企公文撰写能力；英语流利（CET-6，雅思6.5，硕士全英文教学），可无障碍阅读英文学术文献与行业文档；曾获南财演说家五强，具备跨团队沟通协调与大型项目统筹执行能力；熟悉校园招聘与简历筛选全流程，对HR及运营场景有实操认知</div>
     </div>
