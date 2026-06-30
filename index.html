@@ -379,8 +379,8 @@ function exportPDF() {
     var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
     var now = new Date();
-    var ds = String(now.getDate()).padStart(2,'0') + String(now.getMonth()+1).padStart(2,'0');
-    pdf.save(ds + '刘芮辰.pdf');
+    var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+    pdf.save(ds + '-刘芮辰.pdf');
   });
 }
 </script>
