@@ -1,4 +1,4 @@
-<!-- build:1782813946.2852483 -->
+<!-- build:1782814258.6659782 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -62,24 +62,26 @@
     z-index:5; opacity:0.6;
   }
 
-  /* ===== 头部：温暖渐变 + 底部装饰线 ===== */
+  /* ===== 头部：渐变背景 + 几何线条纹理 ===== */
   .header {
-    background:linear-gradient(135deg, #fce4ec, #e3f2fd);
+    background:
+      /* 精细菱格纹理叠加 */
+      repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.18) 14px, rgba(255,255,255,0.18) 15px),
+      repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(255,255,255,0.18) 14px, rgba(255,255,255,0.18) 15px),
+      /* 底色渐变 */
+      linear-gradient(135deg, #fce4ec, #e3f2fd);
     padding:14px 20px 12px 20px;
     display:flex; align-items:center; gap:16px;
     position:relative;
-    border-bottom:1px solid #e0d8cc;
   }
-  /* 头部底部装饰：三个半透明色块 */
+  /* 头部底部：简约白色双线装饰 */
   .header::after {
     content:'';
-    position:absolute; bottom:0; left:20px; right:20px; height:2px;
-    background:linear-gradient(90deg,
-      #f8d5e0 0%, #f8d5e0 25%,
-      #e8f5e9 25%, #e8f5e9 50%,
-      #fef3c7 50%, #fef3c7 75%,
-      #bbdefb 75%, #bbdefb 100%);
-    opacity:0.45; border-radius:0 0 2px 2px;
+    position:absolute; bottom:0; left:20px; right:20px;
+    height:1px;
+    background:#fff;
+    box-shadow:0 2px 0 rgba(255,255,255,0.4);
+    opacity:0.9;
   }
   .header .photo { width:60px; height:80px; border-radius:4px; object-fit:cover; flex-shrink:0; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.08); }
   .name { font-size:1.4rem; font-weight:700; color:#3d3d3d; letter-spacing:1px; }
@@ -93,9 +95,10 @@
 
   /* ===== 分区容器：用细线分割代替色块 ===== */
   .section { padding:6px 18px; background:#fff; position:relative; }
-  .section.edu { padding-bottom:0; }
+  .section.edu { padding-bottom:0; background:linear-gradient(180deg, rgba(252,228,236,0.12) 0%, rgba(227,242,253,0.08) 40%, #fff 100%); }
   .section.intern { padding-bottom:0; }
-  .section + .section { border-top:1px dotted #e0d8cc; }
+  /* 分区之间：白色简约线条分隔 */
+  .section + .section { border-top:1.5px solid #fff; box-shadow:0 -1px 3px rgba(0,0,0,0.04); }
 
   /* ===== 分区标题：满幅渐变背景（经典配色）===== */
   .section h2 {
