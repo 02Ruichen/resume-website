@@ -36,7 +36,7 @@
 
   /* ===== A4 页面主体 ===== */
   .page {
-    width:210mm; min-height:297mm;
+    width:210mm; 
     background:#fff;
     margin:0 auto;
     box-shadow:
@@ -64,7 +64,7 @@
   /* ===== 头部：温暖渐变 + 底部装饰线 ===== */
   .header {
     background:linear-gradient(135deg, #fce4ec, #e3f2fd);
-    padding:16px 20px 14px 20px;
+    padding:14px 20px 12px 20px;
     display:flex; align-items:center; gap:16px;
     position:relative;
     border-bottom:1px solid #e0d8cc;
@@ -91,14 +91,14 @@
   }
 
   /* ===== 分区容器：用细线分割代替色块 ===== */
-  .section { padding:8px 18px; background:#fff; position:relative; }
+  .section { padding:6px 18px; background:#fff; position:relative; }
   .section.edu { padding-bottom:0; }
   .section.intern { padding-bottom:0; }
   .section + .section { border-top:1px dotted #e0d8cc; }
 
   /* ===== 分区标题：满幅渐变背景（经典配色）===== */
   .section h2 {
-    font-size:.82rem; margin:-6px -16px 5px -16px; padding:6px 16px;
+    font-size:.82rem; margin:-6px -16px 3px -16px; padding:6px 16px;
     display:block; color:#3d3d3d; font-weight:600;
   }
   .section.edu h2    { background:linear-gradient(135deg,#fce4ec,#f8d5e0); }
@@ -107,7 +107,7 @@
   .section.skills h2 { background:linear-gradient(135deg,#e3f2fd,#bbdefb); }
 
   /* ===== 教育背景 ===== */
-  .edu-row { margin-bottom:4px; }
+  .edu-row { margin-bottom:2px; }
   .edu-head { font-size:.74rem; line-height:1.5; }
   .edu-head em { font-size:.64rem; color:#999; margin-left:4px; }
   .edu-detail {
@@ -116,7 +116,7 @@
   }
 
   /* ===== 经历条目 ===== */
-  .exp-item { margin-bottom:4px; }
+  .exp-item { margin-bottom:2px; }
   .exp-bar {
     display:flex; align-items:center; gap:8px;
     padding:4px 10px; border-radius:3px;
@@ -137,13 +137,13 @@
   .exp-arrow { font-size:.5rem; color:#ccc; flex-shrink:0; transition:transform .2s; }
   .exp-item.open .exp-arrow { transform:rotate(90deg); }
 
-  .exp-brief { font-size:.66rem; color:#6b6b6b; padding:4px 6px 2px 12px; line-height:1.45; text-align:left; }
+  .exp-brief { font-size:.66rem; color:#6b6b6b; padding:3px 6px 0 12px; line-height:1.45; text-align:left; }
   .exp-item.open .exp-brief { display:none; }
 
   .exp-full { display:none; }
   .exp-item.open .exp-full { display:block; }
 
-  .exp-detail { font-size:.66rem; color:#6b6b6b; padding:4px 6px 2px 12px; line-height:1.45; text-align:left; }
+  .exp-detail { font-size:.66rem; color:#6b6b6b; padding:3px 6px 0 12px; line-height:1.45; text-align:left; }
   .back-btn {
     background:#f5f2ed; border:1px solid #e5ded0; padding:4px 12px;
     border-radius:4px; cursor:pointer; font-size:.62rem; margin:4px 0 6px 0;
@@ -162,7 +162,7 @@
   .section.skills {
     position:relative;
     background:linear-gradient(135deg, #e3f2fd, #bbdefb);
-    padding:5px 26px 16px 26px;
+    padding:4px 26px 12px 26px;
   }
   .section.skills::before {
     content:'';
@@ -176,21 +176,21 @@
   }
   .section.skills > * { position:relative; z-index:2; }
 
-  .skill-block { margin-bottom:6px; }
-  .skill-block h4 {
-    font-size:.7rem; margin-bottom:3px; color:#3d3d3d;
+  .skill-block { margin-bottom:4px; }
+  .skill-block h4 { margin-bottom:1px;
+    font-size:.7rem; color:#3d3d3d;
     padding-left:0; font-weight:600;
   }
   .skill-text {
-    font-size:.72rem; color:#6b6b6b; line-height:1.4;
+    font-size:.72rem; color:#6b6b6b; line-height:1.25;
     padding-left:0; text-align:left;
   }
 
   /* ===== 页脚 ===== */
-  .footer {
-    text-align:center; padding:8px; font-size:.6rem; color:#ccc;
+  .footer { padding:6px;
+    text-align:center; font-size:.6rem; color:#ccc;
     border-top:1px dotted #e0d8cc;
-    margin-top:4px;
+    margin-top:2px;
   }
 
   /* ===== 编辑模式 ===== */
