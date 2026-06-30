@@ -8,77 +8,239 @@
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:"Microsoft YaHei","PingFang SC",sans-serif; background:#e8e8e8; padding:14px; }
+
+  /* ===== 整体背景：温暖灰调 + 微妙的点阵纹理 ===== */
+  body {
+    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+    background:#faf8f5;
+    background-image:
+      /* 微妙的纸张纤维纹理 */
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,170,150,0.03) 2px, rgba(180,170,150,0.03) 4px),
+      /* 极淡的点阵 */
+      radial-gradient(circle, rgba(180,170,150,0.08) 1px, transparent 1px);
+    background-size: 100% 4px, 16px 16px;
+    padding:14px;
+  }
+
+  /* ===== 工具栏 ===== */
   .toolbar { width:210mm; margin:0 auto 8px; display:flex; gap:8px; justify-content:flex-end; }
-  .toolbar button { padding:6px 16px; border-radius:6px; border:1px solid #ddd; cursor:pointer; font-size:13px; font-family:inherit; background:#fff; }
-  .toolbar button.unlock { background:linear-gradient(135deg,#fce4ec,#f8d5e0); border-color:transparent; }
-  .toolbar button.save { background:#4a3f6b; color:#fff; border-color:transparent; display:none; }
+  .toolbar button {
+    padding:6px 16px; border-radius:20px; border:1px solid #ddd;
+    cursor:pointer; font-size:13px; font-family:inherit;
+    background:#fff; color:#6b6b6b; transition:all .2s;
+  }
+  .toolbar button:hover { border-color:#bbb; color:#3d3d3d; }
+  .toolbar button.unlock { background:#faf8f5; border:1px solid #d0c8b8; color:#8b7e6a; }
+  .toolbar button.save { background:#6b8e7b; color:#fff; border-color:transparent; display:none; }
   .toolbar button.cancel { display:none; }
-  .page { width:210mm; min-height:297mm; background:#fff; margin:0 auto; box-shadow:0 4px 24px rgba(0,0,0,.12); border-radius:4px; overflow:hidden; }
 
-  .header { background:linear-gradient(135deg,#fce4ec,#e3f2fd); padding:12px 18px; display:flex; align-items:center; gap:14px; margin-bottom:6px; }
-  .header .photo { width:60px; height:80px; border-radius:6px; object-fit:cover; flex-shrink:0; border:2px solid #fff; }
-  .name { font-size:1.4rem; font-weight:700; color:#333; }
-  .title { font-size:.7rem; color:#666; margin-top:1px; }
-  .tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
-  .tag { background:rgba(255,255,255,.6); padding:1px 8px; border-radius:10px; font-size:.62rem; }
+  /* ===== A4 页面主体 ===== */
+  .page {
+    width:210mm; min-height:297mm;
+    background:#fff;
+    margin:0 auto;
+    box-shadow:
+      0 1px 3px rgba(0,0,0,.06),
+      0 8px 32px rgba(0,0,0,.10);
+    border-radius:2px;
+    overflow:hidden;
+    /* 页面内纹理 */
+    background-image:
+      radial-gradient(ellipse at 15% 5%, rgba(245,237,226,0.25) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 92%, rgba(238,243,248,0.22) 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, rgba(243,240,247,0.15) 0%, transparent 70%);
+    background-attachment:local;
+    position:relative;
+  }
 
-  .section { padding:6px 16px; background:#fff; }
-  .section + .section { border-top:1px solid #f5f5f5; }
-  .section h2 { font-size:.82rem; margin:-6px -16px 5px -16px; padding:6px 16px; display:block; }
-  .section.edu h2 { background:linear-gradient(135deg,#fce4ec,#f8d5e0); }
-  .section.intern h2 { background:linear-gradient(135deg,#fff8e1,#fef3c7); }
-  .section.campus h2 { background:linear-gradient(135deg,#e8f5e9,#d4edda); }
-  .section.skills { position:relative; background:linear-gradient(135deg,#e3f2fd,#bbdefb); padding:14px 24px; }
-  .section.skills::before { content:''; position:absolute; top:3mm; left:3mm; right:3mm; bottom:3mm; background:rgba(255,255,255,.8); border-radius:6px; z-index:1; }
-  .section.skills > * { position:relative; z-index:2; }
+  /* ===== 页面上方精致的装饰细线 ===== */
+  .page::before {
+    content:'';
+    position:absolute; top:0; left:12mm; right:12mm; height:1px;
+    background:linear-gradient(90deg, transparent, #e0d8cc, transparent);
+    z-index:5; opacity:0.6;
+  }
 
-  .edu-row { margin-bottom:3px; }
-  .edu-head { font-size:.74rem; line-height:1.4; }
-  .edu-head em { font-size:.64rem; color:#888; margin-left:4px; }
-  .edu-detail { font-size:.72rem; color:#555; padding-left:6px; border-left:2px solid #e5e5e5; margin-top:1px; }
+  /* ===== 头部：温暖渐变 + 底部装饰线 ===== */
+  .header {
+    background:linear-gradient(180deg, #fdfaf5 0%, #faf6ef 40%, #f7f1e8 100%);
+    padding:16px 20px 14px 20px;
+    display:flex; align-items:center; gap:16px;
+    position:relative;
+    border-bottom:1px solid #e0d8cc;
+  }
+  /* 头部底部装饰：三个半透明色块 */
+  .header::after {
+    content:'';
+    position:absolute; bottom:0; left:20px; right:20px; height:2px;
+    background:linear-gradient(90deg,
+      #ede0d0 0%, #ede0d0 25%,
+      #f3f0f7 25%, #f3f0f7 50%,
+      #dce8dc 50%, #dce8dc 75%,
+      #dce6f0 75%, #dce6f0 100%);
+    opacity:0.45; border-radius:0 0 2px 2px;
+  }
+  .header .photo { width:60px; height:80px; border-radius:4px; object-fit:cover; flex-shrink:0; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+  .name { font-size:1.4rem; font-weight:700; color:#3d3d3d; letter-spacing:1px; }
+  .title { font-size:.7rem; color:#6b6b6b; margin-top:2px; }
+  .tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
+  .tag {
+    background:rgba(245,237,226,0.5);
+    padding:2px 10px; border-radius:12px; font-size:.62rem;
+    color:#6b6b6b; border:1px solid rgba(200,185,160,0.25);
+  }
 
-  .exp-item { margin-bottom:3px; }
-  .exp-bar { display:flex; align-items:center; gap:7px; padding:3px 8px; border-radius:4px; background:#fafafa; border-left:3px solid transparent; }
-  .exp-item:nth-child(4n+1) .exp-bar { border-left-color:#f8d5e0; }
-  .exp-item:nth-child(4n+2) .exp-bar { border-left-color:#fef3c7; }
-  .exp-item:nth-child(4n+3) .exp-bar { border-left-color:#d4edda; }
-  .exp-item:nth-child(4n+4) .exp-bar { border-left-color:#bbdefb; }
-  .exp-dot { width:5px; height:5px; border-radius:50%; background:#bbb; flex-shrink:0; }
-  .exp-title { font-size:.72rem; font-weight:600; flex-shrink:0; }
+  /* ===== 分区容器：用细线分割代替色块 ===== */
+  .section { padding:8px 18px; background:#fff; position:relative; }
+  .section + .section { border-top:1px dotted #e0d8cc; }
+
+  /* ===== 分区标题：精致点缀，不用满幅渐变 ===== */
+  .section h2 {
+    font-size:.82rem; color:#3d3d3d;
+    margin:0 0 6px 0; padding:4px 0 4px 0;
+    display:flex; align-items:center; gap:6px;
+    position:relative;
+    font-weight:600;
+    letter-spacing:.5px;
+  }
+  /* 标题左侧小装饰点 */
+  .section h2::before {
+    content:'';
+    width:4px; height:4px; border-radius:50%;
+    flex-shrink:0;
+  }
+  /* 各分区标题的装饰色各不相同 */
+  .section.edu h2::before    { background:#ede0d0; box-shadow:0 0 0 3px #f5ede2; }
+  .section.intern h2::before { background:#dce8dc; box-shadow:0 0 0 3px #edf2ed; }
+  .section.campus h2::before { background:#e6e0f0; box-shadow:0 0 0 3px #f3f0f7; }
+  .section.skills h2::before { background:#dce6f0; box-shadow:0 0 0 3px #eef3f8; }
+
+  /* 标题下方细线 */
+  .section h2::after {
+    content:'';
+    flex:1; height:1px;
+    background:linear-gradient(90deg, #e0d8cc, transparent 60%);
+    margin-left:6px;
+  }
+
+  /* ===== 教育背景 ===== */
+  .edu-row { margin-bottom:4px; }
+  .edu-head { font-size:.74rem; line-height:1.5; }
+  .edu-head em { font-size:.64rem; color:#999; margin-left:4px; }
+  .edu-detail {
+    font-size:.72rem; color:#6b6b6b; padding:2px 0 2px 10px;
+    border-left:2px solid #e0d8cc; margin-top:2px; line-height:1.5;
+  }
+
+  /* ===== 经历条目 ===== */
+  .exp-item { margin-bottom:4px; }
+  .exp-bar {
+    display:flex; align-items:center; gap:8px;
+    padding:4px 10px; border-radius:3px;
+    background:#fafaf9; cursor:pointer;
+    border-left:3px solid transparent;
+    transition:background .15s;
+  }
+  .exp-bar:hover { background:#f5f2ed; }
+  /* 各条目左边框颜色轮换 */
+  .exp-item:nth-child(4n+1) .exp-bar { border-left-color:#ede0d0; }
+  .exp-item:nth-child(4n+2) .exp-bar { border-left-color:#dce8dc; }
+  .exp-item:nth-child(4n+3) .exp-bar { border-left-color:#e6e0f0; }
+  .exp-item:nth-child(4n+4) .exp-bar { border-left-color:#dce6f0; }
+
+  .exp-dot { width:5px; height:5px; border-radius:50%; background:#c5bfb2; flex-shrink:0; }
+  .exp-title { font-size:.72rem; font-weight:600; color:#3d3d3d; flex-shrink:0; }
   .exp-sub { font-size:.62rem; color:#999; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .exp-arrow { font-size:.5rem; color:#ccc; flex-shrink:0; transition:transform .2s; }
   .exp-item.open .exp-arrow { transform:rotate(90deg); }
 
-  .exp-brief { font-size:.66rem; color:#555; padding:3px 6px 3px 10px; line-height:1.4; text-align:justify; }
+  .exp-brief { font-size:.66rem; color:#6b6b6b; padding:4px 6px 2px 12px; line-height:1.45; text-align:justify; }
   .exp-item.open .exp-brief { display:none; }
 
   .exp-full { display:none; }
   .exp-item.open .exp-full { display:block; }
 
-  .exp-detail { font-size:.66rem; color:#555; padding:3px 6px 3px 10px; line-height:1.4; text-align:justify; }
-  .back-btn { background:#f3e8ff; border:none; padding:3px 10px; border-radius:4px; cursor:pointer; font-size:.62rem; margin-bottom:6px; font-family:inherit; }
+  .exp-detail { font-size:.66rem; color:#6b6b6b; padding:4px 6px 2px 12px; line-height:1.45; text-align:justify; }
+  .back-btn {
+    background:#f5f2ed; border:1px solid #e5ded0; padding:4px 12px;
+    border-radius:4px; cursor:pointer; font-size:.62rem; margin:4px 0 6px 0;
+    font-family:inherit; color:#6b6b6b; transition:background .15s;
+  }
+  .back-btn:hover { background:#ede6d8; }
 
-  .skill-block { margin-bottom:5px; }
-  .skill-block h4 { font-size:.7rem; margin-bottom:2px; }
-  .skill-text { font-size:.72rem; color:#555; line-height:1.35; padding-left:8px; }
+  /* 关键词行 */
+  .kw-line {
+    font-size:.6rem; color:#999; margin-top:4px;
+    padding:3px 8px; background:rgba(245,237,226,0.3);
+    border-radius:3px; display:inline-block;
+  }
 
-  b { color:#333; }
-  .footer { text-align:center; padding:6px; font-size:.6rem; color:#ccc; }
+  /* ===== 技能与评价：渐变底 + 精致蒙版 ===== */
+  .section.skills {
+    position:relative;
+    background:linear-gradient(135deg, #eef3f8, #dce6f0);
+    padding:16px 26px;
+  }
+  .section.skills::before {
+    content:'';
+    position:absolute; top:3mm; left:3mm; right:3mm; bottom:3mm;
+    background:
+      /* 蒙版主体 */
+      linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.82) 100%);
+    border-radius:4px; z-index:1;
+    /* 蒙版内微妙的纹理 */
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.6);
+  }
+  .section.skills > * { position:relative; z-index:2; }
 
-  /* 编辑模式 */
+  .skill-block { margin-bottom:6px; }
+  .skill-block h4 {
+    font-size:.7rem; margin-bottom:3px; color:#3d3d3d;
+    padding-left:0; font-weight:600;
+  }
+  .skill-text {
+    font-size:.72rem; color:#6b6b6b; line-height:1.4;
+    padding-left:0; text-align:justify;
+  }
+
+  /* ===== 页脚 ===== */
+  .footer {
+    text-align:center; padding:8px; font-size:.6rem; color:#ccc;
+    border-top:1px dotted #e0d8cc;
+    margin-top:4px;
+  }
+
+  /* ===== 编辑模式 ===== */
   body.editing [contenteditable] { background:rgba(255,255,200,.3); outline:1px dashed #ccc; cursor:text; }
   body.editing [contenteditable]:focus { outline:2px solid #a18cd1; background:rgba(255,255,230,.5); }
   body.editing .toolbar .save,.body.editing .toolbar .cancel { display:inline-block; }
   body.editing .toolbar .unlock { display:none; }
 
-  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:99; justify-content:center; align-items:center; }
+  /* ===== 密码弹窗 ===== */
+  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:99; justify-content:center; align-items:center; }
   .modal.show { display:flex; }
-  .modal-box { background:#fff; padding:24px 32px; border-radius:12px; text-align:center; box-shadow:0 8px 32px rgba(0,0,0,.2); }
-  .modal-box input { padding:8px 14px; border:1px solid #ddd; border-radius:6px; font-size:14px; width:200px; margin:10px 0; }
-  .modal-box button { padding:8px 20px; border-radius:6px; border:none; cursor:pointer; font-size:13px; }
-  .modal-box .confirm { background:linear-gradient(135deg,#fce4ec,#f8d5e0); }
+  .modal-box {
+    background:#fff; padding:28px 36px; border-radius:12px;
+    text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.15);
+  }
+  .modal-box input {
+    padding:8px 14px; border:1px solid #ddd; border-radius:6px;
+    font-size:14px; width:200px; margin:10px 0;
+  }
+  .modal-box button {
+    padding:8px 20px; border-radius:6px; border:none;
+    cursor:pointer; font-size:13px; transition:opacity .15s;
+  }
+  .modal-box button:hover { opacity:.85; }
+  .modal-box .confirm { background:linear-gradient(135deg,#f5ede2,#ede0d0); color:#3d3d3d; }
   .modal-box .close { background:#eee; margin-left:8px; }
+
+  /* ===== 打印样式 ===== */
+  @media print {
+    body { background:#fff; padding:0; }
+    .toolbar, .modal { display:none !important; }
+    .page { box-shadow:none; margin:0; border-radius:0; }
+  }
 </style>
 </head>
 <body>
@@ -215,14 +377,11 @@ function cancelEdit() {
   if (confirm('放弃修改？未保存的更改将丢失。')) location.reload();
 }
 function saveAll() {
-  // 收集所有编辑内容并下载为 HTML
   var html = document.documentElement.outerHTML;
-  // 重置为只读
   document.body.classList.remove('editing');
   document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'false');
   document.querySelector('.save').style.display = 'none';
   document.querySelector('.cancel').style.display = 'none';
-  // 触发下载
   var blob = new Blob(['<!DOCTYPE html>\n' + html], {type:'text/html'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
