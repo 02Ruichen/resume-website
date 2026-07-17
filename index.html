@@ -1,4 +1,4 @@
-<!-- build:1784277632.6571803 -->
+<!-- build:1784277857.703891 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -44,6 +44,8 @@
       --h2-text: #3d3d3d;
 
       --edu-gradient: linear-gradient(180deg, rgba(252,228,236,0.12) 0%, rgba(227,242,253,0.08) 40%, #fff 100%);
+      --intern-bg: transparent;
+      --campus-bg: transparent;
 
       --bl-1: #f8d5e0;
       --bl-2: #fef3c7;
@@ -85,6 +87,8 @@
 
       --modal-confirm: linear-gradient(135deg, #fce4ec, #f8d5e0);
 
+      --skills-h2-text: #3d3d3d;
+
       --theme-active-bg: #fce4ec;
       --theme-active-text: #3d3d3d;
       --theme-active-border: #f8d5e0;
@@ -124,7 +128,9 @@
       --h2-gradient: #1a3550;
       --h2-text: #ffffff;
 
-      --edu-gradient: linear-gradient(180deg, rgba(26,53,80,0.05) 0%, rgba(45,90,128,0.03) 40%, #fff 100%);
+      --edu-gradient: linear-gradient(180deg, #e6ecf3 0%, #eef2f7 35%, #fff 100%);
+      --intern-bg: #f2f4f8;
+      --campus-bg: #f7f8fa;
 
       --bl-1: #1a3550;
       --bl-2: #2d5a80;
@@ -165,6 +171,8 @@
       --back-btn-hover: #dde2ea;
 
       --modal-confirm: linear-gradient(135deg, #1a3550, #2d5a80);
+
+      --skills-h2-text: #1a3550;
 
       --theme-active-bg: #1a3550;
       --theme-active-text: #ffffff;
@@ -263,7 +271,8 @@
     /* ===== 分区容器 ===== */
     .section { padding:6px 18px; background: var(--section-bg); position:relative; transition: background .4s; }
     .section.edu { padding-bottom:0; background: var(--edu-gradient); }
-    .section.intern { padding-bottom:0; }
+    .section.intern { padding-bottom:0; background: var(--intern-bg); transition: background .4s; }
+    .section.campus { padding-bottom:0; background: var(--campus-bg); transition: background .4s; }
     .section + .section { border-top: var(--section-sep-border); box-shadow: var(--section-sep-shadow); }
 
     /* ===== 分区标题 ===== */
@@ -345,7 +354,7 @@
       border-radius: 3px;
     }
     .section.skills h2 {
-      background: transparent;
+      background: transparent; color: var(--skills-h2-text);
       position: relative; z-index: 1;
     }
 
