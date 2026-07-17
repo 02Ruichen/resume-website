@@ -1,4 +1,4 @@
-<!-- build:1784278367.6519852 -->
+<!-- build:1784280408.2619574 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -191,6 +191,12 @@
       padding:14px;
       transition: background .4s;
     }
+
+    /* ===== 双版本页面可见性控制 ===== */
+    .page-internet { display: block; }
+    .page-gov { display: none; }
+    body.gov .page-internet { display: none; }
+    body.gov .page-gov { display: block; }
 
     /* ===== 工具栏 ===== */
     .toolbar { width:210mm; margin:0 auto 8px; display:flex; gap:6px; justify-content:flex-end; align-items:center; flex-wrap:wrap; }
@@ -407,6 +413,11 @@
       body { background:#fff; padding:0; }
       .toolbar, .modal { display:none !important; }
       .page { box-shadow:none; margin:0; border-radius:0; }
+      /* 打印时显示当前选中的版本 */
+      body.gov .page-internet { display: none !important; }
+      body.gov .page-gov { display: block !important; }
+      body:not(.gov) .page-internet { display: block !important; }
+      body:not(.gov) .page-gov { display: none !important; }
     }
 
 </style>
@@ -431,7 +442,95 @@
   </div>
 </div>
 
-<div class="page" id="resume">
+<div class="page page-internet" id="resume-internet">
+  <div class="header">
+    <img class="photo" src="photo.jpg" alt="照片">
+    <div>
+      <div class="name">刘芮辰</div>
+      <div class="title">意向岗位：AI产品运营 / 策略运营 / 数字化项目运营 / AI训练与管理 / 电商运营</div>
+      <div class="tags"><span class="tag">15318036172</span> <span class="tag">liuruichen02@qq.com</span> <span class="tag">山东</span> <span class="tag">24岁</span> <span class="tag">中共党员</span></div>
+    </div>
+  </div>
+
+  <div class="section edu">
+    <h2>🎓 教育背景</h2>
+    <div class="edu-row">
+  <div class="edu-head"><b>澳门大学</b> <span>国际关系与公共政策（硕士）</span> <em>2025-08 ~ 至今</em></div>
+  <div class="edu-detail" contenteditable="false">专业成绩：<b>GPA 3.41</b> | 专业排名：前<b>20%（全英文授课）</b><br>主修课程：<b>国际关系理论</b>、国际组织与全球治理、亚太国际关系、<b>社会科学研究设计</b>、<b>国际关系与数据科学、中国与葡语国家的关系</b>等</div>
+</div><div class="edu-row">
+  <div class="edu-head"><b>南京财经大学</b> <span>公共事业管理（学士）</span> <em>2020-09 ~ 2024-06</em></div>
+  <div class="edu-detail" contenteditable="false">专业成绩：<b>GPA 3.54</b> | 专业排名：前<b>10%</b><br>主修课程：公共政策学、公共管理学、<b>定量研究方法与Stata应用</b>、公共经济学、<b>公共管理研究方法</b>、高等数学等<br>荣誉奖项：连续获得五次<b>校级学习优秀奖学金</b>、两次<b>素质拓展奖学金</b>；获<b>优秀大学生</b>、<b>优秀学生干部</b>、<b>优秀毕业论文</b>等称号</div>
+</div>
+  </div>
+  <div class="section intern">
+    <h2>💼 实习经历</h2>
+    <div class="exp-item" id="intern_0">
+      <div class="exp-bar" onclick="expandExp('intern_0')"><span class="exp-dot"></span><span class="exp-title">横琴人才集团有限公司（横琴粤澳深度合作区属国企·央地合作）</span><span class="exp-sub">项目实习生 | 2026.05 ~ 至今</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief"><b>AI增效赋能</b>：基于<b>Claude Code</b>搭建智能体工作流，重构数据链路；打通<b>MS 365 API</b>实现报名信息批量清洗校验，将3人日压至2-3小时；沉淀<b>Prompt模板</b>与SOP，降低使用门槛。<br><b>项目统筹落地</b>：负责<b>政企对接</b>与线下活动全流程落地，在高并发场景下精准排序任务优先级；独立完成物料统筹与现场调度，全流程零失误，展现扎实的<b>沟通协调能力</b>与<b>执行力</b>。<div class="kw-line">🔑 核心能力体现：AI增效赋能、项目统筹落地、标准化流程建设、跨部门协同</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_0')">← 返回列表</button>
+        <div class="exp-detail"><b>AI增效赋能</b>：基于<b>Claude Code</b>搭建智能体工作流，重构数据链路；打通<b>MS 365 API</b>实现报名信息批量清洗校验，将3人日压至2-3小时；沉淀<b>Prompt模板</b>与SOP，降低使用门槛。<br><b>项目统筹落地</b>：负责<b>政企对接</b>与线下活动全流程落地，在高并发场景下精准排序任务优先级；独立完成物料统筹与现场调度，全流程零失误，展现扎实的<b>沟通协调能力</b>与<b>执行力</b>。<div class="kw-line">🔑 核心能力体现：AI增效赋能、项目统筹落地、标准化流程建设、跨部门协同</div></div>
+      </div>
+    </div><div class="exp-item" id="intern_1">
+      <div class="exp-bar" onclick="expandExp('intern_1')"><span class="exp-dot"></span><span class="exp-title">中国新闻发展公司江苏分公司（新华社）</span><span class="exp-sub">政务新媒体部实习生 | 2022.06 ~ 2022.10</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief"><b>信息监测与提炼</b>：监测省内<b>财经动态</b>，精准筛选高价值新闻并撰写200字核心摘要；严控内容质量，贴合<b>新媒体传播范式</b>，保障信息对决策的参考价值。<br><b>内容运营支持</b>：参与中小企业<b>惠税政策宣贯</b>，独立撰写<b>新闻通稿</b>及美化汇报PPT；全流程跟会梳理企业诉求，沉淀为标准化清单，以清晰文风辅助政策落地。<br><b>流程优化治理</b>：依托采购平台审核申报材料，依据<b>SOP</b>驳回不合规申请并出具规范指引；熟悉<b>OA报批逻辑</b>与公文规范，具备扎实的流程把控与风险甄别意识。<div class="kw-line">🔑 核心能力体现：内容运营、公文规范把控、跨部门协同、SOP标准化建设</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_1')">← 返回列表</button>
+        <div class="exp-detail"><b>信息监测与提炼</b>：监测省内<b>财经动态</b>，精准筛选高价值新闻并撰写200字核心摘要；严控内容质量，贴合<b>新媒体传播范式</b>，保障信息对决策的参考价值。<br><b>内容运营支持</b>：参与中小企业<b>惠税政策宣贯</b>，独立撰写<b>新闻通稿</b>及美化汇报PPT；全流程跟会梳理企业诉求，沉淀为标准化清单，以清晰文风辅助政策落地。<br><b>流程优化治理</b>：依托采购平台审核申报材料，依据<b>SOP</b>驳回不合规申请并出具规范指引；熟悉<b>OA报批逻辑</b>与公文规范，具备扎实的流程把控与风险甄别意识。<div class="kw-line">🔑 核心能力体现：内容运营、公文规范把控、跨部门协同、SOP标准化建设</div></div>
+      </div>
+    </div><div class="exp-item" id="intern_2">
+      <div class="exp-bar" onclick="expandExp('intern_2')"><span class="exp-dot"></span><span class="exp-title">山东省枣庄市薛城区财政局</span><span class="exp-sub">行政助理 | 2024.06 ~ 2024.10</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief"><b>数据资产治理</b>：运用<b>Excel高阶函数</b>构建文档索引体系，推动非结构化档案标准化归档；沉淀<b>数据清洗SOP</b>与分类规范，显著提升调阅效率与数据管理能力。<br><b>合规运营</b>：起草格式化公文，精通文书规范与<b>Word排版SOP</b>；熟悉公文语体风格与<b>行文规范</b>，具备扎实的<b>办公流合规</b>意识与文字把控力。<div class="kw-line">🔑 核心能力体现：数据资产治理、合规运营、文字表达、SOP标准化建设</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('intern_2')">← 返回列表</button>
+        <div class="exp-detail"><b>数据资产治理</b>：运用<b>Excel高阶函数</b>构建文档索引体系，推动非结构化档案标准化归档；沉淀<b>数据清洗SOP</b>与分类规范，显著提升调阅效率与数据管理能力。<br><b>合规运营</b>：起草格式化公文，精通文书规范与<b>Word排版SOP</b>；熟悉公文语体风格与<b>行文规范</b>，具备扎实的<b>办公流合规</b>意识与文字把控力。<div class="kw-line">🔑 核心能力体现：数据资产治理、合规运营、文字表达、SOP标准化建设</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section campus">
+    <h2>🏫 校园经历</h2>
+    <div class="exp-item" id="campus_0">
+      <div class="exp-bar" onclick="expandExp('campus_0')"><span class="exp-dot"></span><span class="exp-title">南京财经大学神寂动漫社</span><span class="exp-sub">社长 | 2022.06 ~ 2023.06</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief"><b>项目统筹落地</b>：从0策划并执行<b>南京高校联盟</b>舞台剧暨宅舞大赛，统筹22+社团及300+参加者，通过精细化预算管控与SOP执行，获评<b>十佳社团活动</b>。<br><b>跨团队管理与增长</b>：主导社团日常运营与招新，任期内获评校<b>五星级社团</b>；独立运营<b>B站及QQ空间</b>，策划内容单条播放量达2.7万，实现社团影响力破圈。<div class="kw-line">🔑 核心能力体现：项目全生命周期管理、跨部门资源整合、数据驱动运营</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('campus_0')">← 返回列表</button>
+        <div class="exp-detail"><b>项目统筹落地</b>：从0策划并执行<b>南京高校联盟</b>舞台剧暨宅舞大赛，统筹22+社团及300+参加者，通过精细化预算管控与SOP执行，获评<b>十佳社团活动</b>。<br><b>跨团队管理与增长</b>：主导社团日常运营与招新，任期内获评校<b>五星级社团</b>；独立运营<b>B站及QQ空间</b>，策划内容单条播放量达2.7万，实现社团影响力破圈。<div class="kw-line">🔑 核心能力体现：项目全生命周期管理、跨部门资源整合、数据驱动运营</div></div>
+      </div>
+    </div><div class="exp-item" id="campus_1">
+      <div class="exp-bar" onclick="expandExp('campus_1')"><span class="exp-dot"></span><span class="exp-title">逃离福利陷阱：激励政策如何重塑低收入群体的经济自主性</span><span class="exp-sub">独立研究员 | 2025.10 ~ 至今</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief"><b>政策数据建模</b>：研读<b>CFPS/CHFS</b>微观数据文档，梳理变量定义与清洗逻辑，搭建政策评估研究的底层数据框架。<br><b>AI科研增效</b>：运用<b>Claude Code</b>辅助文献研读与Stata脚本调试；沉淀<b>Prompt模板</b>与数据校验SOP，提升非结构化数据处理的规范性与效率。<div class="kw-line">🔑 核心能力体现：政策数据建模、AI科研增效、SOP标准化建设</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('campus_1')">← 返回列表</button>
+        <div class="exp-detail"><b>政策数据建模</b>：研读<b>CFPS/CHFS</b>微观数据文档，梳理变量定义与清洗逻辑，搭建政策评估研究的底层数据框架。<br><b>AI科研增效</b>：运用<b>Claude Code</b>辅助文献研读与Stata脚本调试；沉淀<b>Prompt模板</b>与数据校验SOP，提升非结构化数据处理的规范性与效率。<div class="kw-line">🔑 核心能力体现：政策数据建模、AI科研增效、SOP标准化建设</div></div>
+      </div>
+    </div><div class="exp-item" id="campus_2">
+      <div class="exp-bar" onclick="expandExp('campus_2')"><span class="exp-dot"></span><span class="exp-title">贫困群体内生动力双驱动模型构建</span><span class="exp-sub">研究员 | 2023.12 ~ 2024.05</span><span class="exp-arrow">▶</span></div>
+      <div class="exp-brief"><b>理论建模</b>：基于<b>行为公共管理</b>视角，构建「政策供给-个体响应」互动机制框架，通过20个典型案例比较分析，提炼关键变量与内生动力生成路径。<br><b>结构化论证</b>：通过编码进行定性资料分析，拆解复杂社会现象为可分析逻辑单元，锤炼严谨学术逻辑与数据治理素养。获校级<b>优秀毕业论文</b>。<div class="kw-line">🔑 核心能力体现：理论建模能力、严谨学术论证、数据治理素养</div></div>
+      <div class="exp-full">
+        <button class="back-btn" onclick="event.stopPropagation();collapseExp('campus_2')">← 返回列表</button>
+        <div class="exp-detail"><b>理论建模</b>：基于<b>行为公共管理</b>视角，构建「政策供给-个体响应」互动机制框架，通过20个典型案例比较分析，提炼关键变量与内生动力生成路径。<br><b>结构化论证</b>：通过编码进行定性资料分析，拆解复杂社会现象为可分析逻辑单元，锤炼严谨学术逻辑与数据治理素养。获校级<b>优秀毕业论文</b>。<div class="kw-line">🔑 核心能力体现：理论建模能力、严谨学术论证、数据治理素养</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="section skills">
+    <h2>⭐ 技能与评价</h2>
+    <div class="skill-block">
+      <h4>大模型工程化应用</h4>
+      <div class="skill-text" contenteditable="false">具备<b>Claude Code本地化部署</b>能力，可独立完成<b>环境配置与运维</b>；熟练整合<b>MCP协议与Agent工具链</b>，搭建<b>AI智能办公工具</b>（如简历优化Web应用），实现大模型→前端部署全链路闭环，善用AI智能体辅助完成复杂数据处理与自动化任务。</div>
+    </div><div class="skill-block">
+      <h4>数据治理与AI辅助分析</h4>
+      <div class="skill-text" contenteditable="false">掌握<b>Stata、R语言</b>及<b>Excel高阶函数</b>，具备<b>CFPS/CHFS</b>等微观面板数据处理经验；擅长利用<b>AI辅助生成Python代码</b>，解决数据清洗、格式校验等非结构化数据处理难题，提升数据资产标准化程度。</div>
+    </div><div class="skill-block">
+      <h4>流程优化与自动化运营</h4>
+      <div class="skill-text" contenteditable="false">熟悉<b>公文写作规范</b>与<b>Word排版SOP</b>，具备扎实的文字表达力；精通<b>OA审批逻辑</b>与<b>采购审核流程</b>，能敏锐识别流程风险，适应高标准化、强流程化的办公环境。</div>
+    </div><div class="skill-block">
+      <h4>核心软实力</h4>
+      <div class="skill-text" contenteditable="false">英语可作为工作语言（<b>雅思6.5</b>，<b>全英文硕士授课</b>），无障碍阅读英文文献及行业报告；<b>中共党员</b>，大局观与执行力强；拥有<b>300+人次大型活动统筹</b>经验，擅长跨部门资源协调与多线程任务管理。</div>
+    </div>
+  </div>
+  <div class="footer">© 2025 刘芮辰 | 感谢阅读</div>
+</div>
+<div class="page page-gov" id="resume-gov">
   <div class="header">
     <img class="photo" src="photo.jpg" alt="照片">
     <div>
@@ -524,7 +623,7 @@
 var PASSWORD = 'Lrc020930.';
 var currentExpanded = null;
 
-// ===== 主题切换 =====
+// ===== 主题切换（CSS变量 + 页面可见性） =====
 var THEME_KEY = 'resume-theme';
 function setTheme(theme) {
   if (theme === 'gov') {
@@ -585,9 +684,11 @@ function saveAll() {
 }
 document.getElementById('pwInput').addEventListener('keydown', function(e) { if(e.key==='Enter') doUnlock(); });
 
-// ===== 导出PDF =====
+// ===== 导出PDF（导出当前可见版本） =====
 function exportPDF() {
-  var el = document.getElementById('resume');
+  var el = document.body.classList.contains('gov')
+    ? document.getElementById('resume-gov')
+    : document.getElementById('resume-internet');
   html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
     var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
