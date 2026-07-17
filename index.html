@@ -1,4 +1,4 @@
-<!-- build:1782985440.2230055 -->
+<!-- build:1784277632.6571803 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -8,237 +8,410 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
 
-  /* ===== 整体背景：温暖灰调 + 微妙的点阵纹理 ===== */
-  body {
-    font-family:"Microsoft YaHei","PingFang SC",sans-serif;
-    background:#faf8f5;
-    background-image:
-      /* 微妙的纸张纤维纹理 */
-      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,170,150,0.03) 2px, rgba(180,170,150,0.03) 4px),
-      /* 极淡的点阵 */
-      radial-gradient(circle, rgba(180,170,150,0.08) 1px, transparent 1px);
-    background-size: 100% 4px, 16px 16px;
-    padding:14px;
-  }
+    /* ========== 🎨 互联网/AI 主题（默认） ========== */
+    :root {
+      --page-bg: #faf8f5;
+      --page-bg-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,170,150,0.03) 2px, rgba(180,170,150,0.03) 4px), radial-gradient(circle, rgba(180,170,150,0.08) 1px, transparent 1px);
+      --page-bg-size: 100% 4px, 16px 16px;
 
-  /* ===== 工具栏 ===== */
-  .toolbar { width:210mm; margin:0 auto 8px; display:flex; gap:8px; justify-content:flex-end; }
-  .toolbar button {
-    padding:6px 16px; border-radius:20px; border:1px solid #ddd;
-    cursor:pointer; font-size:13px; font-family:inherit;
-    background:#fff; color:#6b6b6b; transition:all .2s;
-  }
-  .toolbar button:hover { border-color:#bbb; color:#3d3d3d; }
-  .toolbar button.unlock { background:#faf8f5; border:1px solid #d0c8b8; color:#8b7e6a; }
-  .toolbar button.save { background:#6b8e7b; color:#fff; border-color:transparent; display:none; }
-  .toolbar button.cancel { display:none; }
+      --page-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 32px rgba(0,0,0,.10);
+      --page-deco-line: linear-gradient(90deg, transparent, #e0d8cc, transparent);
 
-  /* ===== A4 页面主体 ===== */
-  .page {
-    width:210mm; 
-    background:#fff;
-    margin:0 auto;
-    box-shadow:
-      0 1px 3px rgba(0,0,0,.06),
-      0 8px 32px rgba(0,0,0,.10);
-    border-radius:2px;
-    overflow:hidden;
-    /* 页面内纹理 */
-    background-image:
-      radial-gradient(ellipse at 15% 5%, rgba(252,228,236,0.22) 0%, transparent 55%),
-      radial-gradient(ellipse at 85% 92%, rgba(227,242,253,0.22) 0%, transparent 55%),
-      radial-gradient(ellipse at 50% 50%, rgba(232,245,233,0.12) 0%, transparent 70%);
-    background-attachment:local;
-    position:relative;
-  }
+      --page-texture-1: radial-gradient(ellipse at 15% 5%, rgba(252,228,236,0.22) 0%, transparent 55%);
+      --page-texture-2: radial-gradient(ellipse at 85% 92%, rgba(227,242,253,0.22) 0%, transparent 55%);
+      --page-texture-3: radial-gradient(ellipse at 50% 50%, rgba(232,245,233,0.12) 0%, transparent 70%);
 
-  /* ===== 页面上方精致的装饰细线 ===== */
-  .page::before {
-    content:'';
-    position:absolute; top:0; left:12mm; right:12mm; height:1px;
-    background:linear-gradient(90deg, transparent, #e0d8cc, transparent);
-    z-index:5; opacity:0.6;
-  }
+      --header-gradient: linear-gradient(135deg, #fce4ec, #e3f2fd);
+      --header-diamond-alpha: 0.18;
+      --header-text-dark: #3d3d3d;
+      --header-text-mid: #6b6b6b;
+      --header-underline-color: #fff;
+      --header-underline-shadow: 0 2px 0 rgba(255,255,255,0.4);
 
-  /* ===== 头部：渐变背景 + 几何线条纹理 ===== */
-  .header {
-    background:
-      /* 精细菱格纹理叠加 */
-      repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.18) 14px, rgba(255,255,255,0.18) 15px),
-      repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(255,255,255,0.18) 14px, rgba(255,255,255,0.18) 15px),
-      /* 底色渐变 */
-      linear-gradient(135deg, #fce4ec, #e3f2fd);
-    padding:14px 20px 12px 20px;
-    display:flex; align-items:center; gap:16px;
-    position:relative;
-  }
-  /* 头部底部：简约白色双线装饰 */
-  .header::after {
-    content:'';
-    position:absolute; bottom:0; left:20px; right:20px;
-    height:1px;
-    background:#fff;
-    box-shadow:0 2px 0 rgba(255,255,255,0.4);
-    opacity:0.9;
-  }
-  .header .photo { width:60px; height:80px; border-radius:4px; object-fit:cover; flex-shrink:0; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.08); }
-  .name { font-size:1.4rem; font-weight:700; color:#3d3d3d; letter-spacing:1px; }
-  .title { font-size:.78rem; color:#6b6b6b; margin-top:2px; }
-  .tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
-  .tag {
-    background:rgba(252,228,236,0.35);
-    padding:2px 10px; border-radius:12px; font-size:.62rem;
-    color:#6b6b6b; border:1px solid rgba(248,213,224,0.4);
-  }
+      --photo-border: 2px solid #fff;
+      --photo-shadow: 0 2px 8px rgba(0,0,0,.08);
 
-  /* ===== 分区容器：用细线分割代替色块 ===== */
-  .section { padding:6px 18px; background:#fff; position:relative; }
-  .section.edu { padding-bottom:0; background:linear-gradient(180deg, rgba(252,228,236,0.12) 0%, rgba(227,242,253,0.08) 40%, #fff 100%); }
-  .section.intern { padding-bottom:0; }
-  /* 分区之间：白色简约线条分隔 */
-  .section + .section { border-top:1.5px solid #fff; box-shadow:0 -1px 3px rgba(0,0,0,0.04); }
+      --tag-bg: rgba(252,228,236,0.35);
+      --tag-border: rgba(248,213,224,0.4);
+      --tag-text: #6b6b6b;
 
-  /* ===== 分区标题：满幅渐变背景（经典配色）===== */
-  .section h2 {
-    font-size:.82rem; margin:-6px -16px 3px -16px; padding:6px 16px;
-    display:block; color:#3d3d3d; font-weight:600;
-  }
-  .section h2        { background:linear-gradient(135deg,#fce4ec,#e3f2fd); }
+      --section-bg: #fff;
+      --section-sep-border: 1.5px solid #fff;
+      --section-sep-shadow: 0 -1px 3px rgba(0,0,0,0.04);
 
-  /* ===== 教育背景 ===== */
-  .edu-row { margin-bottom:2px; }
-  .edu-head { font-size:.74rem; line-height:1.5; }
-  .edu-head em { font-size:.64rem; color:#999; margin-left:4px; }
-  .edu-detail {
-    font-size:.72rem; color:#6b6b6b; padding:2px 0 2px 10px;
-    border-left:2px solid #e0d8cc; margin-top:2px; line-height:1.5;
-  }
+      --h2-gradient: linear-gradient(135deg, #fce4ec, #e3f2fd);
+      --h2-text: #3d3d3d;
 
-  /* ===== 经历条目 ===== */
-  .exp-item { margin-bottom:2px; }
-  .exp-bar {
-    display:flex; align-items:center; gap:8px;
-    padding:4px 10px; border-radius:3px;
-    background:#fafaf9; cursor:pointer;
-    border-left:3px solid transparent;
-    transition:background .15s;
-  }
-  .exp-bar:hover { background:#f5f2ed; }
-  /* 各条目左边框颜色轮换 */
-  .exp-item:nth-child(4n+1) .exp-bar { border-left-color:#f8d5e0; }
-  .exp-item:nth-child(4n+2) .exp-bar { border-left-color:#fef3c7; }
-  .exp-item:nth-child(4n+3) .exp-bar { border-left-color:#d4edda; }
-  .exp-item:nth-child(4n+4) .exp-bar { border-left-color:#bbdefb; }
+      --edu-gradient: linear-gradient(180deg, rgba(252,228,236,0.12) 0%, rgba(227,242,253,0.08) 40%, #fff 100%);
 
-  .exp-dot { width:5px; height:5px; border-radius:50%; background:#c5bfb2; flex-shrink:0; }
-  .exp-title { font-size:.72rem; font-weight:600; color:#3d3d3d; flex-shrink:0; }
-  .exp-sub { font-size:.62rem; color:#999; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .exp-arrow { font-size:.5rem; color:#ccc; flex-shrink:0; transition:transform .2s; }
-  .exp-item.open .exp-arrow { transform:rotate(90deg); }
+      --bl-1: #f8d5e0;
+      --bl-2: #fef3c7;
+      --bl-3: #d4edda;
+      --bl-4: #bbdefb;
 
-  .exp-brief { font-size:.66rem; color:#6b6b6b; padding:3px 6px 0 12px; line-height:1.45; text-align:left; }
-  .exp-item.open .exp-brief { display:none; }
+      --exp-bar-bg: #fafaf9;
+      --exp-bar-hover: #f5f2ed;
+      --exp-dot: #c5bfb2;
 
-  .exp-full { display:none; }
-  .exp-item.open .exp-full { display:block; }
+      --kw-bg: rgba(252,228,236,0.25);
+      --kw-color: #9B8EA9;
 
-  .exp-detail { font-size:.66rem; color:#6b6b6b; padding:3px 6px 0 12px; line-height:1.45; text-align:left; }
-  .back-btn {
-    background:#f5f2ed; border:1px solid #e5ded0; padding:4px 12px;
-    border-radius:4px; cursor:pointer; font-size:.62rem; margin:4px 0 6px 0;
-    font-family:inherit; color:#6b6b6b; transition:background .15s;
-  }
-  .back-btn:hover { background:#ede6d8; }
+      --skills-gradient: linear-gradient(135deg, #E0F7FA, #F8BBD0);
+      --skills-overlay: #FFFFFF;
 
-  /* 关键词行 */
-  .kw-line {
-    font-size:.6rem; color:#9B8EA9; font-weight:bold; margin-top:6px;
-    padding:3px 8px; background:rgba(252,228,236,0.25);
-    border-radius:3px; display:block;
-  }
+      --text-dark: #3d3d3d;
+      --text-mid: #6b6b6b;
+      --text-light: #999;
 
-	  /* ===== 技能与评价：粉蓝渐变 + 白色蒙版 ===== */
-	  .section.skills {
-	    background: linear-gradient(135deg, #E0F7FA, #F8BBD0);
-	    padding:8px 26px 14px 26px;
-	    position: relative;
-	  }
-	  /* 白色蒙版层：左右距边缘3mm，70%透明度 */
-	  .section.skills::before {
-	    content: '';
-	    position: absolute;
-	    top: 8mm; bottom: 6px;
-	    left: 3mm; right: 3mm;
-	    background: #FFFFFF;
-	    opacity: 0.7;
-	    z-index: 0;
-	    border-radius: 3px;
-	  }
-	  /* 标题融入渐变背景 */
-	  .section.skills h2 {
-	    background: transparent;
-	    position: relative; z-index: 1;
-	  }
+      --accent-line: #e0d8cc;
+      --footer-border: #e0d8cc;
+      --footer-text: #ccc;
 
-	  .skill-block { margin-bottom:4px; position: relative; z-index: 1; }
-	  .skill-block h4 { margin-bottom:1px;
-	    font-size:.68rem; color:#333;
-	    padding-left:8px; font-weight:600;
-	    background: none;
-	  }
-	  .skill-text {
-	    font-size:.66rem; color:#333; line-height:1.3;
-	    padding-left:8px; text-align:left;
-	  }
-  /* ===== 页脚 ===== */
-  .footer { padding:6px;
-    text-align:center; font-size:.6rem; color:#ccc;
-    border-top:1px dotted #e0d8cc;
-    margin-top:2px;
-  }
+      --toolbar-btn-bg: #fff;
+      --toolbar-btn-border: #ddd;
+      --toolbar-btn-hover-border: #bbb;
 
-  /* ===== 编辑模式 ===== */
-  body.editing [contenteditable] { background:rgba(255,255,200,.3); outline:1px dashed #ccc; cursor:text; }
-  body.editing [contenteditable]:focus { outline:2px solid #a18cd1; background:rgba(255,255,230,.5); }
-  body.editing .toolbar .save,.body.editing .toolbar .cancel { display:inline-block; }
-  body.editing .toolbar .unlock { display:none; }
+      --unlock-bg: #faf8f5;
+      --unlock-border: #d0c8b8;
+      --unlock-text: #8b7e6a;
 
-  /* ===== 密码弹窗 ===== */
-  .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:99; justify-content:center; align-items:center; }
-  .modal.show { display:flex; }
-  .modal-box {
-    background:#fff; padding:28px 36px; border-radius:12px;
-    text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.15);
-  }
-  .modal-box input {
-    padding:8px 14px; border:1px solid #ddd; border-radius:6px;
-    font-size:14px; width:200px; margin:10px 0;
-  }
-  .modal-box button {
-    padding:8px 20px; border-radius:6px; border:none;
-    cursor:pointer; font-size:13px; transition:opacity .15s;
-  }
-  .modal-box button:hover { opacity:.85; }
-  .modal-box .confirm { background:linear-gradient(135deg,#fce4ec,#f8d5e0); color:#3d3d3d; }
-  .modal-box .close { background:#eee; margin-left:8px; }
+      --save-bg: #6b8e7b;
+      --save-text: #fff;
 
-  /* ===== 打印样式 ===== */
-  @media print {
-    body { background:#fff; padding:0; }
-    .toolbar, .modal { display:none !important; }
-    .page { box-shadow:none; margin:0; border-radius:0; }
-  }
+      --back-btn-bg: #f5f2ed;
+      --back-btn-border: #e5ded0;
+      --back-btn-hover: #ede6d8;
+
+      --modal-confirm: linear-gradient(135deg, #fce4ec, #f8d5e0);
+
+      --theme-active-bg: #fce4ec;
+      --theme-active-text: #3d3d3d;
+      --theme-active-border: #f8d5e0;
+    }
+
+    /* ========== 🏛️ 国企/央企主题 ========== */
+    body.gov {
+      --page-bg: #f4f5f7;
+      --page-bg-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px), radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+      --page-bg-size: 100% 4px, 16px 16px;
+
+      --page-shadow: 0 1px 3px rgba(0,0,0,.08), 0 8px 32px rgba(0,0,0,.12);
+      --page-deco-line: linear-gradient(90deg, transparent, #c0c8d4, transparent);
+
+      --page-texture-1: radial-gradient(ellipse at 15% 5%, rgba(26,53,80,0.05) 0%, transparent 55%);
+      --page-texture-2: radial-gradient(ellipse at 85% 92%, rgba(45,90,128,0.05) 0%, transparent 55%);
+      --page-texture-3: radial-gradient(ellipse at 50% 50%, rgba(61,112,153,0.03) 0%, transparent 70%);
+
+      --header-gradient: linear-gradient(135deg, #1a3550, #2d5a80);
+      --header-diamond-alpha: 0.06;
+      --header-text-dark: #ffffff;
+      --header-text-mid: rgba(255,255,255,0.85);
+      --header-underline-color: rgba(255,255,255,0.25);
+      --header-underline-shadow: 0 2px 0 rgba(255,255,255,0.12);
+
+      --photo-border: 2px solid #1a3550;
+      --photo-shadow: 0 2px 8px rgba(0,0,0,.15);
+
+      --tag-bg: #e8ecf1;
+      --tag-border: #d0d5dd;
+      --tag-text: #4a5568;
+
+      --section-bg: #fff;
+      --section-sep-border: 1.5px solid #e8ecf1;
+      --section-sep-shadow: 0 -1px 3px rgba(0,0,0,0.03);
+
+      --h2-gradient: #1a3550;
+      --h2-text: #ffffff;
+
+      --edu-gradient: linear-gradient(180deg, rgba(26,53,80,0.05) 0%, rgba(45,90,128,0.03) 40%, #fff 100%);
+
+      --bl-1: #1a3550;
+      --bl-2: #2d5a80;
+      --bl-3: #3d7099;
+      --bl-4: #4a85b0;
+
+      --exp-bar-bg: #f8f9fb;
+      --exp-bar-hover: #edf0f5;
+      --exp-dot: #8a94a6;
+
+      --kw-bg: #edf0f5;
+      --kw-color: #2d5a80;
+
+      --skills-gradient: linear-gradient(135deg, #e8ecf1, #f0f2f5);
+      --skills-overlay: #FFFFFF;
+
+      --text-dark: #1a202c;
+      --text-mid: #4a5568;
+      --text-light: #8a94a6;
+
+      --accent-line: #c0c8d4;
+      --footer-border: #c0c8d4;
+      --footer-text: #b0b8c4;
+
+      --toolbar-btn-bg: #fff;
+      --toolbar-btn-border: #d0d5dd;
+      --toolbar-btn-hover-border: #8a94a6;
+
+      --unlock-bg: #f4f5f7;
+      --unlock-border: #c0c8d4;
+      --unlock-text: #4a5568;
+
+      --save-bg: #2d5a80;
+      --save-text: #fff;
+
+      --back-btn-bg: #edf0f5;
+      --back-btn-border: #d0d5dd;
+      --back-btn-hover: #dde2ea;
+
+      --modal-confirm: linear-gradient(135deg, #1a3550, #2d5a80);
+
+      --theme-active-bg: #1a3550;
+      --theme-active-text: #ffffff;
+      --theme-active-border: #2d5a80;
+    }
+
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    /* ===== 整体背景 ===== */
+    body {
+      font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+      background: var(--page-bg);
+      background-image: var(--page-bg-image);
+      background-size: var(--page-bg-size);
+      padding:14px;
+      transition: background .4s;
+    }
+
+    /* ===== 工具栏 ===== */
+    .toolbar { width:210mm; margin:0 auto 8px; display:flex; gap:6px; justify-content:flex-end; align-items:center; flex-wrap:wrap; }
+    .toolbar button {
+      padding:6px 14px; border-radius:20px; border:1px solid var(--toolbar-btn-border);
+      cursor:pointer; font-size:12px; font-family:inherit;
+      background: var(--toolbar-btn-bg); color: var(--text-mid); transition:all .2s;
+      white-space:nowrap;
+    }
+    .toolbar button:hover { border-color: var(--toolbar-btn-hover-border); color: var(--text-dark); }
+
+    /* 主题切换按钮 */
+    .theme-btn { opacity:0.65; }
+    .theme-btn.active {
+      opacity:1;
+      background: var(--theme-active-bg) !important;
+      color: var(--theme-active-text) !important;
+      border-color: var(--theme-active-border) !important;
+      font-weight:600;
+    }
+
+    .toolbar button.unlock { background: var(--unlock-bg); border:1px solid var(--unlock-border); color: var(--unlock-text); }
+    .toolbar button.save { background: var(--save-bg); color: var(--save-text); border-color:transparent; display:none; }
+    .toolbar button.cancel { display:none; }
+
+    /* ===== A4 页面主体 ===== */
+    .page {
+      width:210mm; min-height:297mm;
+      background: #fff;
+      margin:0 auto;
+      box-shadow: var(--page-shadow);
+      border-radius:2px;
+      overflow:hidden;
+      background-image: var(--page-texture-1), var(--page-texture-2), var(--page-texture-3);
+      background-attachment:local;
+      position:relative;
+      transition: box-shadow .4s;
+    }
+
+    /* ===== 页面上方装饰细线 ===== */
+    .page::before {
+      content:'';
+      position:absolute; top:0; left:12mm; right:12mm; height:1px;
+      background: var(--page-deco-line);
+      z-index:5; opacity:0.6;
+    }
+
+    /* ===== 头部 ===== */
+    .header {
+      background:
+        repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,var(--header-diamond-alpha)) 14px, rgba(255,255,255,var(--header-diamond-alpha)) 15px),
+        repeating-linear-gradient(-45deg, transparent, transparent 14px, rgba(255,255,255,var(--header-diamond-alpha)) 14px, rgba(255,255,255,var(--header-diamond-alpha)) 15px),
+        var(--header-gradient);
+      padding:14px 20px 12px 20px;
+      display:flex; align-items:center; gap:16px;
+      position:relative;
+      transition: background .4s;
+    }
+    .header::after {
+      content:'';
+      position:absolute; bottom:0; left:20px; right:20px;
+      height:1px;
+      background: var(--header-underline-color);
+      box-shadow: var(--header-underline-shadow);
+      opacity:0.9;
+    }
+    .header .photo { width:60px; height:80px; border-radius:4px; object-fit:cover; flex-shrink:0; border: var(--photo-border); box-shadow: var(--photo-shadow); transition: border .4s, box-shadow .4s; }
+    .name { font-size:1.4rem; font-weight:700; color: var(--header-text-dark); letter-spacing:1px; transition: color .4s; }
+    .title { font-size:.78rem; color: var(--header-text-mid); margin-top:2px; transition: color .4s; }
+    .tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:5px; }
+    .tag {
+      background: var(--tag-bg);
+      padding:2px 10px; border-radius:12px; font-size:.62rem;
+      color: var(--tag-text); border:1px solid var(--tag-border);
+      transition: background .4s, color .4s, border .4s;
+    }
+
+    /* ===== 分区容器 ===== */
+    .section { padding:6px 18px; background: var(--section-bg); position:relative; transition: background .4s; }
+    .section.edu { padding-bottom:0; background: var(--edu-gradient); }
+    .section.intern { padding-bottom:0; }
+    .section + .section { border-top: var(--section-sep-border); box-shadow: var(--section-sep-shadow); }
+
+    /* ===== 分区标题 ===== */
+    .section h2 {
+      font-size:.82rem; margin:-6px -16px 3px -16px; padding:6px 16px;
+      display:block; color: var(--h2-text); font-weight:600;
+      background: var(--h2-gradient);
+      transition: background .4s, color .4s;
+    }
+
+    /* ===== 教育背景 ===== */
+    .edu-row { margin-bottom:2px; }
+    .edu-head { font-size:.74rem; line-height:1.5; }
+    .edu-head em { font-size:.64rem; color: var(--text-light); margin-left:4px; }
+    .edu-detail {
+      font-size:.72rem; color: var(--text-mid); padding:2px 0 2px 10px;
+      border-left:2px solid var(--accent-line); margin-top:2px; line-height:1.5;
+      transition: color .4s, border-color .4s;
+    }
+
+    /* ===== 经历条目 ===== */
+    .exp-item { margin-bottom:2px; }
+    .exp-bar {
+      display:flex; align-items:center; gap:8px;
+      padding:4px 10px; border-radius:3px;
+      background: var(--exp-bar-bg); cursor:pointer;
+      border-left:3px solid transparent;
+      transition:background .15s;
+    }
+    .exp-bar:hover { background: var(--exp-bar-hover); }
+    .exp-item:nth-child(4n+1) .exp-bar { border-left-color: var(--bl-1); }
+    .exp-item:nth-child(4n+2) .exp-bar { border-left-color: var(--bl-2); }
+    .exp-item:nth-child(4n+3) .exp-bar { border-left-color: var(--bl-3); }
+    .exp-item:nth-child(4n+4) .exp-bar { border-left-color: var(--bl-4); }
+
+    .exp-dot { width:5px; height:5px; border-radius:50%; background: var(--exp-dot); flex-shrink:0; transition: background .4s; }
+    .exp-title { font-size:.72rem; font-weight:600; color: var(--text-dark); flex-shrink:0; }
+    .exp-sub { font-size:.62rem; color: var(--text-light); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .exp-arrow { font-size:.5rem; color:#ccc; flex-shrink:0; transition:transform .2s; }
+    .exp-item.open .exp-arrow { transform:rotate(90deg); }
+
+    .exp-brief { font-size:.66rem; color: var(--text-mid); padding:3px 6px 0 12px; line-height:1.45; text-align:left; }
+    .exp-item.open .exp-brief { display:none; }
+
+    .exp-full { display:none; }
+    .exp-item.open .exp-full { display:block; }
+
+    .exp-detail { font-size:.66rem; color: var(--text-mid); padding:3px 6px 0 12px; line-height:1.45; text-align:left; }
+    .back-btn {
+      background: var(--back-btn-bg); border:1px solid var(--back-btn-border); padding:4px 12px;
+      border-radius:4px; cursor:pointer; font-size:.62rem; margin:4px 0 6px 0;
+      font-family:inherit; color: var(--text-mid); transition:background .15s;
+    }
+    .back-btn:hover { background: var(--back-btn-hover); }
+
+    /* 关键词行 */
+    .kw-line {
+      font-size:.6rem; color: var(--kw-color); font-weight:bold; margin-top:6px;
+      padding:3px 8px; background: var(--kw-bg);
+      border-radius:3px; display:block;
+      transition: background .4s, color .4s;
+    }
+
+    /* ===== 技能与评价 ===== */
+    .section.skills {
+      background: var(--skills-gradient);
+      padding:8px 26px 14px 26px;
+      position: relative;
+      transition: background .4s;
+    }
+    .section.skills::before {
+      content: '';
+      position: absolute;
+      top: 8mm; bottom: 6px;
+      left: 3mm; right: 3mm;
+      background: var(--skills-overlay);
+      opacity: 0.7;
+      z-index: 0;
+      border-radius: 3px;
+    }
+    .section.skills h2 {
+      background: transparent;
+      position: relative; z-index: 1;
+    }
+
+    .skill-block { margin-bottom:4px; position: relative; z-index: 1; }
+    .skill-block h4 { margin-bottom:1px;
+      font-size:.68rem; color:#333;
+      padding-left:8px; font-weight:600;
+      background: none;
+    }
+    .skill-text {
+      font-size:.66rem; color:#333; line-height:1.3;
+      padding-left:8px; text-align:left;
+    }
+
+    /* ===== 页脚 ===== */
+    .footer { padding:6px;
+      text-align:center; font-size:.6rem; color: var(--footer-text);
+      border-top:1px dotted var(--footer-border);
+      margin-top:2px;
+      transition: color .4s, border-color .4s;
+    }
+
+    /* ===== 编辑模式 ===== */
+    body.editing [contenteditable] { background:rgba(255,255,200,.3); outline:1px dashed #ccc; cursor:text; }
+    body.editing [contenteditable]:focus { outline:2px solid #a18cd1; background:rgba(255,255,230,.5); }
+    body.editing .toolbar .save, body.editing .toolbar .cancel { display:inline-block; }
+    body.editing .toolbar .unlock, body.editing .toolbar .theme-btn { display:none; }
+
+    /* ===== 密码弹窗 ===== */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:99; justify-content:center; align-items:center; }
+    .modal.show { display:flex; }
+    .modal-box {
+      background:#fff; padding:28px 36px; border-radius:12px;
+      text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.15);
+    }
+    .modal-box input {
+      padding:8px 14px; border:1px solid #ddd; border-radius:6px;
+      font-size:14px; width:200px; margin:10px 0;
+    }
+    .modal-box button {
+      padding:8px 20px; border-radius:6px; border:none;
+      cursor:pointer; font-size:13px; transition:opacity .15s;
+    }
+    .modal-box button:hover { opacity:.85; }
+    .modal-box .confirm { background: var(--modal-confirm); color: var(--h2-text); }
+    .modal-box .close { background:#eee; margin-left:8px; }
+
+    /* ===== 打印样式 ===== */
+    @media print {
+      body { background:#fff; padding:0; }
+      .toolbar, .modal { display:none !important; }
+      .page { box-shadow:none; margin:0; border-radius:0; }
+    }
+
 </style>
 </head>
 <body>
 
 <div class="toolbar">
+  <button class="theme-btn active" data-theme="internet" onclick="setTheme('internet')" title="互联网/AI行业风格">🎨 互联网</button>
+  <button class="theme-btn" data-theme="gov" onclick="setTheme('gov')" title="国企/央企稳重风格">🏛️ 国企</button>
+  <span style="flex:1;"></span>
   <button class="unlock" onclick="showUnlock()">🔓 编辑模式</button>
   <button class="save" onclick="saveAll()">💾 保存修改</button>
   <button class="cancel" onclick="cancelEdit()">✕ 退出编辑</button>
-  <button onclick="exportPDF()" style="margin-left:auto;">📄 导出PDF</button>
+  <button onclick="exportPDF()">📄 导出PDF</button>
 </div>
 
 <div class="modal" id="pwModal">
@@ -341,6 +514,27 @@
 <script>
 var PASSWORD = 'Lrc020930.';
 var currentExpanded = null;
+
+// ===== 主题切换 =====
+var THEME_KEY = 'resume-theme';
+function setTheme(theme) {
+  if (theme === 'gov') {
+    document.body.classList.add('gov');
+  } else {
+    document.body.classList.remove('gov');
+  }
+  localStorage.setItem(THEME_KEY, theme);
+  document.querySelectorAll('.theme-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.theme === theme);
+  });
+}
+// 页面加载时恢复主题
+(function() {
+  var saved = localStorage.getItem(THEME_KEY) || 'internet';
+  setTheme(saved);
+})();
+
+// ===== 经历展开/折叠 =====
 function expandExp(id) {
   if (currentExpanded) document.getElementById(currentExpanded).classList.remove('open');
   var el = document.getElementById(id);
@@ -351,12 +545,14 @@ function collapseExp(id) {
   document.getElementById(id).classList.remove('open');
   if (currentExpanded === id) currentExpanded = null;
 }
+
+// ===== 编辑模式 =====
 function showUnlock() { document.getElementById('pwModal').classList.add('show'); document.getElementById('pwInput').focus(); }
 function hideModal() { document.getElementById('pwModal').classList.remove('show'); }
 function doUnlock() {
   if (document.getElementById('pwInput').value === PASSWORD) {
     document.body.classList.add('editing');
-    document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'true');
+    document.querySelectorAll('[contenteditable]').forEach(function(el) { el.contentEditable = 'true'; });
     document.querySelector('.save').style.display = 'inline-block';
     document.querySelector('.cancel').style.display = 'inline-block';
     hideModal();
@@ -368,7 +564,7 @@ function cancelEdit() {
 function saveAll() {
   var html = document.documentElement.outerHTML;
   document.body.classList.remove('editing');
-  document.querySelectorAll('[contenteditable]').forEach(el => el.contentEditable = 'false');
+  document.querySelectorAll('[contenteditable]').forEach(function(el) { el.contentEditable = 'false'; });
   document.querySelector('.save').style.display = 'none';
   document.querySelector('.cancel').style.display = 'none';
   var blob = new Blob(['<!DOCTYPE html>\n' + html], {type:'text/html'});
@@ -379,6 +575,8 @@ function saveAll() {
   alert('已下载修改后的简历！把文件发给我，我帮你更新到网站上。');
 }
 document.getElementById('pwInput').addEventListener('keydown', function(e) { if(e.key==='Enter') doUnlock(); });
+
+// ===== 导出PDF =====
 function exportPDF() {
   var el = document.getElementById('resume');
   html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
