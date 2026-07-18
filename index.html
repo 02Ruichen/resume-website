@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<!-- build:1784371769.3241012 -->
+<!-- build:1784373975.0262463 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰的简历</title>
 <script src="vendor/html2canvas.min.js"></script>
@@ -696,8 +696,8 @@ if (pwInput) pwInput.addEventListener('keydown', function(e) { if(e.key==='Enter
 
 // ===== 导出PDF =====
 function exportPDF() {
-  if (typeof html2canvas === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
-  if (typeof jspdf === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
+  if (typeof html2canvas === 'undefined') { alert('html2canvas组件未加载，请刷新重试'); return; }
+  if (typeof jspdf === 'undefined') { alert('jsPDF组件未加载，请刷新重试'); return; }
   if (!activePage) { alert('导出失败：页面未找到'); return; }
   try {
     html2canvas(activePage, { scale: 2, useCORS: true, logging: false }).then(function(canvas) {
@@ -705,7 +705,10 @@ function exportPDF() {
       var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
       var pageWidth = pdf.internal.pageSize.getWidth();
       var pageHeight = pdf.internal.pageSize.getHeight();
-      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+      // 根据 canvas 实际宽高比计算放置高度，防止强制拉伸导致字体变形
+      var renderHeight = pageWidth * (canvas.height / canvas.width);
+      if (renderHeight > pageHeight) { renderHeight = pageHeight; }
+      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, renderHeight);
       var now = new Date();
       var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
       var isGov = document.body.classList.contains('gov');
