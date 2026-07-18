@@ -1,4 +1,4 @@
-<!-- build:1784370904.1634839 -->
+<!-- build:1784371056.2766354 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -519,7 +519,7 @@
   </div>
   <div class="footer">© 2025 刘芮辰 | 感谢阅读</div>
 </div>
-<div class="page page-gov" id="resume-gov">
+<div class="page page-gov" id="resume-gov" style="display:none">
   <div class="header">
     <img class="photo" src="photo.jpg" alt="照片">
     <div>
@@ -626,7 +626,8 @@ function setTheme(theme) {
   if (target !== activePage) {
     // 把当前页面从 DOM 移除
     if (activePage && activePage.parentNode) activePage.remove();
-    // 插入目标页面（放在 script 标签之前）
+    // 确保目标页面可见，再插入到 script 标签之前
+    target.style.display = 'block';
     document.body.insertBefore(target, document.querySelector('script'));
     activePage = target;
     currentExpanded = null;  // 重置展开状态
