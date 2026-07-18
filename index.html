@@ -2,11 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<!-- build:1784374898.4500656 -->
+<!-- build:1784377056.3169804 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰的简历</title>
-<script src="vendor/html2canvas.min.js"></script>
-<script src="vendor/jspdf.umd.min.js"></script>
 <style>
 
     /* ========== 🎨 互联网/AI 主题（默认） ========== */
@@ -404,12 +402,22 @@
     .modal-box .confirm { background: var(--modal-confirm); color: var(--h2-text); }
     .modal-box .close { background:#eee; margin-left:8px; }
 
-    /* ===== 打印样式 ===== */
+    /* ===== 打印样式（浏览器原生打印 → 矢量文字 PDF） ===== */
     @media print {
-      body { background:#fff; padding:0; }
-      .toolbar, .modal { display:none !important; }
-      .page { box-shadow:none; margin:0; border-radius:0; }
-    }
+      @page {{ size: A4; margin: 0; }}
+      html, body {{
+        background: #fff !important;
+        background-image: none !important;
+        padding: 0; margin: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }}
+      .toolbar, .modal {{ display: none !important; }}
+      .page {{
+        box-shadow: none; margin: 0; border-radius: 0;
+        width: 210mm; min-height: 297mm;
+      }}
+    }}
 
 </style>
 </head>
@@ -694,37 +702,10 @@ function saveAll() {
 var pwInput = document.getElementById('pwInput');
 if (pwInput) pwInput.addEventListener('keydown', function(e) { if(e.key==='Enter') doUnlock(); });
 
-// ===== 导出PDF =====
-// 核心思路：网页渲染出来多大就导出多大，不做任何拉伸/适配/锁定
-	function exportPDF() {
-	  if (typeof html2canvas === 'undefined') { alert('html2canvas组件未加载，请刷新重试'); return; }
-	  if (typeof jspdf === 'undefined') { alert('jsPDF组件未加载，请刷新重试'); return; }
-	  if (!activePage) { alert('导出失败：页面未找到'); return; }
-	  try {
-	    // scale:4 保证文字清晰（等效 ~384 DPI）
-	    html2canvas(activePage, { scale: 4, useCORS: true, logging: false }).then(function(canvas) {
-	      var imgData = canvas.toDataURL('image/jpeg', 0.92);
-	      // .page div 的 CSS width = 210mm，canvas 宽度像素就代表 210mm
-	      // 按此比例算出图片的真实 mm 高度，不假设一定是 A4
-	      var imgWidthMm = 210;
-	      var imgHeightMm = imgWidthMm * (canvas.height / canvas.width);
-	      // 创建与图片等大的 PDF 页面，1:1 原尺寸导出，零拉伸零变形
-	      var pdf = new jspdf.jsPDF('p', 'mm', [imgWidthMm, imgHeightMm]);
-	      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidthMm, imgHeightMm);
-	      var now = new Date();
-	      var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
-	      var isGov = document.body.classList.contains('gov');
-	      var verLabel = isGov ? '政企版' : '互联网';
-	      pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
-	    }).catch(function(err) {
-	      console.error('PDF导出失败:', err);
-	      alert('导出失败：' + (err.message || '未知错误'));
-	    });
-	  } catch(e) {
-	    console.error('PDF导出异常:', e);
-	    alert('导出失败：' + (e.message || '未知错误'));
-	  }
-	}
-	</script>
+// ===== 导出PDF（浏览器原生打印 → 矢量文字，与 Word 导出效果一致） =====
+		function exportPDF() {
+		  window.print();
+		}
+		</script>
 	</body>
 	</html>
