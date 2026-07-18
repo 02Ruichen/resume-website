@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<!-- build:1784374332.6920652 -->
+<!-- build:1784374898.4500656 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰的简历</title>
 <script src="vendor/html2canvas.min.js"></script>
@@ -695,49 +695,36 @@ var pwInput = document.getElementById('pwInput');
 if (pwInput) pwInput.addEventListener('keydown', function(e) { if(e.key==='Enter') doUnlock(); });
 
 // ===== 导出PDF =====
-function exportPDF() {
-  if (typeof html2canvas === 'undefined') { alert('html2canvas组件未加载，请刷新重试'); return; }
-  if (typeof jspdf === 'undefined') { alert('jsPDF组件未加载，请刷新重试'); return; }
-  if (!activePage) { alert('导出失败：页面未找到'); return; }
-  try {
-    // 导出前锁定页面为精确 A4 高度，保证 canvas 与 PDF 完全同比例，消除拉伸
-    var origHeight = activePage.style.height;
-    var origMinHeight = activePage.style.minHeight;
-    var origOverflow = activePage.style.overflow;
-    activePage.style.minHeight = '297mm';
-    activePage.style.height = '297mm';
-    activePage.style.overflow = 'hidden';
-    // scale:4 → 等效 ~384 DPI，清晰度对标打印标准
-    html2canvas(activePage, { scale: 4, useCORS: true, logging: false }).then(function(canvas) {
-      // 恢复页面原始样式
-      activePage.style.height = origHeight;
-      activePage.style.minHeight = origMinHeight;
-      activePage.style.overflow = origOverflow;
-      // JPEG 替代 PNG：scale:4 下 PNG 体积过大，JPEG 0.92 质量几乎无差
-      var imgData = canvas.toDataURL('image/jpeg', 0.92);
-      var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-      var pageWidth = pdf.internal.pageSize.getWidth();
-      var pageHeight = pdf.internal.pageSize.getHeight();
-      // canvas 已锁定为精确 A4 比例，直接填满 PDF 页面，零失真
-      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight);
-      var now = new Date();
-      var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
-      var isGov = document.body.classList.contains('gov');
-      var verLabel = isGov ? '政企版' : '互联网';
-      pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
-    }).catch(function(err) {
-      // 出错时也要恢复样式，避免页面显示异常
-      activePage.style.height = origHeight;
-      activePage.style.minHeight = origMinHeight;
-      activePage.style.overflow = origOverflow;
-      console.error('PDF导出失败:', err);
-      alert('导出失败：' + (err.message || '未知错误'));
-    });
-  } catch(e) {
-    console.error('PDF导出异常:', e);
-    alert('导出失败：' + (e.message || '未知错误'));
-  }
-}
-</script>
-</body>
-</html>
+// 核心思路：网页渲染出来多大就导出多大，不做任何拉伸/适配/锁定
+	function exportPDF() {
+	  if (typeof html2canvas === 'undefined') { alert('html2canvas组件未加载，请刷新重试'); return; }
+	  if (typeof jspdf === 'undefined') { alert('jsPDF组件未加载，请刷新重试'); return; }
+	  if (!activePage) { alert('导出失败：页面未找到'); return; }
+	  try {
+	    // scale:4 保证文字清晰（等效 ~384 DPI）
+	    html2canvas(activePage, { scale: 4, useCORS: true, logging: false }).then(function(canvas) {
+	      var imgData = canvas.toDataURL('image/jpeg', 0.92);
+	      // .page div 的 CSS width = 210mm，canvas 宽度像素就代表 210mm
+	      // 按此比例算出图片的真实 mm 高度，不假设一定是 A4
+	      var imgWidthMm = 210;
+	      var imgHeightMm = imgWidthMm * (canvas.height / canvas.width);
+	      // 创建与图片等大的 PDF 页面，1:1 原尺寸导出，零拉伸零变形
+	      var pdf = new jspdf.jsPDF('p', 'mm', [imgWidthMm, imgHeightMm]);
+	      pdf.addImage(imgData, 'JPEG', 0, 0, imgWidthMm, imgHeightMm);
+	      var now = new Date();
+	      var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+	      var isGov = document.body.classList.contains('gov');
+	      var verLabel = isGov ? '政企版' : '互联网';
+	      pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
+	    }).catch(function(err) {
+	      console.error('PDF导出失败:', err);
+	      alert('导出失败：' + (err.message || '未知错误'));
+	    });
+	  } catch(e) {
+	    console.error('PDF导出异常:', e);
+	    alert('导出失败：' + (e.message || '未知错误'));
+	  }
+	}
+	</script>
+	</body>
+	</html>
