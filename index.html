@@ -1,4 +1,4 @@
-<!-- build:1784370465.1947412 -->
+<!-- build:1784370904.1634839 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -191,12 +191,6 @@
       padding:14px;
       transition: background .4s;
     }
-
-    /* ===== 双版本页面可见性控制 ===== */
-    .page-internet { display: block; }
-    .page-gov { display: none; }
-    body.gov .page-internet { display: none; }
-    body.gov .page-gov { display: block; }
 
     /* ===== 工具栏 ===== */
     .toolbar { width:210mm; margin:0 auto 8px; display:flex; gap:6px; justify-content:flex-end; align-items:center; flex-wrap:wrap; }
@@ -413,11 +407,6 @@
       body { background:#fff; padding:0; }
       .toolbar, .modal { display:none !important; }
       .page { box-shadow:none; margin:0; border-radius:0; }
-      /* 打印时显示当前选中的版本 */
-      body.gov .page-internet { display: none !important; }
-      body.gov .page-gov { display: block !important; }
-      body:not(.gov) .page-internet { display: block !important; }
-      body:not(.gov) .page-gov { display: none !important; }
     }
 
 </style>
@@ -623,9 +612,25 @@
 var PASSWORD = 'Lrc020930.';
 var currentExpanded = null;
 
-// ===== 主题切换（CSS变量 + 页面可见性） =====
+// ===== DOM 管理：只有一个 page 留在文档里 =====
+var pageInternet = document.getElementById('resume-internet');
+var pageGov = document.getElementById('resume-gov');
+var activePage = pageInternet;  // 当前显示的那个
+// 把 gov 页面从 DOM 里移走（缓存起来，切换时再用）
+if (pageGov) pageGov.remove();
+
+// ===== 主题切换（CSS变量 + 替换页面DOM） =====
 var THEME_KEY = 'resume-theme';
 function setTheme(theme) {
+  var target = (theme === 'gov') ? pageGov : pageInternet;
+  if (target !== activePage) {
+    // 把当前页面从 DOM 移除
+    if (activePage && activePage.parentNode) activePage.remove();
+    // 插入目标页面（放在 script 标签之前）
+    document.body.insertBefore(target, document.querySelector('script'));
+    activePage = target;
+    currentExpanded = null;  // 重置展开状态
+  }
   if (theme === 'gov') {
     document.body.classList.add('gov');
   } else {
@@ -686,10 +691,23 @@ function saveAll() {
 var pwInput = document.getElementById('pwInput');
 if (pwInput) pwInput.addEventListener('keydown', function(e) { if(e.key==='Enter') doUnlock(); });
 
-// ===== 导出PDF（导出当前可见版本） =====
+// ===== 导出PDF =====
 function exportPDF() {
-  // 使用浏览器原生打印功能导出PDF，兼容性最好
-  window.print();
+  if (typeof html2canvas === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
+  if (typeof jspdf === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
+  if (!activePage) { alert('导出失败：页面未找到'); return; }
+  html2canvas(activePage, { scale: 2, useCORS: true }).then(function(canvas) {
+    var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
+    var now = new Date();
+    var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+    var isGov = document.body.classList.contains('gov');
+    var verLabel = isGov ? '政企版' : '互联网';
+    pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
+  }).catch(function(err) {
+    console.error('PDF导出失败:', err);
+    alert('导出失败，请重试');
+  });
 }
 </script>
 </body>
