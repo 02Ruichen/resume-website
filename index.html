@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<!-- build:1784373975.0262463 -->
+<!-- build:1784374332.6920652 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰的简历</title>
 <script src="vendor/html2canvas.min.js"></script>
@@ -700,21 +700,36 @@ function exportPDF() {
   if (typeof jspdf === 'undefined') { alert('jsPDF组件未加载，请刷新重试'); return; }
   if (!activePage) { alert('导出失败：页面未找到'); return; }
   try {
-    html2canvas(activePage, { scale: 2, useCORS: true, logging: false }).then(function(canvas) {
-      var imgData = canvas.toDataURL('image/png');
+    // 导出前锁定页面为精确 A4 高度，保证 canvas 与 PDF 完全同比例，消除拉伸
+    var origHeight = activePage.style.height;
+    var origMinHeight = activePage.style.minHeight;
+    var origOverflow = activePage.style.overflow;
+    activePage.style.minHeight = '297mm';
+    activePage.style.height = '297mm';
+    activePage.style.overflow = 'hidden';
+    // scale:4 → 等效 ~384 DPI，清晰度对标打印标准
+    html2canvas(activePage, { scale: 4, useCORS: true, logging: false }).then(function(canvas) {
+      // 恢复页面原始样式
+      activePage.style.height = origHeight;
+      activePage.style.minHeight = origMinHeight;
+      activePage.style.overflow = origOverflow;
+      // JPEG 替代 PNG：scale:4 下 PNG 体积过大，JPEG 0.92 质量几乎无差
+      var imgData = canvas.toDataURL('image/jpeg', 0.92);
       var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
       var pageWidth = pdf.internal.pageSize.getWidth();
       var pageHeight = pdf.internal.pageSize.getHeight();
-      // 根据 canvas 实际宽高比计算放置高度，防止强制拉伸导致字体变形
-      var renderHeight = pageWidth * (canvas.height / canvas.width);
-      if (renderHeight > pageHeight) { renderHeight = pageHeight; }
-      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, renderHeight);
+      // canvas 已锁定为精确 A4 比例，直接填满 PDF 页面，零失真
+      pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight);
       var now = new Date();
       var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
       var isGov = document.body.classList.contains('gov');
       var verLabel = isGov ? '政企版' : '互联网';
       pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
     }).catch(function(err) {
+      // 出错时也要恢复样式，避免页面显示异常
+      activePage.style.height = origHeight;
+      activePage.style.minHeight = origMinHeight;
+      activePage.style.overflow = origOverflow;
       console.error('PDF导出失败:', err);
       alert('导出失败：' + (err.message || '未知错误'));
     });
