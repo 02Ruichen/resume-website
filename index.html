@@ -1,4 +1,4 @@
-<!-- build:1784282874.8692117 -->
+<!-- build:1784363483.4601233 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -686,15 +686,29 @@ document.getElementById('pwInput').addEventListener('keydown', function(e) { if(
 
 // ===== 导出PDF（导出当前可见版本） =====
 function exportPDF() {
-  var el = document.body.classList.contains('gov')
-    ? document.getElementById('resume-gov')
-    : document.getElementById('resume-internet');
+  var isGov = document.body.classList.contains('gov');
+  var el = document.getElementById(isGov ? 'resume-gov' : 'resume-internet');
+  var other = document.getElementById(isGov ? 'resume-internet' : 'resume-gov');
+  if (!el) { alert('导出失败：未找到页面元素'); return; }
+  // 强制显示目标页面、隐藏另一个，确保 html2canvas 能正确捕获
+  var origDisplay = el.style.display;
+  var otherOrig = other ? other.style.display : '';
+  el.style.display = 'block';
+  if (other) other.style.display = 'none';
   html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
+    // 恢复原始样式
+    el.style.display = origDisplay;
+    if (other) other.style.display = otherOrig;
     var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
     var now = new Date();
     var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
     pdf.save(ds + '-刘芮辰.pdf');
+  }).catch(function(err) {
+    el.style.display = origDisplay;
+    if (other) other.style.display = otherOrig;
+    console.error('PDF导出失败:', err);
+    alert('导出失败，请检查网络后重试（需加载CDN脚本）');
   });
 }
 </script>
