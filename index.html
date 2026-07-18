@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<!-- build:1784377056.3169804 -->
+<!-- build:1784377417.3844903 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰的简历</title>
 <style>
@@ -702,10 +702,27 @@ function saveAll() {
 var pwInput = document.getElementById('pwInput');
 if (pwInput) pwInput.addEventListener('keydown', function(e) { if(e.key==='Enter') doUnlock(); });
 
-// ===== 导出PDF（浏览器原生打印 → 矢量文字，与 Word 导出效果一致） =====
+// ===== 导出PDF（h2c scale:8 高清位图 → 等效 ~768 DPI） =====
 		function exportPDF() {
-		  window.print();
+		  if (typeof html2canvas === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
+		  if (typeof jspdf === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
+		  if (!activePage) { alert('导出失败：页面未找到'); return; }
+		  html2canvas(activePage, { scale: 8, useCORS: true, logging: false }).then(function(canvas) {
+		    var imgData = canvas.toDataURL('image/jpeg', 0.95);
+		    var imgWidthMm = 210;
+		    var imgHeightMm = imgWidthMm * (canvas.height / canvas.width);
+		    var pdf = new jspdf.jsPDF('p', 'mm', [imgWidthMm, imgHeightMm]);
+		    pdf.addImage(imgData, 'JPEG', 0, 0, imgWidthMm, imgHeightMm);
+		    var now = new Date();
+		    var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+		    var isGov = document.body.classList.contains('gov');
+		    var verLabel = isGov ? '政企版' : '互联网';
+		    pdf.save(ds + '-' + verLabel + '-' + '刘芮辰.pdf');
+		  }).catch(function(err) {
+		    console.error('PDF导出失败:', err);
+		    alert('导出失败：' + (err.message || '未知错误'));
+		  });
 		}
-		</script>
+				</script>
 	</body>
 	</html>
