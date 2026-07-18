@@ -1,4 +1,4 @@
-<!-- build:1784364083.9353147 -->
+<!-- build:1784364258.6507025 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -703,7 +703,8 @@ function exportPDF() {
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
     var now = new Date();
     var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
-    pdf.save(ds + '-刘芮辰.pdf');
+    var verLabel = isGov ? '政企版' : '互联网';
+    pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
   }).catch(function(err) {
     el.style.display = origDisplay;
     if (other) other.style.display = otherOrig;
