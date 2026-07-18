@@ -1,4 +1,4 @@
-<!-- build:1784369978.8638246 -->
+<!-- build:1784370184.425643 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -688,33 +688,39 @@ if (pwInput) pwInput.addEventListener('keydown', function(e) { if(e.key==='Enter
 // ===== 导出PDF（导出当前可见版本） =====
 function exportPDF() {
   // 检查依赖库是否加载成功
-  if (typeof html2canvas === 'undefined') { alert('导出失败：html2canvas 未加载，请刷新页面后重试'); return; }
-  if (typeof jspdf === 'undefined') { alert('导出失败：jspdf 未加载，请刷新页面后重试'); return; }
+  if (typeof html2canvas === 'undefined') { alert('导出失败：组件未加载，请刷新页面后重试'); return; }
+  if (typeof jspdf === 'undefined') { alert('导出失败：组件未加载，请刷新页面后重试'); return; }
   var isGov = document.body.classList.contains('gov');
   var el = document.getElementById(isGov ? 'resume-gov' : 'resume-internet');
   var other = document.getElementById(isGov ? 'resume-internet' : 'resume-gov');
   if (!el) { alert('导出失败：未找到页面元素'); return; }
-  var origDisplay = el.style.display;
-  var otherOrig = other ? other.style.display : '';
-  el.style.display = 'block';
-  if (other) other.style.display = 'none';
-  // 等待浏览器完成布局再截图
-  requestAnimationFrame(function() {
-    html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
-      el.style.display = origDisplay;
-      if (other) other.style.display = otherOrig;
-      var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
-      var now = new Date();
-      var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
-      var verLabel = isGov ? '政企版' : '互联网';
-      pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
-    }).catch(function(err) {
-      el.style.display = origDisplay;
-      if (other) other.style.display = otherOrig;
-      console.error('PDF导出失败:', err);
-      alert('导出失败：' + (err.message || '未知错误，请重试'));
-    });
+  // 临时从 DOM 中移除另一个页面，截图后再恢复（避免双 page div 干扰 html2canvas）
+  var otherParent = null, otherNext = null;
+  if (other) {
+    otherParent = other.parentNode;
+    otherNext = other.nextSibling;
+    otherParent.removeChild(other);
+  }
+  html2canvas(el, { scale: 2, useCORS: true }).then(function(canvas) {
+    // 恢复被移除的页面
+    if (other && otherParent) {
+      if (otherNext) otherParent.insertBefore(other, otherNext);
+      else otherParent.appendChild(other);
+    }
+    var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
+    var now = new Date();
+    var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+    var verLabel = isGov ? '政企版' : '互联网';
+    pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
+  }).catch(function(err) {
+    // 出错也要恢复
+    if (other && otherParent) {
+      if (otherNext) otherParent.insertBefore(other, otherNext);
+      else otherParent.appendChild(other);
+    }
+    console.error('PDF导出失败:', err);
+    alert('导出失败：' + (err.message || '未知错误，请重试'));
   });
 }
 </script>
