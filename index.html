@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!-- build:1784371469.2793407 -->
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
+<!-- build:1784371769.3241012 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>刘芮辰的简历</title>
 <script src="vendor/html2canvas.min.js"></script>
@@ -182,9 +182,11 @@
 
     * { margin:0; padding:0; box-sizing:border-box; }
 
-    /* ===== 整体背景 ===== */
+    /* ===== 全局字体基准 ===== */
+    html { font-size: 16px; }
     body {
       font-family:"Microsoft YaHei","PingFang SC",sans-serif;
+      font-size: 16px;
       background: var(--page-bg);
       background-image: var(--page-bg-image);
       background-size: var(--page-bg-size);
@@ -697,18 +699,26 @@ function exportPDF() {
   if (typeof html2canvas === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
   if (typeof jspdf === 'undefined') { alert('组件加载中，请刷新后重试'); return; }
   if (!activePage) { alert('导出失败：页面未找到'); return; }
-  html2canvas(activePage, { scale: 2, useCORS: true }).then(function(canvas) {
-    var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
-    var now = new Date();
-    var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
-    var isGov = document.body.classList.contains('gov');
-    var verLabel = isGov ? '政企版' : '互联网';
-    pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
-  }).catch(function(err) {
-    console.error('PDF导出失败:', err);
-    alert('导出失败，请重试');
-  });
+  try {
+    html2canvas(activePage, { scale: 2, useCORS: true, logging: false }).then(function(canvas) {
+      var imgData = canvas.toDataURL('image/png');
+      var pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+      var pageWidth = pdf.internal.pageSize.getWidth();
+      var pageHeight = pdf.internal.pageSize.getHeight();
+      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+      var now = new Date();
+      var ds = String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0');
+      var isGov = document.body.classList.contains('gov');
+      var verLabel = isGov ? '政企版' : '互联网';
+      pdf.save(ds + '-' + verLabel + '-刘芮辰.pdf');
+    }).catch(function(err) {
+      console.error('PDF导出失败:', err);
+      alert('导出失败：' + (err.message || '未知错误'));
+    });
+  } catch(e) {
+    console.error('PDF导出异常:', e);
+    alert('导出失败：' + (e.message || '未知错误'));
+  }
 }
 </script>
 </body>
